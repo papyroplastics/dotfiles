@@ -1,0 +1,40 @@
+#! /bin/bash
+
+alias ls='ls --color=auto --hyperlink=auto'
+alias ll='ls -l --classify --human-readable'
+alias la='ls --almost-all'
+alias lal='ll --almost-all'
+alias lla='lal'
+
+alias evince='nohup evince'
+alias eog='nohup eog'
+alias nemo='nohup nemo'
+
+alias vi='nvim --noplugin'
+alias vim='nvim'
+
+pyactivate() {
+  if [[ -v VIRTUAL_ENV ]]; then
+    echo "Enviroment variable VIRTUAL_ENV is set, deactivate the current virtual environment."
+    return 1
+  fi
+
+  local current_dir=$(pwd)
+
+  while [ "$current_dir" != "/" ]; do
+    if [ -d "$current_dir/venv" ]; then
+      if [ -f "$current_dir/venv/bin/activate" ]; then
+        . $current_dir/venv/bin/activate
+        echo "\$VIRTUAL_ENV=$VIRTUAL_ENV"
+        return 0
+      else
+        echo "Virtual environment with no activation script found at $current_dir/venv."
+      fi
+    fi
+    current_dir=$(dirname "$current_dir")
+  done
+
+  echo "Virtual environment not found."
+  return 1
+}
+
