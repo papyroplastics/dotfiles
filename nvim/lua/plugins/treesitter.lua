@@ -1,14 +1,15 @@
+
+local filetypes = { "lua", "vim", "vimdoc", "query", "c", "cpp",
+    "python", "bash", "glsl", "html", "css", "htmldjango",
+    "gitignore", "gitcommit", "markdown", "make", "cmake"}
+
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        event = "VeryLazy",
         build = ":TSUpdate",
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "lua", "vim", "vimdoc", "query", "c", "cpp",
-                    "python", "bash", "glsl", "html", "css", "htmldjango",
-                    "gitignore", "gitcommit", "markdown", "make", "cmake"},
-
+                ensure_installed = filetypes,
                 sync_install = false,
                 auto_install = false ,
                 ignore_install = {},

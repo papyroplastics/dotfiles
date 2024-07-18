@@ -36,7 +36,7 @@ return {
             Harpoon:setup()
         end,
         keys = {
-            {"<leader>hl", function() Harpoon.ui:toggle_quick_menu(Harpoon:list()) end, desc = "List hooks", group = ""},
+            {"<leader>hl", function() Harpoon.ui:toggle_quick_menu(Harpoon:list()) end, desc = "List hooks"},
 
             {"<leader>ha", function() Harpoon:list():add() end,    desc = "Add hook"},
             {"<leader>hr", function() Harpoon:list():remove() end, desc = "Remove hook"},

@@ -6,12 +6,14 @@ alias la='ls --almost-all'
 alias lal='ll --almost-all'
 alias lla='lal'
 
-alias evince='nohup evince'
-alias eog='nohup eog'
-alias nemo='nohup nemo'
-
 alias vi='nvim --noplugin'
 alias vim='nvim'
+
+alias sl='ls'
+alias atp='apt'
+alias nivm='nvim'
+alias ncim='nvim'
+alias suod='sudo'
 
 pyactivate() {
   if [[ -v VIRTUAL_ENV ]]; then
