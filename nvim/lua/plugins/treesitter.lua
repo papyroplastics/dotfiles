@@ -1,7 +1,7 @@
 
 local filetypes = { "lua", "vim", "vimdoc", "query", "c", "cpp",
-    "python", "bash", "glsl", "html", "css", "htmldjango",
-    "gitignore", "gitcommit", "markdown", "make", "cmake"}
+    "python", "bash", "rust", "gitignore", "gitcommit",
+    "markdown", "make", "cmake" }
 
 return {
     {
@@ -13,7 +13,6 @@ return {
                 sync_install = false,
                 auto_install = false ,
                 ignore_install = {},
-
                 modules = {},
 
                 highlight = {

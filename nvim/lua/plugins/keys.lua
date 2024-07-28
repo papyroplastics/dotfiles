@@ -17,7 +17,11 @@ return {
                 { "<leader>b", group = "buffes" },
                 { "<leader>t", group = "tabs" },
                 { "<leader>l", group = "lsp" },
-                { "<leader><leader>", group= "harpoon" },
+                { "<leader><leader>", group= "telescope" },
+
+                { "<leader>w", hidden = true },
+                { "<leader>a", hidden = true },
+                { "<leader>q", hidden = true },
 
                 { "<leader>0", hidden = true },
                 { "<leader>1", hidden = true },

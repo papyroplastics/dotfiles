@@ -15,3 +15,8 @@ vim.keymap.set("n", "<leader>bn", "<cmd>bnext<cr>",     { desc = "Next buffer" }
 vim.keymap.set("n", "<leader>bm", "<cmd>bmodified<cr>", { desc = "Modified buffer" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>",   { desc = "Delete buffer" })
 
+-- Write
+vim.keymap.set("n", "<leader>w", "<cmd>up<cr>", { desc = "Current" })
+vim.keymap.set("n", "<leader>a", "<cmd>wa<cr>", { desc = "All" })
+vim.keymap.set("n", "<leader>q", "<cmd>wq<cr>", { desc = "Quit" })
+

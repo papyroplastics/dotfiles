@@ -20,14 +20,14 @@ return {
         varsion = "*",
         lazy = true,
         opts = {
-            ensure_installed = { "basedpyright", "cssls", "html", "clangd", "lua_ls", "neocmake"},
+            ensure_installed = { "basedpyright", "clangd", "lua_ls", "neocmake", "rust_analyzer" },
         },
     },
 
     {
         "neovim/nvim-lspconfig",
         varsion = "*",
-        ft = { "python", "css", "html", "c", "cpp", "lua", "cmake" },
+        ft = { "python", "c", "cpp", "lua", "cmake", "rust" },
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
@@ -39,48 +39,38 @@ return {
             { "<leader>la", vim.lsp.buf.code_action,    desc = "Code action" },
             { "<leader>ld", vim.lsp.buf.definition,     desc = "Go to definition" },
             { "<leader>li", vim.lsp.buf.implementation, desc = "Go to implementation" },
-            { "<leader>lr", vim.lsp.buf.rename,         desc = "Go to implementation" },
-            { "<leader>lr", vim.lsp.buf.format,         desc = "Go to implementation" },
+            { "<leader>le", vim.lsp.buf.declaration,    desc = "Go to declaration" },
+            { "<leader>lr", vim.lsp.buf.rename,         desc = "Rename symbol" },
+            { "<leader>lf", vim.lsp.buf.format,         desc = "Format document" },
         },
 
         config = function()
             local lspconfig = require("lspconfig")
-            local capab = require("cmp_nvim_lsp").default_capabilities()
+            local cmp = require("cmp_nvim_lsp")
+            local default_capabilities = cmp.default_capabilities()
+
+            local clangd_default_capabilities = cmp.default_capabilities()
+            clangd_default_capabilities.textDocument.semanticHighlighting = true
+            clangd_default_capabilities.offsetEncoding = "utf-8"
 
             lspconfig.basedpyright.setup({
-                capabilities = capab,
-                settings = {
-                    basedpyright= {
-                        analysis = {
-                            typeCheckingMode = "off"
-                        }
-                    }
-                }
+                capabilities = default_capabilities,
             })
-
-            lspconfig.cssls.setup({
-                capabilities = capab,
-            })
-
-            local clangd_capab = require("cmp_nvim_lsp").default_capabilities()
-            clangd_capab.textDocument.semanticHighlighting = true
-            clangd_capab.offsetEncoding = "utf-16"
 
             lspconfig.clangd.setup({
-                capabilities = clangd_capab,
-            })
-
-            lspconfig.html.setup({
-                capabilities = capab,
-                filetypes = {"htmldjango", "html"}
+                capabilities = clangd_default_capabilities,
             })
 
             lspconfig.lua_ls.setup({
-                capabilities = capab,
+                capabilities = default_capabilities,
             })
 
             lspconfig.neocmake.setup({
-                capabilities = capab,
+                capabilities = default_capabilities,
+            })
+
+            lspconfig.rust_analyzer.setup({
+                capabilities = default_capabilities,
             })
 
         end,
