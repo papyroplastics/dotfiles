@@ -13,7 +13,7 @@ return {
         config = function()
             local cmp = require("cmp")
 
-            local toggle_docs = function (fallback)
+            local toggle_docs = function (callback)
                 if cmp.visible() then
                     if cmp.visible_docs() then
                         cmp.close_docs()
@@ -21,7 +21,7 @@ return {
                         cmp.open_docs()
                     end
                 else
-                    fallback()
+                    callback()
                 end
             end
 
@@ -57,22 +57,50 @@ return {
                 end
             end
 
-            local select = function(fallback)
+            local confirm_select = function(callback)
                 if cmp.visible() then
-                    cmp.confirm({ select = true})
+                    cmp.confirm({ select = true })
                 else
-                    fallback()
+                    callback()
                 end
             end
 
-            local complete = function()
-                cmp.complete()
+            local confirm_noselect = function(callback)
+                if cmp.visible() then
+                    if not cmp.confirm({ select = false }) then
+                        callback()
+                    end
+                else
+                    callback()
+                end
+            end
+
+            local confirm_nocallback = function ()
+                if cmp.visible() then
+                    cmp.confirm({ select = true })
+                else
+                    cmp.complete()
+                end
+            end
+
+            local toggle_complete = function()
+                if cmp.visible() then
+                    cmp.close()
+                else
+                    cmp.complete()
+                end
             end
 
             local mappings = {
-                ["<C-Space>"] = cmp.mapping(complete, {"i","c"}),
-                ["<tab>"] = cmp.mapping(select, {"i","c"}),
-                ["<CR>"] = cmp.mapping(select, {"i"}),
+                ["<C-Space>"] = cmp.mapping(toggle_complete, {"i","c"}),
+                ["<tab>"] = {
+                    i = confirm_select,
+                    c = confirm_nocallback,
+                },
+                ["<CR>"] = {
+                    i = confirm_select,
+                    c = confirm_noselect,
+                },
 
                 ["<C-k>"] = cmp.mapping(select_prev_item, {"i", "c"}),
                 ["<C-j>"] = cmp.mapping(select_next_item, {"i", "c"}),

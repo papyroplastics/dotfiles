@@ -11,6 +11,7 @@ return {
             { "<leader><leader>g", "<cmd>Telescope live_grep<cr>", desc = "Ripgrep" },
             { "<leader><leader>j", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
             { "<leader><leader>s", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Fuzzy finder" },
+            { "<leader><leader>n", "<cmd>Telescope notify<cr>", desc = "Notify" },
         },
     },
     {
