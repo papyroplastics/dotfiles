@@ -59,4 +59,12 @@ return {
             {"<leader>9", function() Harpoon:list():select(9) end},
         }
     },
+    {
+        "m4xshen/hardtime.nvim",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim"
+        },
+        opts = {}
+    },
 }

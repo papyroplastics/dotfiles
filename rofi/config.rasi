@@ -1,0 +1,22 @@
+configuration{
+    modi: "drun,filebrowser,window,run";
+    icon-theme: "";
+    show-icons: true;
+    terminal: "kitty";
+    drun-display-format: "{icon} {name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-drun: " Apps ";
+    display-filebrowser: " Files";
+    display-window: "󰕰  Nodes";
+    display-run: "  Run ";
+    sidebar-mode: true;
+    filebrowser {
+        directory: "/home/lucas";
+    }
+}
+
+
+@theme "catppuccin-mocha"
+

@@ -45,37 +45,4 @@ return {
             scope = { enabled = false },
         },
     },
-    {
-        "srcarriga/nvim-notify",
-        version = "*",
-        lazy = true,
-        cond = colorterm,
-        opts = {
-            background_colour = "#181826",
-            fps = 1,
-            level = 3,
-            render = "wrapped-compact",
-            stages = nil,
-            timeout = 3000,
-        },
-    },
-    {
-        "folke/noice.nvim",
-        version = "*",
-        event = "VeryLazy",
-        cond = colorterm,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
-        },
-        opts = {
-            presets = {
-                bottom_search = true, -- use a classic bottom cmdline for search
-                command_palette = true, -- position the cmdline and popupmenu together
-                long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false, -- add a border to hover docs and signature help
-            },
-        }
-    },
 }
