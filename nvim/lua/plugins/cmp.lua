@@ -1,14 +1,14 @@
 return {
     {
-        "hrsh7th/nvim-cmp",
-        event = {"InsertEnter", "CmdlineEnter"},
+        'hrsh7th/nvim-cmp',
+        event = {'InsertEnter', 'CmdlineEnter'},
         dependencies = {
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-cmdline',
         },
         config = function()
-            local cmp = require("cmp")
+            local cmp = require('cmp')
 
             local toggle_docs = function (callback)
                 if cmp.visible() then
@@ -89,22 +89,22 @@ return {
             end
 
             local mappings = {
-                ["<C-Space>"] = cmp.mapping(toggle_complete, {"i","c"}),
-                ["<tab>"] = {
+                ['<C-Space>'] = cmp.mapping(toggle_complete, {'i','c'}),
+                ['<tab>'] = {
                     i = confirm_select,
                     c = confirm_nocallback,
                 },
-                ["<CR>"] = {
+                ['<CR>'] = {
                     i = confirm_select,
                     c = confirm_noselect,
                 },
 
-                ["<C-k>"] = cmp.mapping(select_prev_item, {"i", "c"}),
-                ["<C-j>"] = cmp.mapping(select_next_item, {"i", "c"}),
+                ['<C-k>'] = cmp.mapping(select_prev_item, {'i', 'c'}),
+                ['<C-j>'] = cmp.mapping(select_next_item, {'i', 'c'}),
 
-                ["<C-d>"] = cmp.mapping(toggle_docs, {"i", "c"}),
-                ["<C-h>"] = cmp.mapping(scroll_docs_up, {"i", "c"}),
-                ["<C-l>"] = cmp.mapping(scroll_docs_down, {"i", "c"}),
+                ['<C-d>'] = cmp.mapping(toggle_docs, {'i', 'c'}),
+                ['<C-h>'] = cmp.mapping(scroll_docs_up, {'i', 'c'}),
+                ['<C-l>'] = cmp.mapping(scroll_docs_down, {'i', 'c'}),
             }
 
 
@@ -125,28 +125,28 @@ return {
                 mapping = mappings,
 
                 sources = cmp.config.sources( {
-                        { name = "nvim_lsp" },
-                        { name = "nvim_lsp_signature_help" },
+                        { name = 'nvim_lsp' },
+                        { name = 'nvim_lsp_signature_help' },
                     }, {
-                        { name = "lazydev" },
-                        { name = "buffer" }
+                        { name = 'lazydev' },
+                        { name = 'buffer' }
                     }
                 )
             })
 
-            cmp.setup.cmdline(":", {
+            cmp.setup.cmdline(':', {
                 mapping = mappings,
                 sources = cmp.config.sources({
-                    { name = "path" },
-                    { name = "cmdline" }
+                    { name = 'path' },
+                    { name = 'cmdline' }
                 })
             })
 
-            cmp.setup.cmdline("/", {
+            cmp.setup.cmdline('/', {
                 mapping = mappings,
                 sources = cmp.config.sources({
-                    { name = "buffer" },
-                    { name = "nvim_lsp_document_symbol" }
+                    { name = 'buffer' },
+                    { name = 'nvim_lsp_document_symbol' }
                 })
             })
         end,

@@ -75,9 +75,9 @@ return {
             lspconfig.rust_analyzer.setup({
                 capabilities = default_capabilities,
             })
-
         end,
     },
+
     {
         "folke/trouble.nvim",
         opts = {},

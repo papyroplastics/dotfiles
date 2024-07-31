@@ -52,8 +52,8 @@ done
 #  Aliases
 # ---------
 
-alias ls='ls --color=auto --hyperlink=auto'
-alias ll='ls -l --classify --human-readable'
+alias ls='ls --color=auto --hyperlink=auto --classify=auto'
+alias ll='ls -l --human-readable --no-group'
 alias la='ls --almost-all'
 alias lal='ll --almost-all'
 alias lla='lal'

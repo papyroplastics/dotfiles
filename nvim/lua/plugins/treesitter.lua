@@ -1,14 +1,14 @@
 
-local filetypes = { "lua", "vim", "vimdoc", "query", "c", "cpp",
-    "python", "bash", "rust", "gitignore", "gitcommit",
-    "markdown", "make", "cmake" }
-
 return {
     {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
+        'nvim-treesitter/nvim-treesitter',
+        build = ':TSUpdate',
         config = function()
-            require("nvim-treesitter.configs").setup({
+            local filetypes = { 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
+                'python', 'bash', 'rust', 'gitignore', 'gitcommit',
+                'markdown', 'make', 'cmake' }
+
+            require('nvim-treesitter.configs').setup({
                 ensure_installed = filetypes,
                 sync_install = false,
                 auto_install = false ,
@@ -26,10 +26,10 @@ return {
                 incremental_selection = {
                     enable = true,
                     keymaps = {
-                        init_selection = "gs",
-                        node_incremental = "gi",
-                        scope_incremental = "gs",
-                        node_decremental = "gd",
+                        init_selection = 'gs',
+                        node_incremental = 'gi',
+                        scope_incremental = 'gs',
+                        node_decremental = 'gd',
                     },
                 },
             })
