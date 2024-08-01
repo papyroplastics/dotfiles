@@ -2,6 +2,7 @@
 -- General
 vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch, { desc = 'Clean search' })
 vim.keymap.set('n', '´', '^', { desc = 'Go to start of text in line' })
+vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
 
 -- Tabs
 vim.keymap.set('n', '<leader>tt', '<cmd>tabnew<cr>',      { desc = 'New tab' })

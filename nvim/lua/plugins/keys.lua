@@ -66,7 +66,9 @@ return {
             vim.keymap.set('!', '<C-e>', readline.end_of_line)
 
             vim.keymap.set('!', '<M-d>', readline.kill_word)
+            vim.keymap.set('!', '<C-d>', '<Del>')
             vim.keymap.set('!', '<M-BS>',readline.backward_kill_word)
+            vim.keymap.set('!', '<C-BS>',readline.backward_kill_word)
             vim.keymap.set('!', '<C-w>', readline.unix_word_rubout)
 
             vim.keymap.set('!', '<M-k>', readline.kill_line)

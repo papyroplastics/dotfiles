@@ -2,6 +2,7 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        tag = 'v0.9.2',
         build = ':TSUpdate',
         config = function()
             local filetypes = { 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
