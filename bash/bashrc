@@ -33,6 +33,7 @@ export PAGER='batcat --paging=always'
 export MANPAGER=manpager
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 # -------------
 #  Completions
