@@ -12,9 +12,9 @@ return {
             require('catppuccin').setup()
             vim.opt.termguicolors = true
             vim.cmd.colorscheme('catppuccin-mocha')
-            vim.cmd.highlight('Normal', 'ctermbg=none', 'guibg=none')
-            vim.cmd.highlight('NormalNC', 'ctermbg=none', 'guibg=none')
-            vim.cmd.highlight('NonText', 'ctermbg=none', 'guibg=none')
+            -- vim.cmd.highlight('Normal', 'ctermbg=none', 'guibg=none')
+            -- vim.cmd.highlight('NormalNC', 'ctermbg=none', 'guibg=none')
+            -- vim.cmd.highlight('NonText', 'ctermbg=none', 'guibg=none')
         end,
     },
     {

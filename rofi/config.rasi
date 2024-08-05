@@ -1,5 +1,5 @@
 configuration{
-    modi: "drun,filebrowser,window,run";
+    modi: "drun";
     icon-theme: "";
     show-icons: true;
     terminal: "kitty";
@@ -17,6 +17,4 @@ configuration{
     }
 }
 
-
-@theme "catppuccin-mocha"
-
+@theme "/usr/share/rofi/themes/android_notification.rasi"
