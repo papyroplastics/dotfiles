@@ -1,5 +1,5 @@
 configuration{
-    modi: "drun";
+    modi: "drun,window,filebrowser,run";
     icon-theme: "";
     show-icons: true;
     terminal: "kitty";
@@ -7,14 +7,15 @@ configuration{
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: " Apps ";
-    display-filebrowser: " Files";
-    display-window: "󰕰  Nodes";
-    display-run: "  Run ";
-    sidebar-mode: true;
+    display-drun: " ";
+    display-filebrowser: " ";
+    display-window: "󰕰 ";
+    display-run: "󱓞 ";
+    sidebar-mode: false;
     filebrowser {
         directory: "/home/lucas";
     }
 }
 
-@theme "/usr/share/rofi/themes/android_notification.rasi"
+@theme "themes/dracula.rasi"
+

@@ -10,12 +10,11 @@ set $urb #FF5555
 
 workspace_layout tabbed
 default_border pixel 1
-default_floating_border pixel 1
+font pango:Noto Sans 0
+# for_window [class=".*"] title_format "<span alpha='0'>%title</span>"
 
+focus_follows_mouse no
 floating_modifier $mod
-tiling_drag modifier titlebar
-
-font pango:DroidSansM Nerd Font 10
 
 exec --no-startup-id picom
 exec --no-startup-id xwallpaper --zoom Media/sunbg.jpg
@@ -23,18 +22,21 @@ exec --no-startup-id redshift-gtk
 exec --no-startup-id nm-applet
 exec --no-startup-id light-locker
 exec --no-startup-id start-pulseaudio-x11
+exec --no-startup-id pa-applet --disable-key-grabbing --disable-notifications
 
 # exec --no-startup-id alttab -w 1 -mk Super_L
 # exec --no-startup-id dex --autostart --environment i3
 
+bindsym $mod+t exec $terminal
 bindsym $mod+Return exec $terminal
-bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -i -sb '$acb' -sf '$act' -nb '$inb' -nf '$int'" --term=$terminal
+bindsym $mod+b exec firefox-esr
+bindsym $mod+d exec rofi -show drun
+# bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -i -sb '$acb' -sf '$act' -nb '$inb' -nf '$int'" --term=$terminal
 
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+# bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -time 0 -steps 1 +1
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -time 0 -steps 1 -1
@@ -48,6 +50,9 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+
+bindsym $mod+Tab focus right 
+bindsym $mod+shift+Tab focus left
 
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
@@ -119,11 +124,11 @@ mode "resize" {
 }
 
 # class                 brdr  bg  text ind ch_brdr
-client.focused          $acb $acb $act $acb $acb
-client.focused_inactive $acb $acb $act $acb $acb
-client.unfocused        $inb $inb $int $inb $inb
-client.urgent           $acb $urb $act $urb $urb
-client.placeholder      $inb $inb $act $inb $inb
+client.focused          $acb $acb $acb $acb $acb
+client.focused_inactive $acb $acb $acb $acb $acb
+client.unfocused        $inb $inb $inb $inb $inb
+client.urgent           $acb $urb $acb $urb $urb
+client.placeholder      $inb $inb $acb $inb $inb
 
 client.background       $inb
 
@@ -131,10 +136,12 @@ bar {
     status_command i3status
     mode hide
     hidden_state hide
+    font pango:DroidSansM Nerd Font 11
+    separator_symbol " ❯ "
     colors {
         background $inb
         statusline $act
-        separator  $acb
+        separator #585B70
 
         # class            brdr  bg  text
         focused_workspace  $acb $acb $act
@@ -144,5 +151,4 @@ bar {
         binding_mode       $urb $urb $act
     }
 }
-
 

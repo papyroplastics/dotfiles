@@ -1,0 +1,45 @@
+
+general {
+    colors = true
+    interval = 60
+    color_good = "#A6E3A1"
+    color_degraded = "#F9E2AF"
+    color_bad = "#F38BA8"
+}
+
+order += "battery 0"
+order += "disk /"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+battery 0 {
+        format = "%status %percentage"
+        integer_battery_capacity = true
+        status_chr = "󰂄"
+        status_bat = "󰁿"
+        status_unk = "󰂑"
+        status_full = "󰂃"
+        low_threshold = 25
+        threshold_type = "percentage"
+}
+
+
+disk "/" {
+    format = " %avail"
+}
+
+memory {
+    format = "󰍛 %used"
+    threshold_degraded = "1G"
+}
+
+volume master {
+        format = "🕪 %volume"
+        format_muted = "🕨 %volume"
+        device = "pulse"
+}
+
+tztime local {
+    format = " %m-%d  %H:%M"
+}

@@ -27,7 +27,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust' },
+        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust', 'racket'},
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -75,6 +75,10 @@ return {
             lspconfig.rust_analyzer.setup({
                 capabilities = default_capabilities,
             })
+
+            lspconfig.racket_langserver.setup({
+                capabilities = default_capabilities,
+            })
         end,
     },
 
@@ -84,6 +88,7 @@ return {
         cmd = 'Trouble',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         version = '*',
+
         keys = {
             {
                 '<leader>r',
