@@ -35,8 +35,8 @@ memory {
 }
 
 volume master {
-        format = "🕪 %volume"
-        format_muted = "🕨 %volume"
+        format = "󰕾 %volume"
+        format_muted = "󰖁 %volume"
         device = "pulse"
 }
 

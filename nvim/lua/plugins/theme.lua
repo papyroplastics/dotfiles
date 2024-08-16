@@ -9,12 +9,12 @@ return {
         cond = colorterm,
         lazy = false,
         priority = 1000, config = function()
-            require('catppuccin').setup()
             vim.opt.termguicolors = true
+            require('catppuccin').setup()
             vim.cmd.colorscheme('catppuccin-mocha')
-            -- vim.cmd.highlight('Normal', 'ctermbg=none', 'guibg=none')
-            -- vim.cmd.highlight('NormalNC', 'ctermbg=none', 'guibg=none')
-            -- vim.cmd.highlight('NonText', 'ctermbg=none', 'guibg=none')
+            vim.cmd.highlight('Normal', 'ctermbg=none', 'guibg=none')
+            vim.cmd.highlight('NormalNC', 'ctermbg=none', 'guibg=none')
+            vim.cmd.highlight('NonText', 'ctermbg=none', 'guibg=none')
         end,
     },
     {
@@ -33,7 +33,7 @@ return {
     },
     {
         'HiPhish/rainbow-delimiters.nvim',
-        event = 'VeryLazy',
+        lazy = false,
         cond = colorterm,
     },
     {
