@@ -5,7 +5,7 @@ return {
             'nvim-lua/plenary.nvim',
         },
         keys = {
-            { '<leader><leader>t', '<cmd>Telescope<cr>', desc = 'Show builtins'},
+            { '<leader><leader>t', '<cmd>Telescope<cr>', desc = 'Telescope builtins'},
             { '<leader><leader>b', '<cmd>Telescope buffers<cr>', desc = 'Buffer list' },
             { '<leader><leader>f', '<cmd>Telescope find_files<cr>', desc = 'Find file' },
             { '<leader><leader>g', '<cmd>Telescope live_grep<cr>', desc = 'Ripgrep' },
@@ -77,7 +77,7 @@ return {
             { "S", function() Flash.treesitter() end,        mode = { "n", "x", "o" }, desc = "Flash Treesitter" },
             { "r", function() Flash.remote() end,            mode = "o",               desc = "Remote Flash" },
             { "R", function() Flash.treesitter_search() end, mode = { "o", "x" },      desc = "Treesitter Search" },
-            { "<c-s>", function() Flash.toggle() end,        mode = { "c" },           desc = "Toggle Flash Search" },
+            { "<C-s>", function() Flash.toggle() end,        mode = { "c" },           desc = "Toggle Flash Search" },
         },
     }
 }

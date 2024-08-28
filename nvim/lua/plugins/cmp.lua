@@ -1,26 +1,20 @@
 return {
     {
+        'hrsh7th/cmp-path',
+        event = 'CmdlineEnter',
+        dependencies = {
+            'hrsh7th/nvim-cmp',
+            'hrsh7th/cmp-cmdline',
+        }
+    },
+    {
         'hrsh7th/nvim-cmp',
-        event = {'InsertEnter', 'CmdlineEnter'},
+        event = 'InsertEnter',
         dependencies = {
             'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-cmdline',
         },
         config = function()
             local cmp = require('cmp')
-
-            local toggle_docs = function (callback)
-                if cmp.visible() then
-                    if cmp.visible_docs() then
-                        cmp.close_docs()
-                    else
-                        cmp.open_docs()
-                    end
-                else
-                    callback()
-                end
-            end
 
             local select_prev_item = function()
                 if cmp.visible() then
@@ -38,23 +32,35 @@ return {
                 end
             end
 
-            local scroll_docs_up = function()
+            local toggle_docs = function (callback)
                 if cmp.visible() then
+                    if cmp.visible_docs() then
+                        cmp.close_docs()
+                    else
+                        cmp.open_docs()
+                    end
+                else
+                    callback()
+                end
+            end
+
+            local scroll_docs_up = function(callback)
+                if cmp.visible_docs() then
                     cmp.scroll_docs(-4)
                 else
-                    cmp.complete()
+                    callback()
                 end
             end
 
-            local scroll_docs_down = function()
-                if cmp.visible() then
+            local scroll_docs_down = function(callback)
+                if cmp.visible_docs() then
                     cmp.scroll_docs(4)
                 else
-                    cmp.complete()
+                    callback()
                 end
             end
 
-            local confirm_select = function(callback)
+            local confirm = function(callback)
                 if cmp.visible() then
                     cmp.confirm({ select = true })
                 else
@@ -62,7 +68,7 @@ return {
                 end
             end
 
-            local confirm_noselect = function(callback)
+            local weak_confirm = function(callback)
                 if cmp.visible() then
                     if not cmp.confirm({ select = false }) then
                         callback()
@@ -72,7 +78,7 @@ return {
                 end
             end
 
-            local confirm_nocallback = function ()
+            local strong_confirm = function ()
                 if cmp.visible() then
                     cmp.confirm({ select = true })
                 else
@@ -82,7 +88,7 @@ return {
 
             local toggle_complete = function()
                 if cmp.visible() then
-                    cmp.close()
+                    cmp.abort()
                 else
                     cmp.complete()
                 end
@@ -91,12 +97,12 @@ return {
             local mappings = {
                 ['<C-Space>'] = cmp.mapping(toggle_complete, {'i','c'}),
                 ['<tab>'] = {
-                    i = confirm_select,
-                    c = confirm_nocallback,
+                    i = confirm,
+                    c = strong_confirm,
                 },
                 ['<CR>'] = {
-                    i = confirm_select,
-                    c = confirm_noselect,
+                    i = confirm,
+                    c = weak_confirm,
                 },
 
                 ['<C-k>'] = cmp.mapping(select_prev_item, {'i', 'c'}),
@@ -105,6 +111,7 @@ return {
                 ['<C-d>'] = cmp.mapping(toggle_docs, {'i', 'c'}),
                 ['<C-h>'] = cmp.mapping(scroll_docs_up, {'i', 'c'}),
                 ['<C-l>'] = cmp.mapping(scroll_docs_down, {'i', 'c'}),
+
             }
 
 
@@ -126,9 +133,6 @@ return {
 
                 sources = cmp.config.sources( {
                         { name = 'nvim_lsp' },
-                        { name = 'nvim_lsp_signature_help' },
-                    }, {
-                        { name = 'lazydev' },
                         { name = 'buffer' }
                     }
                 )

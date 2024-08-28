@@ -8,8 +8,6 @@ general {
 }
 
 order += "battery 0"
-order += "disk /"
-order += "memory"
 order += "volume master"
 order += "tztime local"
 
@@ -22,16 +20,6 @@ battery 0 {
         status_full = "󰂃"
         low_threshold = 25
         threshold_type = "percentage"
-}
-
-
-disk "/" {
-    format = " %avail"
-}
-
-memory {
-    format = "󰍛 %used"
-    threshold_degraded = "1G"
 }
 
 volume master {

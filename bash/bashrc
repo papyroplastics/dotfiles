@@ -70,6 +70,8 @@ alias nivm='nvim'
 alias ncim='nvim'
 alias suod='sudo'
 
+alias idf-export=". $HOME/Code/sistemas_embedidos/esp-idf/export.sh"
+
 pyactivate() {
     if [[ -v VIRTUAL_ENV ]]; then
         echo "Enviroment variable VIRTUAL_ENV is set, deactivate the current virtual environment."
