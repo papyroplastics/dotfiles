@@ -29,7 +29,6 @@ export SUDO_EDITOR=nvim
 export LESS='--ignore-case --incsearch --mouse --use-color'
 export BAT_THEME='catppuccin-mocha'
 export BAT_PAGER='less --RAW-CONTROL-CHARS'
-export PAGER='batcat --paging=always'
 export MANPAGER=manpager
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
