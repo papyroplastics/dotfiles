@@ -31,6 +31,7 @@ return {
     {
         'ThePrimeagen/harpoon',
         branch = 'harpoon2',
+        enabled = false,
         dependencies = {
             'nvim-lua/plenary.nvim'
         },
@@ -63,21 +64,19 @@ return {
     },
 
     {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        version = "*",
-
+        'folke/flash.nvim',
+        version = '*',
         config = function ()
             Flash = require('flash')
             Flash.setup({})
         end,
-
         keys = {
-            { "s", function() Flash.jump() end,              mode = { "n", "x", "o" }, desc = "Flash" },
-            { "S", function() Flash.treesitter() end,        mode = { "n", "x", "o" }, desc = "Flash Treesitter" },
-            { "r", function() Flash.remote() end,            mode = "o",               desc = "Remote Flash" },
-            { "R", function() Flash.treesitter_search() end, mode = { "o", "x" },      desc = "Treesitter Search" },
-            { "<C-s>", function() Flash.toggle() end,        mode = { "c" },           desc = "Toggle Flash Search" },
+            'f', 'F', 't', 'T',
+            { 's', function() Flash.jump() end,              mode = { 'n', 'x', 'o' }, desc = 'Flash' },
+            { 'S', function() Flash.treesitter() end,        mode = { 'n', 'x', 'o' }, desc = 'Flash Treesitter' },
+            { 'r', function() Flash.remote() end,            mode = 'o',               desc = 'Remote Flash' },
+            { 'R', function() Flash.treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter Search' },
+            { '<C-s>', function() Flash.toggle() end,        mode = { 'c' },           desc = 'Toggle Flash Search' },
         },
     }
 }

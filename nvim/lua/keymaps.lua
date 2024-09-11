@@ -3,9 +3,9 @@
 vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch, { desc = 'Clean search' })
 vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
 
-vim.keymap.set('n', '¿', '^', { desc = 'Go to start of text in line' })
-vim.keymap.set('n', '<C-p>', '8k')
-vim.keymap.set('n', '<C-n>', '8j')
+vim.keymap.set('', '¿', '^', { desc = 'Go to start of text in line' })
+vim.keymap.set('', '<C-p>', '8k')
+vim.keymap.set('', '<C-n>', '8j')
 
 vim.cmd('cab S %s')
 

@@ -20,6 +20,7 @@ fi
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
+source "/home/lucas/.ghcup/env"
 
 export HISTCONTROL=ignoreboth
 export VISUAL=nvim
@@ -183,5 +184,4 @@ update_prompt() {
 
 PROMPT_COMMAND='update_prompt'
 PS1="$deb_col$deb_icon$host_col\u@\H $dir_col\$short_dir $git_col\$git_status$exit_col\$exit_status$prompt_col$prompt_icon$white"
-
 

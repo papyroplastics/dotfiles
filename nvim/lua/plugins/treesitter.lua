@@ -7,7 +7,7 @@ return {
         config = function()
             local filetypes = { 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
                 'python', 'bash', 'rust', 'gitignore', 'gitcommit',
-                'markdown', 'make', 'cmake', 'racket'}
+                'markdown', 'make', 'cmake', 'racket', 'haskell'}
 
             require('nvim-treesitter.configs').setup({
                 ensure_installed = filetypes,

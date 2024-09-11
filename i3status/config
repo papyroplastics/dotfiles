@@ -9,7 +9,8 @@ general {
 
 order += "battery 0"
 order += "volume master"
-order += "tztime local"
+order += "tztime date"
+order += "tztime hour"
 
 battery 0 {
         format = "%status %percentage"
@@ -28,6 +29,11 @@ volume master {
         device = "pulse"
 }
 
-tztime local {
-    format = " %m-%d  %H:%M"
+tztime date {
+    format = " %m-%d"
 }
+
+tztime hour {
+    format = " %H:%M "
+}
+

@@ -27,7 +27,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust', 'racket'},
+        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust', 'racket', 'haskell'},
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -49,34 +49,35 @@ return {
         config = function()
             local lspconfig = require('lspconfig')
             local cmp = require('cmp_nvim_lsp')
-            local default_capabilities = cmp.default_capabilities()
-
-            local clangd_default_capabilities = cmp.default_capabilities()
-            clangd_default_capabilities.textDocument.semanticHighlighting = true
-            clangd_default_capabilities.offsetEncoding = 'utf-8'
+            local complete = cmp.default_capabilities()
 
             lspconfig.basedpyright.setup({
-                capabilities = default_capabilities,
+                capabilities = complete,
             })
 
             lspconfig.clangd.setup({
-                capabilities = clangd_default_capabilities,
+                capabilities = complete,
+                cmd = { "clangd", "--offset-encoding=utf-8"}
             })
 
             lspconfig.lua_ls.setup({
-                capabilities = default_capabilities,
+                capabilities = complete,
             })
 
             lspconfig.neocmake.setup({
-                capabilities = default_capabilities,
+                capabilities = complete,
             })
 
             lspconfig.rust_analyzer.setup({
-                capabilities = default_capabilities,
+                capabilities = complete,
             })
 
             lspconfig.racket_langserver.setup({
-                capabilities = default_capabilities,
+                capabilities = complete,
+            })
+
+            lspconfig.hls.setup({
+                capabilities = complete,
             })
         end,
     },
