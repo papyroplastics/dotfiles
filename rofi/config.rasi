@@ -1,5 +1,6 @@
 configuration{
     modi: "drun,window,filebrowser,run";
+    matching: "fuzzy";
     icon-theme: "";
     show-icons: true;
     terminal: "kitty";

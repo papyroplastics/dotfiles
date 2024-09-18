@@ -49,7 +49,7 @@ return {
         config = function()
             local lspconfig = require('lspconfig')
             local cmp = require('cmp_nvim_lsp')
-            local complete = cmp.default_capabilities()
+            local complete = cmp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
             lspconfig.basedpyright.setup({
                 capabilities = complete,

@@ -34,6 +34,6 @@ tztime date {
 }
 
 tztime hour {
-    format = " %H:%M "
+    format = " %H:%M"
 }
 

@@ -8,21 +8,19 @@
 # histappend: append to the history file.
 # checkwinsize: update the values of LINES and COLUMNS.
 # globstar: ** matches files on subdirectories
-shopt -s autocd cdspell histappend checkwinsize globstar
+shopt -s autocd histappend checkwinsize globstar
 
 # -------------
 #  Environment
 # -------------
 
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
+PATH="$HOME/.local/bin:$PATH"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
 source "/home/lucas/.ghcup/env"
 
-export HISTCONTROL=ignoreboth
+export MANPATH="$HOME/.ghcup/share/man:$MANPATH"
+
 export VISUAL=nvim
 export EDITOR=nvim
 export SUDO_EDITOR=nvim
@@ -33,7 +31,7 @@ export BAT_PAGER='less --RAW-CONTROL-CHARS'
 export MANPAGER=manpager
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export LIBVIRT_DEFAULT_URI='qemu:///system'
+# export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 # -------------
 #  Completions
@@ -110,29 +108,29 @@ prompt_col='\[\e[37m\]'
 white='\[\e[0m\]'
 exit_col='\[\e[91m\]'
 
-prompt_icon='$ '
+prompt_icon='$'
 dir_sep='...'
 
-git_branch='(b: '
-git_tag='(t: '
-git_commit='(c: '
-git_end=') '
+git_branch='(b:'
+git_tag='(t:'
+git_commit='(c:'
+git_end=')'
 
-exit_icon='(e: '
-exit_end=') '
+exit_icon='(e:'
+exit_end=')'
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
     deb_icon=' '
-    prompt_icon=' '
+    prompt_icon=''
     dir_sep='....'
 
-    git_branch=' '
-    git_tag=' '
-    git_commit=' '
-    git_end=' '
+    git_branch=''
+    git_tag=''
+    git_commit=''
+    git_end=''
 
-    exit_icon=' '
-    exit_end=' '
+    exit_icon=''
+    exit_end=''
 fi
 
 short_dir=''
@@ -145,19 +143,17 @@ update_prompt() {
     if [[ "$exit_status" == '0' ]]; then
         exit_status=''
     else
-        exit_status="$exit_icon$exit_status$exit_end"
+        exit_status="$exit_icon $exit_status$exit_end "
     fi
 
     # update formatted dir
     short_dir=$(pwd)
-    if [[ $short_dir == $HOME* ]]; then
-        short_dir=$(echo ~${short_dir#$HOME} | sed "s|/.*/|/$dir_sep/|")
-
-    elif [[ $short_dir == '/' ]]; then
+    if [[ $short_dir == '/' ]]; then
         short_dir='/'
-
     else
-        short_dir=$(echo ${short_dir#/} | sed "s|/.*/|/$dir_sep/|")
+        short_dir=${short_dir/#$HOME/'~'}
+        short_dir=${short_dir#/}
+        short_dir=${short_dir/\/*\//\/$dir_sep\/}
     fi
 
     # update git status
@@ -166,22 +162,27 @@ update_prompt() {
         # if on a branch
         git_status=$(git symbolic-ref --short HEAD 2>/dev/null)
         if [[ -n $git_status ]]; then
-            git_status="$git_branch$git_status$git_end"
+            git_status="$git_branch $git_status$git_end "
             return
         fi
 
         # if on a tag
         git_status=$(git describe --tags --exact-match 2>/dev/null)
         if [[ -n $git_status ]]; then
-            git_status="$git_tag$git_status$git_end"
+            git_status="$git_tag $git_status$git_end "
             return
         fi
 
         # else use commit hash
-        git_status="$git_commit$(git rev-parse --short HEAD 2>/dev/null)$git_end"
+        git_status="$git_commit $(git rev-parse --short HEAD 2>/dev/null)$git_end "
     fi
 }
 
 PROMPT_COMMAND='update_prompt'
-PS1="$deb_col$deb_icon$host_col\u@\H $dir_col\$short_dir $git_col\$git_status$exit_col\$exit_status$prompt_col$prompt_icon$white"
+PS1="$deb_col$deb_icon\
+$host_col\u@\H \
+$dir_col\$short_dir \
+$git_col\$git_status\
+$exit_col\$exit_status\
+$prompt_col$prompt_icon $white"
 

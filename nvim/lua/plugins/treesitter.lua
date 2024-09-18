@@ -1,13 +1,11 @@
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        tag = 'v0.9.2',
         build = ':TSUpdate',
         config = function()
             local filetypes = { 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
-                'python', 'bash', 'rust', 'gitignore', 'gitcommit',
-                'markdown', 'make', 'cmake', 'racket', 'haskell'}
+                'python', 'bash', 'rust', 'gitignore', 'gitcommit', 'markdown',
+                'markdown_inline', 'make', 'cmake', 'racket', 'haskell'}
 
             require('nvim-treesitter.configs').setup({
                 ensure_installed = filetypes,

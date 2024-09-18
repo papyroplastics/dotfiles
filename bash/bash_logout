@@ -1,4 +1,4 @@
 # ~/.bash_logout
 if [ "$SHLVL" = 1 ]; then
-    klear_console -q
+    clear_console -q
 fi

@@ -5,6 +5,9 @@ return {
         version = '*',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function()
+            vim.opt.timeout = true
+            vim.opt.timeoutlen = 700
+
             local wk = require('which-key')
 
             wk.setup({
