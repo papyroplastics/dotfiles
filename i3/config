@@ -18,6 +18,8 @@ exec --no-startup-id xwallpaper --zoom ~/.config/i3/dark-narcissus.jpg
 exec --no-startup-id redshift
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 
+exec --no-startup-id sh -c 'sleep 0.2; i3lock-fancy'
+
 bindsym $mod+t exec $terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+b exec firefox-esr
@@ -159,4 +161,3 @@ bar {
     }
 }
 
-exec --no-startup-id i3lock-fancy

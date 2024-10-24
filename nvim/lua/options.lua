@@ -10,7 +10,7 @@ vim.opt.scrolloff = 20
 vim.opt.sidescrolloff = 5
 
 vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 0
 vim.opt.shiftround = true
 vim.opt.expandtab = true
 vim.opt.smarttab = true

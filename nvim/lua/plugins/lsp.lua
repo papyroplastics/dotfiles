@@ -3,6 +3,7 @@ return {
         'folke/lazydev.nvim',
         lazy = true,
         ft = 'lua',
+        cond = string.sub(vim.fn.getcwd(), -5) == '/nvim',
         version = '*',
         opts = {},
     },
@@ -20,14 +21,16 @@ return {
         varsion = '*',
         lazy = true,
         opts = {
-            ensure_installed = { 'basedpyright', 'clangd', 'lua_ls', 'neocmake', 'rust_analyzer' },
+            ensure_installed = { 'basedpyright', 'clangd',
+                'lua_ls', 'neocmake', 'rust_analyzer', 'verible'},
         },
     },
 
     {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust', 'racket', 'haskell'},
+        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust',
+            'racket', 'haskell', 'verilog', 'systemverilog'},
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -77,6 +80,10 @@ return {
             })
 
             lspconfig.hls.setup({
+                capabilities = complete,
+            })
+
+            lspconfig.svlangserver .setup({
                 capabilities = complete,
             })
         end,

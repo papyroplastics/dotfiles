@@ -52,7 +52,7 @@ done
 # ---------
 
 alias ls='ls --color=auto --hyperlink=auto --classify=auto'
-alias ll='ls -l --human-readable --no-group'
+alias ll='ls -l --human-readable'
 alias la='ls --almost-all'
 alias lal='ll --almost-all'
 alias lla='lal'
@@ -60,15 +60,13 @@ alias lla='lal'
 alias vi='nvim --noplugin'
 alias vim='nvim'
 
-alias bat="batcat"
-
 alias sl='ls'
 alias atp='apt'
 alias nivm='nvim'
 alias ncim='nvim'
 alias suod='sudo'
 
-alias idf-export=". $HOME/Code/sistemas_embedidos/esp-idf/export.sh"
+alias idf-export=". $HOME/.esp-idf/export.sh"
 
 pyactivate() {
     if [[ -v VIRTUAL_ENV ]]; then
