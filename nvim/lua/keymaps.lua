@@ -9,6 +9,10 @@ vim.keymap.set('', '<C-n>', '8j')
 
 vim.cmd('cab S %s')
 
+-- Insert
+vim.keymap.set('i', '<C-CR>', '<esc>o')
+vim.keymap.set('i', '<S-CR>', '<esc>O')
+
 -- Tabs
 vim.keymap.set('n', '<leader>tt', '<cmd>tabnew<cr>',      { desc = 'New tab' })
 vim.keymap.set('n', '<leader>tc', '<cmd>tabclose<cr>',    { desc = 'Close tab' })

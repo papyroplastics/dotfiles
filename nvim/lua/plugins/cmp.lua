@@ -8,12 +8,18 @@ return {
         }
     },
     {
-        'hrsh7th/nvim-cmp',
+        'hrsh7th/cmp-buffer',
         event = 'InsertEnter',
         dependencies = {
-            'hrsh7th/cmp-buffer',
+            'hrsh7th/nvim-cmp',
         },
+    },
+    {
+        'hrsh7th/nvim-cmp',
+        lazy = true,
         config = function()
+            vim.opt.completeopt = {"menu","menuone","noselect"}
+
             local cmp = require('cmp')
 
             local select_prev_item = function()
@@ -96,6 +102,7 @@ return {
 
             local mappings = {
                 ['<C-Space>'] = cmp.mapping(toggle_complete, {'i','c'}),
+
                 ['<tab>'] = {
                     i = confirm,
                     c = strong_confirm,
@@ -108,7 +115,7 @@ return {
                 ['<C-k>'] = cmp.mapping(select_prev_item, {'i', 'c'}),
                 ['<C-j>'] = cmp.mapping(select_next_item, {'i', 'c'}),
 
-                ['<C-d>'] = cmp.mapping(toggle_docs, {'i', 'c'}),
+                ['<C-i>'] = cmp.mapping(toggle_docs, {'i', 'c'}),
                 ['<C-h>'] = cmp.mapping(scroll_docs_up, {'i', 'c'}),
                 ['<C-l>'] = cmp.mapping(scroll_docs_down, {'i', 'c'}),
 
