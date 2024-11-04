@@ -102,9 +102,9 @@ deb_col='\[\e[91m\]'
 host_col='\[\e[94m\]'
 dir_col='\[\e[95m\]'
 git_col='\[\e[96m\]'
+exit_col='\[\e[91m\]'
 prompt_col='\[\e[37m\]'
 white='\[\e[0m\]'
-exit_col='\[\e[91m\]'
 
 prompt_icon='$'
 dir_sep='...'
@@ -138,7 +138,7 @@ exit_status=''
 update_prompt() {
     # update exit status
     exit_status=$?
-    if [[ "$exit_status" == '0' ]]; then
+    if [[ $exit_status == 0 ]]; then
         exit_status=''
     else
         exit_status="$exit_icon $exit_status$exit_end "
@@ -176,7 +176,7 @@ update_prompt() {
     fi
 }
 
-PROMPT_COMMAND='update_prompt'
+PROMPT_COMMAND=update_prompt
 PS1="$deb_col$deb_icon\
 $host_col\u@\H \
 $dir_col\$short_dir \
