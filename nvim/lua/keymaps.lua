@@ -2,12 +2,16 @@
 -- General
 vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch, { desc = 'Clean search' })
 vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
+vim.cmd('cab S %s')
 
-vim.keymap.set('', '¿', '^', { desc = 'Go to start of text in line' })
+-- Movement
+vim.keymap.set('', '<C-j>', '4j')
+vim.keymap.set('', '<C-k>', '4k')
+
 vim.keymap.set('', '<C-p>', '8k')
 vim.keymap.set('', '<C-n>', '8j')
 
-vim.cmd('cab S %s')
+vim.keymap.set('', '¿', '^', { desc = 'Go to start of text in line' })
 
 -- Insert
 vim.keymap.set('i', '<C-CR>', '<esc>o')

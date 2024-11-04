@@ -7,7 +7,7 @@ return {
             local filetypes = { 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
                 'python', 'bash', 'rust', 'gitignore', 'gitcommit', 'markdown',
                 'markdown_inline', 'make', 'cmake', 'racket', 'haskell',
-                'verilog', 'systemverilog'}
+                'verilog'}
 
             require('nvim-treesitter.configs').setup({
                 ensure_installed = filetypes,
