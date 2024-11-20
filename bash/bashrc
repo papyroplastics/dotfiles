@@ -21,14 +21,13 @@ source "/home/lucas/.ghcup/env"
 
 export MANPATH="$HOME/.ghcup/share/man:$MANPATH"
 
-export VISUAL=nvim
-export EDITOR=nvim
-export SUDO_EDITOR=nvim
+export VISUAL=vim
+export EDITOR=vim
+export SUDO_EDITOR=vim
 
 export LESS='--ignore-case --incsearch --mouse --use-color'
 export BAT_THEME='catppuccin-mocha'
-export BAT_PAGER='less --RAW-CONTROL-CHARS'
-export MANPAGER=manpager
+export MANPAGER="sh -c 'col -bx | bat --style plain --language man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 # export LIBVIRT_DEFAULT_URI='qemu:///system'
@@ -57,9 +56,7 @@ alias la='ls --almost-all'
 alias lal='ll --almost-all'
 alias lla='lal'
 
-alias vi='nvim --noplugin'
-alias vim='nvim'
-
+alias l='ls'
 alias sl='ls'
 alias atp='apt'
 alias nivm='nvim'
@@ -67,6 +64,7 @@ alias ncim='nvim'
 alias suod='sudo'
 
 alias idf-export=". $HOME/.esp-idf/export.sh"
+alias virsh='virsh -c qemu:///system'
 
 pyactivate() {
     if [[ -v VIRTUAL_ENV ]]; then
@@ -98,13 +96,13 @@ pyactivate() {
 #  Prompt
 # --------
 
-deb_col='\[\e[91m\]'
+logo_col='\[\e[91m\]'
 host_col='\[\e[94m\]'
 dir_col='\[\e[95m\]'
 git_col='\[\e[96m\]'
 exit_col='\[\e[91m\]'
 prompt_col='\[\e[37m\]'
-white='\[\e[0m\]'
+no_col='\[\e[0m\]'
 
 prompt_icon='$'
 dir_sep='...'
@@ -118,7 +116,7 @@ exit_icon='(e:'
 exit_end=')'
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
-    deb_icon=' '
+    logo_icon=' '
     prompt_icon=''
     dir_sep='....'
 
@@ -177,10 +175,13 @@ update_prompt() {
 }
 
 PROMPT_COMMAND=update_prompt
-PS1="$deb_col$deb_icon\
+PS1="$no_col\
+$logo_col$logo_icon\
 $host_col\u@\H \
 $dir_col\$short_dir \
 $git_col\$git_status\
 $exit_col\$exit_status\
-$prompt_col$prompt_icon $white"
+$prompt_col$prompt_icon\
+$no_col "
+
 
