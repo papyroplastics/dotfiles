@@ -15,7 +15,7 @@ exec --no-startup-id dex --autostart
 
 exec --no-startup-id picom
 exec --no-startup-id xwallpaper --zoom ~/.config/i3/dark-narcissus.jpg
-exec --no-startup-id redshift
+exec --no-startup-id xrandr --output eDP1 --gamma 1:0.9:0.9
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 
 exec --no-startup-id sh -c 'sleep 0.2; i3lock-fancy'
@@ -28,13 +28,13 @@ bindsym $mod+d exec rofi -show drun
 
 bindsym Print exec kazam
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
 # bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-bindsym $mod+F8 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym $mod+F7 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym $mod+F8 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym $mod+F7 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym $mod+F6 exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
 # bindsym $mod+XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
@@ -49,7 +49,8 @@ bindsym $mod+Shift+r restart
 
 bindsym $mod+Escape exec "i3-nagbar -t warning -m 'What to do?' \
 -B 'Exit i3' 'i3-msg exit' \
--B 'Power off system' '/usr/sbin/poweroff'"
+-B 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
+-B 'Reboot' '/usr/sbin/shutdown --reboot now'"
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down

@@ -72,11 +72,8 @@ return {
         end,
         keys = {
             'f', 'F', 't', 'T',
-            { 's', function() Flash.jump() end,              mode = { 'n', 'x', 'o' }, desc = 'Flash' },
-            { 'S', function() Flash.treesitter() end,        mode = { 'n', 'x', 'o' }, desc = 'Flash Treesitter' },
-            { 'r', function() Flash.remote() end,            mode = 'o',               desc = 'Remote Flash' },
-            { 'R', function() Flash.treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter Search' },
-            { '<C-s>', function() Flash.toggle() end,        mode = { 'c' },           desc = 'Toggle Flash Search' },
+            { '<leader>s', function () Flash.jump() end, mode = '', desc = 'Flash' },
+            { '<leader>a', function () Flash.treesitter_search() end, mode = '', desc = 'Flash Arround' },
         },
     }
 }
