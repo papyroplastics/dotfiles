@@ -66,6 +66,11 @@ alias suod='sudo'
 alias idf-export=". $HOME/.esp-idf/export.sh"
 alias virsh='virsh -c qemu:///system'
 
+just () {
+    $@ &>/dev/null &
+    disown '%$@';
+}
+
 pyactivate() {
     if [[ -v VIRTUAL_ENV ]]; then
         echo "Enviroment variable VIRTUAL_ENV is set, deactivate the current virtual environment."

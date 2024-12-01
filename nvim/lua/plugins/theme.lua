@@ -1,6 +1,10 @@
 
 local colorterm = os.getenv('COLORTERM') ~= nil
 
+if not colorterm then
+    vim.cmd.colorscheme('torte')
+end
+
 return {
     {
         'catppuccin/nvim',
