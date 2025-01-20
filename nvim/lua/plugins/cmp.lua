@@ -18,7 +18,7 @@ return {
         'hrsh7th/nvim-cmp',
         lazy = true,
         config = function()
-            vim.opt.completeopt = {"menu","menuone","noselect"}
+            vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
             local cmp = require('cmp')
 
@@ -138,11 +138,11 @@ return {
 
                 mapping = mappings,
 
-                sources = cmp.config.sources( {
-                        { name = 'nvim_lsp' },
-                        { name = 'buffer' }
-                    }
-                )
+                sources = cmp.config.sources({
+                    { name = 'nvim_lsp_signature_help' },
+                    { name = 'nvim_lsp' },
+                    { name = 'buffer' },
+                })
             })
 
             cmp.setup.cmdline(':', {

@@ -8,8 +8,8 @@ vim.cmd('cab S %s')
 vim.keymap.set('', '<C-j>', '4j')
 vim.keymap.set('', '<C-k>', '4k')
 
-vim.keymap.set('', '<C-p>', '8k')
 vim.keymap.set('', '<C-n>', '8j')
+vim.keymap.set('', '<C-p>', '8k')
 
 vim.keymap.set('', '¿', '^', { desc = 'Go to start of text in line' })
 

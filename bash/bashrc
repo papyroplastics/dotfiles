@@ -14,12 +14,9 @@ shopt -s autocd histappend checkwinsize globstar
 #  Environment
 # -------------
 
-PATH="$HOME/.local/bin:$PATH"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-source "$HOME/.cargo/env"
-source "/home/lucas/.ghcup/env"
+PATH="$HOME/.android/sdk/platform-tools:$HOME/.local/bin:$PATH"
 
-export MANPATH="$HOME/.ghcup/share/man:$MANPATH"
+#export MANPATH="$MANPATH"
 
 export VISUAL=vim
 export EDITOR=vim
@@ -38,10 +35,6 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 . /usr/share/bash-completion/bash_completion
 
-for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-    [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-done
-
 for COMPLETION in "${HOME}/.local/share/bash-completion/completions/"*; do
     [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
 done
@@ -50,12 +43,6 @@ done
 #  Aliases
 # ---------
 
-alias ls='ls --color=auto --hyperlink=auto --classify=auto'
-alias ll='ls -l --human-readable'
-alias la='ls --almost-all'
-alias lal='ll --almost-all'
-alias lla='lal'
-
 alias l='ls'
 alias sl='ls'
 alias atp='apt'
@@ -63,12 +50,39 @@ alias nivm='nvim'
 alias ncim='nvim'
 alias suod='sudo'
 
-alias idf-export=". $HOME/.esp-idf/export.sh"
+alias l='ls'
+alias ls='ls --color=auto --hyperlink=auto --classify=auto'
+alias ll='ls -l --human-readable'
+alias la='ls --almost-all'
+alias lal='ll --almost-all'
+alias lla='lal'
+
+alias cd..='cd ..'
 alias virsh='virsh -c qemu:///system'
+
+alias idf-export=". $HOME/.esp-idf/export.sh"
 
 just () {
     $@ &>/dev/null &
     disown '%$@';
+}
+
+export-env() {
+    local current_dir=$(pwd)
+
+    while [[ "$current_dir" != "/" ]]; do
+        if [[ -f "$current_dir/.env" ]]; then
+            for line in $(cat "$current_dir/.env"); do
+                export $line
+                echo "export $line"
+            done
+            return 0
+        fi
+        current_dir=$(dirname "$current_dir")
+    done
+
+    echo "Env file not found"
+    return 1
 }
 
 pyactivate() {
@@ -79,11 +93,10 @@ pyactivate() {
 
     local current_dir=$(pwd)
 
-    while [ "$current_dir" != "/" ]; do
-        if [ -d "$current_dir/venv" ]; then
-            if [ -f "$current_dir/venv/bin/activate" ]; then
-                . $current_dir/venv/bin/activate
-                
+    while [[ "$current_dir" != "/" ]]; do
+        if [[ -d "$current_dir/venv" ]]; then
+            if [[ -f "$current_dir/venv/bin/activate" ]]; then
+                source $current_dir/venv/bin/activate
                 echo "\$VIRTUAL_ENV=$VIRTUAL_ENV"
                 return 0
             else
