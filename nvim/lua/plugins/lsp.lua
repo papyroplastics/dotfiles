@@ -20,23 +20,21 @@ return {
         'williamboman/mason-lspconfig.nvim',
         varsion = '*',
         lazy = true,
-        opts = {
-            ensure_installed = { 'basedpyright', 'clangd',
-                'lua_ls', 'neocmake', 'rust_analyzer', 'verible'},
-        },
     },
 
     {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        ft = { 'python', 'c', 'cpp', 'lua', 'cmake', 'rust',
-            'racket', 'haskell', 'verilog', 'systemverilog'},
+        ft = { 'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
+            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
+            'typescriptreact', 'typescript.tsx' },
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
             'hrsh7th/nvim-cmp',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-nvim-lsp-document-symbol',
+            'hrsh7th/cmp-nvim-lsp-signature-help',
         },
 
         keys = {
@@ -67,23 +65,11 @@ return {
                 capabilities = complete,
             })
 
-            lspconfig.neocmake.setup({
+            lspconfig.svlangserver.setup({
                 capabilities = complete,
             })
 
-            lspconfig.rust_analyzer.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.racket_langserver.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.hls.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.svlangserver .setup({
+            lspconfig.ts_ls.setup({
                 capabilities = complete,
             })
         end,
