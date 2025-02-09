@@ -45,6 +45,8 @@ return {
             { '<leader>le', vim.lsp.buf.declaration,    desc = 'Go to declaration' },
             { '<leader>lr', vim.lsp.buf.rename,         desc = 'Rename symbol' },
             { '<leader>lf', vim.lsp.buf.format,         desc = 'Format document' },
+            { '<leader>ls', vim.lsp.buf.signature_help, desc = 'Signature help' },
+            { '<leader>lt', vim.lsp.buf.type_definition,desc = 'Type definition' },
         },
 
         config = function()
