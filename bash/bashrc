@@ -16,7 +16,7 @@ shopt -s autocd histappend checkwinsize globstar
 
 PATH="$HOME/.android/sdk/platform-tools:$HOME/.local/bin:$PATH"
 
-#export MANPATH="$MANPATH"
+export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
 export EDITOR=vim
@@ -27,7 +27,10 @@ export BAT_THEME='catppuccin-mocha'
 export MANPAGER="sh -c 'col -bx | bat --style plain --language man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-# export LIBVIRT_DEFAULT_URI='qemu:///system'
+export LIBVIRT_DEFAULT_URI='qemu:///system'
+
+export NVM_DIR="$HOME/.nvm"
+source "$NVM_DIR/nvm.sh"
 
 # -------------
 #  Completions
@@ -35,9 +38,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 . /usr/share/bash-completion/bash_completion
 
-for COMPLETION in "${HOME}/.local/share/bash-completion/completions/"*; do
-    [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+for COMPLETION in "$HOME/.local/share/bash-completion/completions/"*; do
+    [[ -r "$COMPLETION" ]] && source "$COMPLETION"
 done
+
+source "$NVM_DIR/bash_completion"
 
 # ---------
 #  Aliases
@@ -60,29 +65,63 @@ alias lla='lal'
 alias cd..='cd ..'
 alias virsh='virsh -c qemu:///system'
 
-alias idf-export=". $HOME/.esp-idf/export.sh"
-
 just () {
     $@ &>/dev/null &
     disown '%$@';
 }
 
-export-env() {
-    local current_dir=$(pwd)
+back-search() {
+    local current_dir="$PWD"
 
-    while [[ "$current_dir" != "/" ]]; do
-        if [[ -f "$current_dir/.env" ]]; then
-            for line in $(cat "$current_dir/.env"); do
-                export $line
-                echo "export $line"
-            done
+    while [[ -n "$current_dir" ]]; do
+        local found_path="$current_dir/$2" 
+
+        if test $1 "$found_path"; then
+            echo $found_path
             return 0
         fi
-        current_dir=$(dirname "$current_dir")
+
+        current_dir=${current_dir%/*}
     done
+
+    return 1
+}
+
+envexport() {
+    local env_path="$(back-search -f '.env')"
+
+    if [[ $? == 0 ]]; then
+        while read -r line; do
+            export $line
+            echo "export $line"
+        done < $env_path
+
+        return 0
+    fi
 
     echo "Env file not found"
     return 1
+}
+
+pretty_path() {
+    local res=${1#$PWD}
+    if [[ $res != $1 ]]; then
+        echo ".$res"
+        return
+    fi
+
+    local prev_dir=${PWD%/*}
+    res=${1#$prev_dir}
+    if [[ $res != $1 ]]; then
+        echo "..$res"
+        return
+    fi
+
+    res=${1#$HOME}
+    if [[ $res != $1 ]]; then
+        echo "~$res"
+        return
+    fi
 }
 
 pyactivate() {
@@ -91,20 +130,13 @@ pyactivate() {
         return 1
     fi
 
-    local current_dir=$(pwd)
+    local script_path="$(back-search -f 'venv/bin/activate')"
 
-    while [[ "$current_dir" != "/" ]]; do
-        if [[ -d "$current_dir/venv" ]]; then
-            if [[ -f "$current_dir/venv/bin/activate" ]]; then
-                source $current_dir/venv/bin/activate
-                echo "\$VIRTUAL_ENV=$VIRTUAL_ENV"
-                return 0
-            else
-                echo "Virtual environment with no activation script found at $current_dir/venv."
-            fi
-        fi
-        current_dir=$(dirname "$current_dir")
-    done
+    if [[ $? == 0 ]]; then
+        source $script_path
+        echo "VIRTUAL_ENV=$(pretty_path $VIRTUAL_ENV)"
+        return 0
+    fi
 
     echo "Virtual environment not found."
     return 1
@@ -145,11 +177,44 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
 
     exit_icon=''
     exit_end=''
+
+    ps1_start='\[\e]133;A\a\]'
+    ps1_end='\[\e]133;B\a\]'
+
+    ps2_start='\[\e]133;A;k=s\a\]'
+    ps2_end='\[\e]133;B;k=s\a\]'
+
+    cmd_start='\[\e]133;C\a\]'
+    cmd_end='\[\e]133;D;$?\a\]'
 fi
 
+exit_status=''
 short_dir=''
 git_status=''
-exit_status=''
+git_status_update_pending=1; 
+
+alias cd='git_status_update_pending=1; builtin cd'
+alias git='git_status_update_pending=1; git'
+alias lazygit='git_status_update_pending=1; lazygit'
+
+update_git_status() {
+    # if on a branch
+    git_status=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [[ -n $git_status ]]; then
+        git_status="$git_branch $git_status$git_end "
+        return
+    fi
+
+    # if on a tag
+    git_status=$(git describe --tags --exact-match 2>/dev/null)
+    if [[ -n $git_status ]]; then
+        git_status="$git_tag $git_status$git_end "
+        return
+    fi
+
+    # else use commit hash
+    git_status="$git_commit $(git rev-parse --short HEAD 2>/dev/null)$git_end "
+}
 
 update_prompt() {
     # update exit status
@@ -161,7 +226,7 @@ update_prompt() {
     fi
 
     # update formatted dir
-    short_dir=$(pwd)
+    short_dir="$PWD"
     if [[ $short_dir == '/' ]]; then
         short_dir='/'
     else
@@ -170,30 +235,18 @@ update_prompt() {
         short_dir=${short_dir/\/*\//\/$dir_sep\/}
     fi
 
-    # update git status
-    git_status=$(git rev-parse --git-dir 2>/dev/null)
-    if [[ -n $git_status ]]; then
-        # if on a branch
-        git_status=$(git symbolic-ref --short HEAD 2>/dev/null)
-        if [[ -n $git_status ]]; then
-            git_status="$git_branch $git_status$git_end "
-            return
-        fi
-
-        # if on a tag
-        git_status=$(git describe --tags --exact-match 2>/dev/null)
-        if [[ -n $git_status ]]; then
-            git_status="$git_tag $git_status$git_end "
-            return
-        fi
-
-        # else use commit hash
-        git_status="$git_commit $(git rev-parse --short HEAD 2>/dev/null)$git_end "
+    if [[ -n "$git_status_update_pending" ]]; then
+        git_status_update_pending=''
+        git_status=''
+        git_dir=$(back-search -d .git)
+        [[ $? == 0 ]] && update_git_status
     fi
 }
 
 PROMPT_COMMAND=update_prompt
-PS1="$no_col\
+PS0="$cmd_start"
+
+PS1="$cmd_end$ps1_start$no_col\
 $logo_col$logo_icon\
 $host_col\u@\H \
 $dir_col\$short_dir \
@@ -202,4 +255,5 @@ $exit_col\$exit_status\
 $prompt_col$prompt_icon\
 $no_col "
 
+PS2="$ps2_start$prompt_col$prompt_icon$no_col $ps2_end"
 
