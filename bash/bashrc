@@ -30,7 +30,6 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 export NVM_DIR="$HOME/.nvm"
-source "$NVM_DIR/nvm.sh"
 
 # -------------
 #  Completions
@@ -42,7 +41,6 @@ for COMPLETION in "$HOME/.local/share/bash-completion/completions/"*; do
     [[ -r "$COMPLETION" ]] && source "$COMPLETION"
 done
 
-source "$NVM_DIR/bash_completion"
 
 # ---------
 #  Aliases
@@ -130,7 +128,13 @@ pyactivate() {
         return 1
     fi
 
-    local script_path="$(back-search -f 'venv/bin/activate')"
+    local venv_dir="$1"
+    if [[ -z $1 ]]; then
+        venv_dir="venv"
+    fi
+
+    local script_path
+    script_path="$(back-search -f "$venv_dir/bin/activate")"
 
     if [[ $? == 0 ]]; then
         source $script_path
@@ -140,6 +144,11 @@ pyactivate() {
 
     echo "Virtual environment not found."
     return 1
+}
+
+nvm_activate() {
+    source "$NVM_DIR/nvm.sh"
+    source "$NVM_DIR/bash_completion"
 }
 
 # --------

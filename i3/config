@@ -32,7 +32,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 #exec --no-startup-id isenkramd
 #exec --no-startup-id blueman-applet
 
-exec --no-startup-id sh -c 'sleep 0.2; i3lock-fancy'
+exec --no-startup-id i3lock -ni ~/.config/i3/blur.png
 
 bindsym Mod4+Shift+ctrl+Mod1+L exec firefox-esr https://www.linkedin.com
 
