@@ -2,7 +2,7 @@
 local colorterm = os.getenv('COLORTERM') ~= nil
 
 if not colorterm then
-    vim.cmd.colorscheme('torte')
+    vim.cmd.colorscheme('vim')
 end
 
 return {
