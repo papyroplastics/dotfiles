@@ -14,7 +14,7 @@ shopt -s autocd histappend checkwinsize globstar
 #  Environment
 # -------------
 
-PATH="$HOME/.android/sdk/platform-tools:$HOME/.local/bin:$PATH"
+PATH="$HOME/.local/bin:$PATH"
 
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
@@ -53,7 +53,6 @@ alias nivm='nvim'
 alias ncim='nvim'
 alias suod='sudo'
 
-alias l='ls'
 alias ls='ls --color=auto --hyperlink=auto --classify=auto'
 alias ll='ls -l --human-readable'
 alias la='ls --almost-all'
@@ -146,9 +145,15 @@ pyactivate() {
     return 1
 }
 
-nvm_activate() {
+nvm-export() {
     source "$NVM_DIR/nvm.sh"
     source "$NVM_DIR/bash_completion"
+    unset nvm-export
+}
+
+idf-export() {
+    source $HOME/Repos/esp-idf/export.sh
+    unset idf-export
 }
 
 # --------

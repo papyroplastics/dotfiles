@@ -70,8 +70,8 @@ return {
             local readline = require('readline')
             vim.keymap.set('!', '<C-p>', '<Up>')
             vim.keymap.set('!', '<C-n>', '<Down>')
-            vim.keymap.set('i', '<M-p>', '<Esc>O')
-            vim.keymap.set('i', '<M-n>', '<Esc>o')
+            vim.keymap.set('i', '<M-p>', function() vim.cmd.norm('O') end)
+            vim.keymap.set('i', '<M-n>', function() vim.cmd.norm('o') end)
 
             vim.keymap.set('!', '<M-f>', readline.forward_word)
             vim.keymap.set('!', '<M-b>', readline.backward_word)
