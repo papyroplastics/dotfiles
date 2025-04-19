@@ -27,7 +27,7 @@ return {
         varsion = '*',
         ft = { 'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-            'typescriptreact', 'typescript.tsx' },
+            'typescriptreact', 'typescript.tsx', 'typst' },
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -74,6 +74,21 @@ return {
             lspconfig.ts_ls.setup({
                 capabilities = complete,
             })
+
+            lspconfig.tinymist.setup({
+                capabilities = complete,
+                settings = {
+                    exportPdf = 'never',
+                    semanticTokens = 'disable'
+                },
+                on_attach = function()
+                    vim.lsp.buf.execute_command({
+                        command = 'tinymist.pinMain',
+                        arguments = { vim.fn.getcwd() .. "/main.typ" }
+                    })
+                end
+            })
+
         end,
     },
 

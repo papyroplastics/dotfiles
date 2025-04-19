@@ -4,34 +4,12 @@ set $terminal kitty
 
 workspace_layout tabbed
 focus_follows_mouse no
-tiling_drag modifier titlebar
+tiling_drag modifier
 floating_modifier $mod
 default_border pixel 0
 font pango:Noto Sans 0
 
-#exec --no-startup-id dex --autostart
-
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh
-exec --no-startup-id /usr/libexec/at-spi-bus-launcher --launch-immediately
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
-#exec --no-startup-id /usr/libexec/gsd-disk-utility-notify
-
-exec --no-startup-id nm-applet
-exec --no-startup-id start-pulseaudio-x11
-exec --no-startup-id xdg-user-dirs-gtk-update
-exec --no-startup-id xdg-user-dirs-update
-
-exec --no-startup-id xrandr --output eDP1 --gamma 1:0.9:0.8
-exec --no-startup-id xwallpaper --zoom ~/.config/i3/background.jpg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
-
-#exec --no-startup-id picom
-#exec --no-startup-id redshift
-#exec --no-startup-id isenkramd
-#exec --no-startup-id blueman-applet
-
 exec --no-startup-id i3lock -ni ~/.config/i3/blur.png
 
 bindsym Mod4+Shift+ctrl+Mod1+L exec firefox-esr https://www.linkedin.com

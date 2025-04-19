@@ -1,6 +1,6 @@
 
 general {
-    colors = true
+    colors = false
     interval = 60
     color_good = "#A6E3A1"
     color_degraded = "#F9E2AF"
@@ -9,6 +9,7 @@ general {
 
 order += "battery 0"
 order += "volume master"
+order += "wireless wlo1"
 order += "tztime date"
 order += "tztime hour"
 
@@ -29,11 +30,16 @@ volume master {
         device = "pulse"
 }
 
+wireless wlo1 {
+    format_up = "󰖩 %essid"
+    format_down = "󰖪 no wi-fi"
+}
+
 tztime date {
     format = " %m-%d"
 }
 
 tztime hour {
-    format = " %H:%M"
+    format = " %H:%M "
 }
 

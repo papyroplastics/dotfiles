@@ -1,0 +1,25 @@
+#!/bin/sh
+
+export XCURSOR_SIZE=24
+
+eval "$(dbus-launch --sh-syntax 2>/dev/null)"
+eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh 2>/dev/null)"
+export SSH_AUTH_SOCK
+
+#/usr/libexec/at-spi-bus-launcher --launch-immediately &
+/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+
+xdg-user-dirs-gtk-update &
+xdg-user-dirs-update &
+
+xrandr --output eDP1 --gamma 1:0.95:0.85 --brightness 1 &
+xwallpaper --zoom ~/.config/i3/background.jpg &
+
+#picom
+#redshift
+#nm-applet
+#isenkramd
+#blueman-applet
+
+exec i3
+
