@@ -27,7 +27,7 @@ return {
         varsion = '*',
         ft = { 'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-            'typescriptreact', 'typescript.tsx', 'typst' },
+            'typescriptreact', 'typescript.tsx', 'typst', 'tex'},
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -50,45 +50,32 @@ return {
         },
 
         config = function()
-            local lspconfig = require('lspconfig')
-            local cmp = require('cmp_nvim_lsp')
-            local complete = cmp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+            vim.lsp.log.set_level(vim.lsp.log.levels.ERROR)
+            vim.diagnostic.config({
+                underline = true,
+                virtual_text = true,
+                update_in_insert = false,
+                signs = false,
+            })
 
-            lspconfig.basedpyright.setup({
+            local _ = require('lspconfig')
+            local cmp = require('cmp_nvim_lsp').default_capabilities(
+                vim.lsp.protocol.make_client_capabilities()
+            )
+
+            vim.lsp.config('*', {
                 capabilities = complete,
             })
 
-            lspconfig.clangd.setup({
-                capabilities = complete,
-                cmd = { "clangd", "--offset-encoding=utf-8"}
+            vim.lsp.enable({
+                'basedpyright',
+                'clangd',
+                'lua_ls',
+                'svlangserver',
+                'ts_ls',
+                'tinymist',
+                'texlab',
             })
-
-            lspconfig.lua_ls.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.svlangserver.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.ts_ls.setup({
-                capabilities = complete,
-            })
-
-            lspconfig.tinymist.setup({
-                capabilities = complete,
-                settings = {
-                    exportPdf = 'never',
-                    semanticTokens = 'disable'
-                },
-                on_attach = function()
-                    vim.lsp.buf.execute_command({
-                        command = 'tinymist.pinMain',
-                        arguments = { vim.fn.getcwd() .. "/main.typ" }
-                    })
-                end
-            })
-
         end,
     },
 
