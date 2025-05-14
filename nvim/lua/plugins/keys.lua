@@ -2,6 +2,7 @@ return {
     {
         'folke/which-key.nvim',
         event = 'VeryLazy',
+        cond = false,
         version = '*',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function()

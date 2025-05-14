@@ -11,6 +11,7 @@ return {
     {
         'williamboman/mason.nvim',
         varsion = '*',
+        enabled = false,
         lazy = true,
         cmd = 'Mason',
         opts = {},
@@ -19,6 +20,7 @@ return {
     {
         'williamboman/mason-lspconfig.nvim',
         varsion = '*',
+        enabled = false,
         lazy = true,
     },
 
@@ -27,7 +29,7 @@ return {
         varsion = '*',
         ft = { 'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-            'typescriptreact', 'typescript.tsx', 'typst', 'tex'},
+            'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh' },
         dependencies = {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
@@ -75,6 +77,7 @@ return {
                 'ts_ls',
                 'tinymist',
                 'texlab',
+                'bashls'
             })
         end,
     },
