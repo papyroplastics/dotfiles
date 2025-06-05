@@ -1,4 +1,5 @@
 # ~/.bashrc
+
 # ---------
 #  options
 # ---------
@@ -8,13 +9,21 @@
 # histappend: append to the history file.
 # checkwinsize: update the values of LINES and COLUMNS.
 # globstar: ** matches files on subdirectories
-shopt -s autocd histappend checkwinsize globstar
+shopt -s autocd cdspell histappend checkwinsize globstar
+
+bind '"\eh": backward-kill-word'
+
+stty -ixon
 
 # -------------
 #  Environment
 # -------------
 
-export PATH="$HOME/.local/bin:$PATH"
+unset MAIL MAILCHECK
+
+export NPM_PREFIX="$HOME/.local/lib/npm_global"
+
+export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
@@ -57,14 +66,30 @@ alias lal='ll --almost-all'
 alias lla='lal'
 
 alias cd..='cd ..'
+
+alias shmbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
 
-just () {
+alias npm-config="npm config set prefix \"$NPM_PREFIX\""
+
+function nvm-export {
+    export NVM_DIR="$HOME/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    source "$NVM_DIR/bash_completion"
+    unset nvm-export
+}
+
+function idf-export {
+    source $HOME/Repos/esp-idf/export.sh
+    unset idf-export
+}
+
+function just {
     $@ &>/dev/null &
     disown '%$@';
 }
 
-back-search() {
+function back-search {
     local current_dir="$PWD"
 
     while [[ -n "$current_dir" ]]; do
@@ -81,7 +106,7 @@ back-search() {
     return 1
 }
 
-envexport() {
+function envexport {
     local env_path="$(back-search -f '.env')"
 
     if [[ $? == 0 ]]; then
@@ -97,7 +122,7 @@ envexport() {
     return 1
 }
 
-pretty_path() {
+function pretty_path {
     local res=${1#$PWD}
     if [[ $res != $1 ]]; then
         echo ".$res"
@@ -118,7 +143,7 @@ pretty_path() {
     fi
 }
 
-pyactivate() {
+function pyactivate {
     if [[ -v VIRTUAL_ENV ]]; then
         echo "Enviroment variable VIRTUAL_ENV is set, deactivate the current virtual environment."
         return 1
@@ -142,29 +167,26 @@ pyactivate() {
     return 1
 }
 
-nvm-export() {
-    export NVM_DIR="$HOME/.nvm"
-    source "$NVM_DIR/nvm.sh"
-    source "$NVM_DIR/bash_completion"
-    unset nvm-export
-}
-
-idf-export() {
-    source $HOME/Repos/esp-idf/export.sh
-    unset idf-export
-}
-
 # --------
 #  Prompt
 # --------
 
-logo_col='\[\e[91m\]'
-host_col='\[\e[94m\]'
-dir_col='\[\e[95m\]'
-git_col='\[\e[96m\]'
-exit_col='\[\e[91m\]'
-prompt_col='\[\e[37m\]'
-no_col='\[\e[0m\]'
+reset=$'\e[0m'
+dark_white=$'\e[37m'
+bright_black=$'\e[90m'
+bright_red=$'\e[91m'
+bright_blue=$'\e[94m'
+bright_magenta=$'\e[95m'
+bright_cyan=$'\e[96m'
+bright_white=$'\e[97m'
+
+logo_col="$bright_red"
+host_col="$bright_blue"
+dir_col="$bright_magenta"
+git_col="$bright_cyan"
+exit_col="$bright_red"
+prompt_col="$bright_white"
+no_col="$reset"
 
 prompt_icon='$'
 dir_sep='...'
@@ -190,14 +212,16 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
     exit_icon=''
     exit_end=''
 
-    ps1_start='\[\e]133;A\a\]'
-    ps1_end='\[\e]133;B\a\]'
+    bslash='\\'
 
-    ps2_start='\[\e]133;A;k=s\a\]'
-    ps2_end='\[\e]133;B;k=s\a\]'
+    ps1_start=$'\e]133;A\e'$bslash
+    ps1_end=$'\e]133;B\e'$bslash
 
-    cmd_start='\[\e]133;C\a\]'
-    cmd_end='\[\e]133;D;$?\a\]'
+    ps2_start=$'\e]133;A;k=s\e'$bslash
+    ps2_end=$'\e]133;B;k=s\e'$bslash
+
+    cmd_start=$'\e]133;C\e'$bslash
+    cmd_end=$'\e]133;D;$?\e'$bslash
 fi
 
 exit_status=''
@@ -209,7 +233,7 @@ alias cd='git_status_update_pending=1; builtin cd'
 alias git='git_status_update_pending=1; git'
 alias lazygit='git_status_update_pending=1; lazygit'
 
-update_git_status() {
+function update_git_status {
     # if on a branch
     git_status=$(git symbolic-ref --short HEAD 2>/dev/null)
     if [[ -n $git_status ]]; then
@@ -228,7 +252,7 @@ update_git_status() {
     git_status="$git_commit $(git rev-parse --short HEAD 2>/dev/null)$git_end "
 }
 
-update_prompt() {
+function update_prompt {
     # update exit status
     exit_status=$?
     if [[ $exit_status == 0 ]]; then
@@ -256,16 +280,24 @@ update_prompt() {
 }
 
 PROMPT_COMMAND=update_prompt
-PS0="$cmd_start"
+PS0="\[$cmd_start\]"
 
-PS1="$cmd_end$ps1_start$no_col\
-$logo_col$logo_icon\
-$host_col\u@\H \
-$dir_col\$short_dir \
-$git_col\$git_status\
-$exit_col\$exit_status\
-$prompt_col$prompt_icon\
-$no_col "
+PS1="\
+\[$cmd_end\
+$ps1_start\
+$no_col\
+$logo_col\]$logo_icon\
+\[$host_col\]\u@\H \
+\[$dir_col\]\$short_dir \
+\[$git_col\]\$git_status\
+\[$exit_col\]\$exit_status\
+\[$prompt_col\]$prompt_icon \
+\[$no_col\
+$ps1_end\]"
 
-PS2="$ps2_start$prompt_col$prompt_icon$no_col $ps2_end"
+PS2="\
+\[$ps2_start\]\
+\[$prompt_col\]$prompt_icon \
+\[$no_col\
+$ps2_end\]"
 
