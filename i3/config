@@ -1,6 +1,7 @@
 
 set $mod Mod4
 set $terminal kitty
+set $web-browser flatpak run org.mozilla.firefox
 
 workspace_layout tabbed
 focus_follows_mouse no
@@ -12,11 +13,11 @@ font pango:Noto Sans 0
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 exec --no-startup-id i3lock -ni ~/.config/i3/blur.png
 
-bindsym Mod4+Shift+ctrl+Mod1+L exec firefox-esr https://www.linkedin.com
+bindsym Mod4+Shift+ctrl+Mod1+L exec $web-browser https://www.linkedin.com
 
 bindsym $mod+t exec $terminal
 bindsym $mod+Return exec $terminal
-bindsym $mod+b exec firefox-esr
+bindsym $mod+b exec $web-browser
 bindsym $mod+e exec nemo
 bindsym $mod+d exec --no-startup-id rofi -show drun
 
