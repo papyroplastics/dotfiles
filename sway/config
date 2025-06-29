@@ -1,0 +1,44 @@
+
+# startup
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
+
+# variables
+set $mod Mod4
+set $term kitty
+set $menu wofi --show drun
+set $files nemo
+
+# options
+workspace_layout tabbed
+floating_modifier $mod normal
+focus_follows_mouse no
+tiling_drag off
+
+font monospace 0
+titlebar_padding 2
+default_border none 
+default_floating_border none 
+hide_edge_borders --i3 none
+#for_window [title="^.*"] title_format ""
+
+# running things
+bindsym $mod+t exec $term
+bindsym $mod+d exec $menu
+bindsym $mod+e exec $files
+bindsym $mod+q kill
+
+# session
+bindsym $mod+Escape exec "swaynag -t warning -m 'Perform an action' \
+-Z 'Reload' 'swaymsg reload' \
+-Z 'Exit' 'swaymsg exit' \
+-Z 'Reboot' '/usr/sbin/shutdown --reboot now' \
+-Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
+"
+
+include input.sway
+include output.sway
+include tiling.sway
+

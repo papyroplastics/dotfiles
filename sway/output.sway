@@ -1,0 +1,40 @@
+
+# background
+output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+
+# colors
+set $acb #44475A
+set $act #F8F8F2
+set $inb #282A36
+set $int #BFBFBF
+set $urb #FF5555
+
+# color class           brdr  bg  text ind ch_brdr
+client.focused          $acb $acb $acb $acb $acb
+client.focused_inactive $acb $acb $acb $acb $acb
+client.unfocused        $inb $inb $inb $inb $inb
+client.urgent           $acb $urb $acb $urb $urb
+client.placeholder      $inb $inb $acb $inb $inb
+
+client.background       $inb
+
+bar {
+    status_command i3status
+    mode hide
+    hidden_state hide
+    font pango:DroidSansM Nerd Font 11
+    separator_symbol " ❯ "
+    colors {
+        background $inb
+        statusline $act
+        separator #585B70
+
+        # class            brdr  bg  text
+        focused_workspace  $acb $acb $act
+        active_workspace   $inb $acb $act
+        inactive_workspace $inb $inb $int
+        urgent_workspace   $urb $urb $act
+        binding_mode       $urb $urb $act
+    }
+}
+
