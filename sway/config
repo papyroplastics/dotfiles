@@ -1,36 +1,33 @@
 
-# startup
-exec swayidle -w \
-         timeout 300 'swaylock -f -c 000000' \
-         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
-
 # variables
 set $mod Mod4
 set $term kitty
 set $menu wofi --show drun
 set $files nemo
+set $browser flatpak run org.mozilla.firefox
 
-# options
-workspace_layout tabbed
-floating_modifier $mod normal
-focus_follows_mouse no
-tiling_drag off
+# session setup
+set $env_vars WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DISPLAY XAUTHORITY
+exec {
+    dbus-update-activation-environment --systemd $env_vars
+    systemctl --user import-environment $env_vars
+    systemctl --user start xdg-desktop-portal-wlr.service
+    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+}
 
-font monospace 0
-titlebar_padding 2
-default_border none 
-default_floating_border none 
-hide_edge_borders --i3 none
-#for_window [title="^.*"] title_format ""
+exec swayidle -w \
+         timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         timeout 300 'swaylock -f -c 000000' \
+         before-sleep 'swaylock -f -c 000000'
 
 # running things
-bindsym $mod+t exec $term
-bindsym $mod+d exec $menu
-bindsym $mod+e exec $files
-bindsym $mod+q kill
+bindsym {
+    $mod+t exec $term
+    $mod+d exec $menu
+    $mod+e exec $files
+    $mod+b exec $browser
+}
 
-# session
 bindsym $mod+Escape exec "swaynag -t warning -m 'Perform an action' \
 -Z 'Reload' 'swaymsg reload' \
 -Z 'Exit' 'swaymsg exit' \
@@ -38,7 +35,19 @@ bindsym $mod+Escape exec "swaynag -t warning -m 'Perform an action' \
 -Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
 "
 
+# options
+workspace_layout tabbed
+floating_modifier $mod
+focus_follows_mouse no
+tiling_drag off
+
+font monospace 0.1
+titlebar_padding 1
+default_border none 
+default_floating_border none 
+hide_edge_borders --i3 none
+
 include input.sway
-include output.sway
+include looks.sway
 include tiling.sway
 
