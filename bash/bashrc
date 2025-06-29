@@ -23,16 +23,16 @@ unset MAIL MAILCHECK
 
 export NPM_PREFIX="$HOME/.local/lib/npm_global"
 
-export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin:$NPM_PREFIX/bin:/opt/microchip/xc8/v3.00/bin"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
 
-export LESS='--ignore-case --incsearch --mouse --use-color'
+export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export BAT_THEME='catppuccin-mocha'
-export MANPAGER="sh -c 'col -bx | bat --style plain --language man'"
+export MANPAGER="sh -c 'col -bx | bat --style=plain --paging=always --language=man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
@@ -61,16 +61,16 @@ alias suod='sudo'
 
 alias ls='ls --color=auto --hyperlink=auto --classify=auto'
 alias ll='ls -l --human-readable'
-alias la='ls --almost-all'
-alias lal='ll --almost-all'
+alias la='ls --all'
+alias lal='ll --all'
 alias lla='lal'
 
 alias cd..='cd ..'
 
-alias shmbolic='ln --symbolic /dev/shm .'
+alias shimbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
 
-alias npm-config="npm config set prefix \"$NPM_PREFIX\""
+alias npm-config="npm config set prefix '$NPM_PREFIX'"
 
 function nvm-export {
     export NVM_DIR="$HOME/.nvm"
@@ -107,18 +107,21 @@ function back-search {
 }
 
 function envexport {
-    local env_path="$(back-search -f '.env')"
+    local env_filename="$1"
+    if [[ -z "$1" ]]; then
+        env_filename='.env'
+    fi
+
+    local env_path="$(back-search -f "$env_filename")"
 
     if [[ $? == 0 ]]; then
-        while read -r line; do
-            export $line
-            echo "export $line"
-        done < $env_path
-
+        set -o allexport
+        source "$env_path"
+        set +o allexport
         return 0
     fi
 
-    echo "Env file not found"
+    echo "File \"$env_filename\" not found."
     return 1
 }
 
@@ -151,11 +154,10 @@ function pyactivate {
 
     local venv_dir="$1"
     if [[ -z $1 ]]; then
-        venv_dir="venv"
+        venv_dir='venv'
     fi
 
-    local script_path
-    script_path="$(back-search -f "$venv_dir/bin/activate")"
+    local script_path="$(back-search -f "$venv_dir/bin/activate")"
 
     if [[ $? == 0 ]]; then
         source $script_path
