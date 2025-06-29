@@ -1,40 +1,5 @@
 return {
     {
-        'folke/which-key.nvim',
-        event = 'VeryLazy',
-        cond = false,
-        version = '*',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        config = function()
-            vim.opt.timeout = true
-            vim.opt.timeoutlen = 700
-
-            local wk = require('which-key')
-
-            wk.setup({
-                icons = {
-                    rules = false,
-                    color = false
-                }
-            })
-
-            wk.add({
-                { '<leader>b', group = 'buffes' },
-                { '<leader>t', group = 'tabs' },
-                { '<leader>l', group = 'lsp' },
-                { '<leader><leader>', group= 'telescope' },
-
-                { '<leader>g', desc = 'Treesitter'},
-                { '<leader>g', group = 'treesitter', mode='v'},
-
-                { '<leader>w', hidden = true },
-                { '<leader>a', hidden = true },
-                { '<leader>q', hidden = true },
-            })
-        end,
-    },
-
-    {
         'kylechui/nvim-surround',
         version = '*',
         opts = {
@@ -66,35 +31,35 @@ return {
 
     {
         'hiberabyss/readline.nvim',
-        event = {'InsertEnter', 'CmdlineEnter'},
+        event = { 'InsertEnter', 'CmdlineEnter' },
         config = function ()
-            local readline = require('readline')
+            Readline = require('readline')
             vim.keymap.set('!', '<C-p>', '<Up>')
             vim.keymap.set('!', '<C-n>', '<Down>')
             vim.keymap.set('i', '<M-p>', function() vim.cmd.norm('O') end)
             vim.keymap.set('i', '<M-n>', function() vim.cmd.norm('o') end)
 
-            vim.keymap.set('!', '<M-f>', readline.forward_word)
-            vim.keymap.set('!', '<M-b>', readline.backward_word)
+            vim.keymap.set('!', '<M-f>', Readline.forward_word)
+            vim.keymap.set('!', '<M-b>', Readline.backward_word)
             vim.keymap.set('!', '<C-f>', '<Right>')
             vim.keymap.set('!', '<C-b>', '<Left>')
 
-            vim.keymap.set('!', '<C-a>', readline.dwim_beginning_of_line)
-            vim.keymap.set('!', '<C-e>', readline.end_of_line)
+            vim.keymap.set('!', '<C-a>', Readline.dwim_beginning_of_line)
+            vim.keymap.set('!', '<C-e>', Readline.end_of_line)
 
-            vim.keymap.set('!', '<M-d>', readline.kill_word)
+            vim.keymap.set('!', '<M-d>', Readline.kill_word)
             vim.keymap.set('!', '<C-d>', '<Del>')
             vim.keymap.set('!', '<C-h>', '<BS>')
-            vim.keymap.set('!', '<M-h>', readline.backward_kill_word)
+            vim.keymap.set('!', '<M-h>', Readline.backward_kill_word)
 
-            vim.keymap.set('!', '<M-BS>',readline.backward_kill_word)
-            vim.keymap.set('!', '<C-BS>',readline.backward_kill_word)
-            vim.keymap.set('!', '<C-w>', readline.unix_word_rubout)
+            vim.keymap.set('!', '<M-BS>',Readline.backward_kill_word)
+            vim.keymap.set('!', '<C-BS>',Readline.backward_kill_word)
+            vim.keymap.set('!', '<C-w>', Readline.unix_word_rubout)
 
-            vim.keymap.set('!', '<M-k>', readline.kill_line)
-            vim.keymap.set('!', '<C-u>', readline.backward_kill_line)
+            vim.keymap.set('!', '<M-k>', Readline.kill_line)
+            vim.keymap.set('!', '<C-u>', Readline.backward_kill_line)
 
-            vim.keymap.set('!', '<M-m>', readline.back_to_indentation)
+            vim.keymap.set('!', '<M-m>', Readline.back_to_indentation)
         end,
     },
 }

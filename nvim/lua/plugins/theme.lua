@@ -12,7 +12,8 @@ return {
         version = '*',
         cond = colorterm,
         lazy = false,
-        priority = 1000, config = function()
+        priority = 900,
+        config = function()
             vim.opt.termguicolors = true
             require('catppuccin').setup()
 
@@ -41,6 +42,7 @@ return {
     {
         'HiPhish/rainbow-delimiters.nvim',
         lazy = false,
+        priority = 800,
         cond = colorterm,
     },
     {

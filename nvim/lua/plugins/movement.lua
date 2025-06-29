@@ -23,6 +23,12 @@ return {
             'nvim-tree/nvim-web-devicons',
             'MunifTanjim/nui.nvim',
         },
+        opts = {
+            filesystem = {
+                hijack_netrw_behavior = "disabled"
+            },
+            enable_git_status = false,
+        },
         keys = {
             { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
         },
@@ -31,7 +37,7 @@ return {
     {
         'folke/flash.nvim',
         version = '*',
-        config = function ()
+        opts = function ()
             Flash = require('flash')
             Flash.setup({})
         end,
