@@ -1,7 +1,6 @@
 return {
     {
         'folke/lazydev.nvim',
-        lazy = true,
         ft = 'lua',
         cond = string.sub(vim.fn.getcwd(), -5) == '/nvim',
         version = '*',
@@ -9,35 +8,42 @@ return {
     },
 
     {
-        'williamboman/mason.nvim',
-        varsion = '*',
-        enabled = false,
-        lazy = true,
-        cmd = 'Mason',
-        opts = {},
-    },
-
-    {
-        'williamboman/mason-lspconfig.nvim',
-        varsion = '*',
-        enabled = false,
-        lazy = true,
-    },
-
-    {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        ft = { 'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
-            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-            'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh' },
         dependencies = {
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
             'hrsh7th/nvim-cmp',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-nvim-lsp-document-symbol',
             'hrsh7th/cmp-nvim-lsp-signature-help',
         },
+        ft = {
+            'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
+            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
+            'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh'
+        },
+
+        config = function()
+            vim.lsp.log.set_level(vim.lsp.log.levels.ERROR)
+            vim.diagnostic.config({
+                underline = true,
+                virtual_text = true,
+                update_in_insert = false,
+                signs = false,
+            })
+
+            local _ = require('lspconfig')
+
+            vim.lsp.enable({
+                'basedpyright',
+                'clangd',
+                'lua_ls',
+                'svlangserver',
+                'ts_ls',
+                'tinymist',
+                'texlab',
+                'bashls'
+            })
+        end,
 
         keys = {
             { '<leader>lh', vim.lsp.buf.hover,              desc = 'Show hover' },
@@ -52,36 +58,6 @@ return {
             { '<leader>lu', vim.lsp.buf.references,         desc = 'Type definition' },
             { '<leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Type definition' },
         },
-
-        config = function()
-            vim.lsp.log.set_level(vim.lsp.log.levels.ERROR)
-            vim.diagnostic.config({
-                underline = true,
-                virtual_text = true,
-                update_in_insert = false,
-                signs = false,
-            })
-
-            local _ = require('lspconfig')
-            local cmp = require('cmp_nvim_lsp').default_capabilities(
-                vim.lsp.protocol.make_client_capabilities()
-            )
-
-            vim.lsp.config('*', {
-                capabilities = complete,
-            })
-
-            vim.lsp.enable({
-                'basedpyright',
-                'clangd',
-                'lua_ls',
-                'svlangserver',
-                'ts_ls',
-                'tinymist',
-                'texlab',
-                'bashls'
-            })
-        end,
     },
 
     {
@@ -90,11 +66,10 @@ return {
         cmd = 'Trouble',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         version = '*',
-
         keys = {
             {
                 '<leader>r',
-                '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>',
+                '<cmd>Trouble diagnostics toggle focus=false filter.buf=0<cr>',
                 desc = 'Diagnostics',
             },
             {

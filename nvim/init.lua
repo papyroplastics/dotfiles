@@ -2,6 +2,8 @@
 require('options')
 require('keymaps')
 require('commands')
+require('filetypes')
+require('netrd')
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.fn.filereadable(lazypath) then
@@ -16,5 +18,7 @@ if not vim.fn.filereadable(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup('plugins')
+if not vim.g.vscode then
+    require('lazy').setup('plugins')
+end
 
