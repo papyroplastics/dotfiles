@@ -1,5 +1,5 @@
 
-input "1739:52560:SYNA32AD:00_06CB:CD50_Touchpad" {
+input type:touchpad {
     tap enabled
     tap_button_map lrm
     drag enabled
@@ -12,7 +12,7 @@ input "1739:52560:SYNA32AD:00_06CB:CD50_Touchpad" {
     click_method clickfinger
 }
 
-input "1:1:AT_Translated_Set_2_keyboard" {
+input type:keyboard {
     xkb_layout latam
 }
 
