@@ -1,0 +1,12 @@
+#!/bin/bash
+
+marker_file="/run/autologin.mark"
+
+if [[ -f "$marker_file" ]]; then
+    exec /sbin/agetty --login-options '-p -- \u' --noclear "$1" $TERM
+fi
+
+touch "$marker_file"
+
+exec /sbin/agetty --skip-login --nonewline --noissue --autologin lucas --login-options '-p -f \u' --noclear "$1" $TERM
+
