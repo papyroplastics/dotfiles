@@ -1,4 +1,10 @@
 
+# options
+workspace_layout tabbed
+floating_modifier $mod
+focus_follows_mouse no
+tiling_drag off
+
 # scratchpad:
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show

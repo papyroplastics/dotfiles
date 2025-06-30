@@ -5,9 +5,10 @@ require('commands')
 require('filetypes')
 require('netrd')
 
-local configpath = vim.fn.stdpath('config')
+local plugin_mark = vim.fn.stdpath('config') .. '/.load_plugins'
+local load_plugins = vim.fn.filereadable(plugin_mark) == 1
 
-if vim.fn.filereadable(configpath .. '/.noplugin') == 0 and not vim.g.vscode then
+if load_plugins and not vim.g.vscode then
     local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
     if not vim.fn.filereadable(lazypath) then
         vim.fn.system({

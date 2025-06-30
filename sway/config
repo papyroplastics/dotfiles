@@ -1,12 +1,21 @@
 
 # variables
 set $mod Mod4
-set $term kitty
 set $menu wofi --show drun
+set $term kitty
 set $files nemo
 set $browser flatpak run org.mozilla.firefox
 
+set $background ~/.config/i3/background.jpg
+set $lock_image ~/.config/i3/blur.png
+set $lock_command swaylock --daemonize \
+    --image $lock_image --scaling fill \
+    --indicator-radius 100 \
+    --indicator-thickness 6
+
 # session setup
+xwayland enable
+
 set $env_vars WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DISPLAY XAUTHORITY
 exec {
     dbus-update-activation-environment --systemd $env_vars
@@ -15,12 +24,14 @@ exec {
     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 }
 
-exec swayidle -w \
-         timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         timeout 300 'swaylock -f -c 000000' \
-         before-sleep 'swaylock -f -c 000000'
+output * bg $background fill
 
-# running things
+exec swayidle -w \
+    timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 300 '$lock_command' \
+    before-sleep '$lock_command'
+
+# running
 bindsym {
     $mod+t exec $term
     $mod+d exec $menu
@@ -28,24 +39,11 @@ bindsym {
     $mod+b exec $browser
 }
 
-bindsym $mod+Escape exec "swaynag -t warning -m 'Perform an action' \
--Z 'Reload' 'swaymsg reload' \
--Z 'Exit' 'swaymsg exit' \
--Z 'Reboot' '/usr/sbin/shutdown --reboot now' \
--Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
-"
-
-# options
-workspace_layout tabbed
-floating_modifier $mod
-focus_follows_mouse no
-tiling_drag off
-
-font monospace 0.1
-titlebar_padding 1
-default_border none 
-default_floating_border none 
-hide_edge_borders --i3 none
+bindsym $mod+Escape exec swaynag -t warning -m 'Perform an action' \
+    -Z 'Reload' 'swaymsg reload' \
+    -Z 'Exit' 'swaymsg exit' \
+    -Z 'Reboot' '/usr/sbin/shutdown --reboot now' \
+    -Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
 
 include input.sway
 include looks.sway
