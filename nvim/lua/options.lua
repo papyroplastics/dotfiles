@@ -31,3 +31,5 @@ if vim.g.as_pager then
     vim.opt.relativenumber = false
 end
 
+vim.cmd.colorscheme('habamax')
+
