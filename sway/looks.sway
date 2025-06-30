@@ -1,6 +1,19 @@
 
-# background
-output * bg ~/.config/i3/background.jpg fill
+# options
+font monospace 0.1
+titlebar_padding 1
+default_border none 
+default_floating_border none 
+hide_edge_borders --i3 none
+
+# gtk theming
+set $gnome-schema org.gnome.desktop.interface
+exec {
+    gsettings set $gnome-schema gtk-theme 'Dracula'
+    gsettings set $gnome-schema icon-theme 'Tela-dracula-dark'
+    gsettings set $gnome-schema cursor-theme 'Bibata-Modern-Classic'
+    gsettings set $gnome-schema font-name 'Noto Sans 11'
+}
 
 # colors
 set $acb #44475A
