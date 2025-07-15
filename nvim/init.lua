@@ -3,7 +3,6 @@ require('options')
 require('keymaps')
 require('commands')
 require('filetypes')
-require('netrd')
 
 local plugin_mark = vim.fn.stdpath('config') .. '/.load_plugins'
 local load_plugins = vim.fn.filereadable(plugin_mark) == 1
