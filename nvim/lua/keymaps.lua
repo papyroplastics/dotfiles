@@ -1,7 +1,7 @@
 
 -- General
 vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch, { desc = 'Clean search' })
-vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
+vim.keymap.set('', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
 
 -- Normal
 vim.keymap.set('', '<C-j>', '4j', { remap = true })
@@ -20,25 +20,20 @@ vim.keymap.set('i', '<S-CR>', function() vim.cmd.norm('O') end)
 vim.keymap.set('i', '<C-CR>', function() vim.cmd.norm('o') end)
 
 -- Windows
-vim.keymap.set('n', '<M-h>', '<C-w>h')
-vim.keymap.set('n', '<M-j>', '<C-w>j')
-vim.keymap.set('n', '<M-k>', '<C-w>k')
-vim.keymap.set('n', '<M-l>', '<C-w>l')
+vim.keymap.set('', '<M-h>', '<C-w>h')
+vim.keymap.set('', '<M-j>', '<C-w>j')
+vim.keymap.set('', '<M-k>', '<C-w>k')
+vim.keymap.set('', '<M-l>', '<C-w>l')
+vim.keymap.set('', '<M-l>', '<C-w>l')
 
 -- Tabs
-vim.keymap.set('n', '<leader>tt', vim.cmd.tabnew,      { desc = 'New tab' })
-vim.keymap.set('n', '<leader>tc', vim.cmd.tabclose,    { desc = 'Close tab' })
-vim.keymap.set('n', '<leader>tp', vim.cmd.tabprevious, { desc = 'Previous tab' })
-vim.keymap.set('n', '<leader>tn', vim.cmd.tabnext,     { desc = 'Next tab' })
-
--- Buffers
-vim.keymap.set('n', '<leader>bp', vim.cmd.bprevious, { desc = 'Previous buffer' })
-vim.keymap.set('n', '<leader>bn', vim.cmd.bnext,     { desc = 'Next buffer' })
-vim.keymap.set('n', '<leader>bm', vim.cmd.bmodified, { desc = 'Modified buffer' })
-vim.keymap.set('n', '<leader>bd', vim.cmd.bdelete,   { desc = 'Delete buffer' })
+vim.keymap.set('', '<C-t>', vim.cmd.tabnew,      { desc = 'New tab' })
+vim.keymap.set('', '<C-q>', vim.cmd.tabclose,    { desc = 'Close tab' })
+vim.keymap.set('', '<Tab>', vim.cmd.tabnext,     { desc = 'Next tab' })
+vim.keymap.set('', '<S-Tab>', vim.cmd.tabprevious, { desc = 'Previous tab' })
 
 -- Write
-vim.keymap.set('n', '<leader>w', vim.cmd.up, { desc = 'Write current' })
-vim.keymap.set('n', '<leader>a', vim.cmd.wa, { desc = 'Write All' })
-vim.keymap.set('n', '<leader>q', vim.cmd.wq, { desc = 'Quit' })
+vim.keymap.set('', '<leader>w', vim.cmd.up, { desc = 'Write current' })
+vim.keymap.set('', '<leader>a', vim.cmd.wa, { desc = 'Write All' })
+vim.keymap.set('', '<leader>q', vim.cmd.wq, { desc = 'Quit' })
 

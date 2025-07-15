@@ -31,5 +31,16 @@ if vim.g.as_pager then
     vim.opt.relativenumber = false
 end
 
-vim.cmd.colorscheme('habamax')
+Colorterm = os.getenv('COLORTERM') ~= nil
 
+if Colorterm then
+    vim.cmd.colorscheme('habamax')
+end
+
+
+vim.g.netrw_banner = 0
+vim.g.netrw_browse_split=4
+vim.g.netrw_altv = 1
+vim.g.netrw_liststyle=3
+
+vim.keymap.set("n", "<leader>e", ":25Lex<CR>")

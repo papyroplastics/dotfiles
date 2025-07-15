@@ -24,10 +24,10 @@ return {
             'MunifTanjim/nui.nvim',
         },
         opts = {
+            enable_git_status = false,
             filesystem = {
                 hijack_netrw_behavior = "disabled"
             },
-            enable_git_status = false,
         },
         keys = {
             { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },

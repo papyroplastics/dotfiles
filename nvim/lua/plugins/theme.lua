@@ -1,12 +1,10 @@
 
-local colorterm = os.getenv('COLORTERM') ~= nil
-
 return {
     {
         'catppuccin/nvim',
         name = 'catppuccin',
         version = '*',
-        cond = colorterm,
+        cond = Colorterm,
         lazy = false,
         priority = 900,
         config = function()
@@ -25,11 +23,23 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         event = 'VeryLazy',
-        cond = colorterm,
+        cond = Colorterm,
         config = function ()
             vim.opt.showmode = false
+            vim.opt.showtabline = 0
+
             require('lualine').setup({
+                options = {
+                    ignore_focus = {
+                        'neo-tree',
+                    },
+                },
                 sections = {
+                    lualine_b = {{
+                        'tabs',
+                        tab_max_length = 15,
+                        show_modified_status = false,
+                    }},
                     lualine_x = {'filetype'},
                 }
             })
@@ -39,13 +49,13 @@ return {
         'HiPhish/rainbow-delimiters.nvim',
         lazy = false,
         priority = 800,
-        cond = colorterm,
+        cond = Colorterm,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
         main = 'ibl',
         event = 'VeryLazy',
-        cond = colorterm,
+        cond = Colorterm,
         opts = {
             scope = { enabled = false },
         },
