@@ -17,7 +17,7 @@ return {
             'hrsh7th/cmp-nvim-lsp-signature-help',
         },
         ft = {
-            'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog',
+            'python', 'c', 'cpp', 'lua', 'verilog', 'systemverilog', 'kotlin',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
             'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh'
         },
@@ -41,7 +41,8 @@ return {
                 'ts_ls',
                 'tinymist',
                 'texlab',
-                'bashls'
+                'bashls',
+                'kotlin_lsp',
             })
         end,
 

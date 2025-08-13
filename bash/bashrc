@@ -11,7 +11,7 @@
 # globstar: ** matches files on subdirectories
 shopt -s autocd cdspell histappend checkwinsize globstar
 
-bind '"\eh": backward-kill-word'
+bind '"\eh":backward-kill-word'
 
 stty -ixon
 
@@ -21,9 +21,10 @@ stty -ixon
 
 unset MAIL MAILCHECK
 
-export NPM_PREFIX="$HOME/.local/lib/npm_global"
+export GOPATH="$HOME/.local/lib/go"
+export NPM_PREFIX="$HOME/Programs/node-v24.5.0"
 
-export PATH="$PATH:$HOME/.local/bin:$NPM_PREFIX/bin:/opt/microchip/xc8/v3.00/bin"
+export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$GOPATH/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
@@ -31,8 +32,8 @@ export EDITOR=vim
 export SUDO_EDITOR=vim
 
 export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
-export BAT_THEME='catppuccin-mocha'
-export MANPAGER="sh -c 'col -bx | bat --style=plain --paging=always --language=man'"
+export BAT_THEME='ansi'
+export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
@@ -54,6 +55,7 @@ done
 
 alias l='ls'
 alias sl='ls'
+alias mna='man'
 alias atp='apt'
 alias nivm='nvim'
 alias ncim='nvim'
@@ -70,18 +72,14 @@ alias cd..='cd ..'
 alias shimbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
 
-alias npm-config="npm config set prefix '$NPM_PREFIX'"
-
-function nvm-export {
-    export NVM_DIR="$HOME/.nvm"
-    source "$NVM_DIR/nvm.sh"
-    source "$NVM_DIR/bash_completion"
-    unset nvm-export
-}
+if [[ $TERM == 'xterm-kitty' ]]; then 
+    alias clear="printf '\e[H\e[22J'"
+    bind -x '"\C-l":echo; clear'
+fi
 
 function idf-export {
     source $HOME/Repos/esp-idf/export.sh
-    unset idf-export
+    unset -f idf-export
 }
 
 function just {
