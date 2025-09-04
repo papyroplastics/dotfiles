@@ -21,9 +21,10 @@ return {
     },
     {
         'nvim-lualine/lualine.nvim',
+        enabled = false,
+        cond = Colorterm,
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         event = 'VeryLazy',
-        cond = Colorterm,
         config = function ()
             vim.opt.showmode = false
             vim.opt.showtabline = 0

@@ -7,7 +7,6 @@ return {
             'hrsh7th/cmp-path',
         }
     },
-
     {
         'hrsh7th/cmp-buffer',
         event = 'InsertEnter',
@@ -15,9 +14,9 @@ return {
             'hrsh7th/nvim-cmp',
         },
     },
-
     {
         'hrsh7th/nvim-cmp',
+        lazy = true,
         config = function()
             vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
