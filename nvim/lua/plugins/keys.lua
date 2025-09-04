@@ -36,8 +36,6 @@ return {
             Readline = require('readline')
             vim.keymap.set('!', '<C-p>', '<Up>')
             vim.keymap.set('!', '<C-n>', '<Down>')
-            vim.keymap.set('i', '<M-p>', function() vim.cmd.norm('O') end)
-            vim.keymap.set('i', '<M-n>', function() vim.cmd.norm('o') end)
 
             vim.keymap.set('!', '<M-f>', Readline.forward_word)
             vim.keymap.set('!', '<M-b>', Readline.backward_word)

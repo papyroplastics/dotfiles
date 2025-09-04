@@ -1,22 +1,40 @@
 return {
     {
+        'stevearc/oil.nvim',
+        opts = {
+            default_file_explorer = false,
+            keymaps = {
+                ["<bs>"]      = { "actions.parent",         mode = "n" },
+                ["H"]         = { "actions.toggle_hidden",  mode = "n" },
+                ["<leader>o"] = { "actions.close",          mode = "n" },
+                ["<esc>"]     = { "actions.close",          mode = "n" },
+            },
+            view_options = {
+                is_always_hidden = function(name, bufnr)
+                    return name == '..'
+                end,
+            },
+        },
+        keys = {
+            { "<leader>o", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
+            { "<leader>e", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
+        }
+    },
+    {
         'nvim-telescope/telescope.nvim',
+        enabled = false,
         dependencies = {
             'nvim-lua/plenary.nvim',
         },
         keys = {
-            { '<leader><leader>t', '<cmd>Telescope<cr>', desc = 'Telescope builtins'},
-            { '<leader><leader>b', '<cmd>Telescope buffers<cr>', desc = 'Buffer list' },
+            { '<leader><leader>t', '<cmd>Telescope<cr>',            desc = 'Telescope builtins'},
             { '<leader><leader>f', '<cmd>Telescope find_files<cr>', desc = 'Find file' },
-            { '<leader><leader>g', '<cmd>Telescope live_grep<cr>', desc = 'Ripgrep' },
-            { '<leader><leader>j', '<cmd>Telescope jumplist<cr>', desc = 'Jumplist' },
-            { '<leader><leader>s', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = 'Fuzzy finder' },
-            { '<leader><leader>n', '<cmd>Telescope notify<cr>', desc = 'Notify' },
+            { '<leader><leader>g', '<cmd>Telescope live_grep<cr>',  desc = 'Ripgrep' },
         },
     },
-
     {
         'nvim-neo-tree/neo-tree.nvim',
+        enabled = false,
         version = '*',
         dependencies = {
             'nvim-lua/plenary.nvim',
@@ -26,14 +44,18 @@ return {
         opts = {
             enable_git_status = false,
             filesystem = {
-                hijack_netrw_behavior = "disabled"
+                hijack_netrw_behavior = "disabled",
+                window = {
+                    mappings = {
+                        ["/"] = "noop",
+                    }
+                },
             },
         },
         keys = {
             { '<leader>e', '<cmd>Neotree toggle<cr>', desc = 'NeoTree' },
         },
     },
-
     {
         'folke/flash.nvim',
         version = '*',

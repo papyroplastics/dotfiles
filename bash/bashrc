@@ -21,10 +21,11 @@ stty -ixon
 
 unset MAIL MAILCHECK
 
-export GOPATH="$HOME/.local/lib/go"
 export NPM_PREFIX="$HOME/Programs/node-v24.5.0"
+export COMPOSER_HOME="$HOME/.config/composer"
+export XAMPP="/opt/lampp"
 
-export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$GOPATH/bin:$PATH"
+export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$COMPOSER_HOME/vendor/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
@@ -80,6 +81,12 @@ fi
 function idf-export {
     source $HOME/Repos/esp-idf/export.sh
     unset -f idf-export
+}
+
+function xampp-export {
+    PATH="$XAMPP:$XAMPP/bin:$PATH"
+    MANPATH="$XAMPP/man:$MANPATH"
+    unset -f xampp-export
 }
 
 function just {
