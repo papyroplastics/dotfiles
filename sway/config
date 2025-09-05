@@ -1,10 +1,6 @@
 
 # variables
 set $mod Mod4
-set $menu wofi --show drun
-set $term kitty
-set $files nemo
-set $browser flatpak run org.mozilla.firefox
 
 set $background ~/.config/i3/background.jpg
 set $lock_image ~/.config/i3/blur.png
@@ -31,12 +27,21 @@ exec swayidle -w \
     timeout 300 '$lock_command' \
     before-sleep '$lock_command'
 
-# running
+# keymaps
 bindsym {
-    $mod+t exec $term
-    $mod+d exec $menu
-    $mod+e exec $files
-    $mod+b exec $browser
+    $mod+t exec wofi --show drun
+    $mod+d exec kitty
+    $mod+e exec nemo
+    $mod+v exec pavucontrol
+    $mod+b exec flatpak run org.mozilla.firefox
+    $mod+m exec flatpak run org.mozilla.Thunderbird
+}
+
+bindsym {
+    XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
+    XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
+    XF86AudioMute        exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
+    XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 }
 
 bindsym $mod+Escape exec swaynag -t warning -m 'Perform an action' \

@@ -12,38 +12,71 @@ end, {})
 
 vim.api.nvim_create_user_command('Wrapoff', function()
     vim.o.wrap = false
-    vim.keymap.set('', 'k', 'k')
-    vim.keymap.set('', 'j', 'j')
-    vim.keymap.set('', '$', '$')
-    vim.keymap.set('', '0', '0')
-    vim.keymap.set('', '^', '^')
+    vim.keymap.del('', 'k')
+    vim.keymap.del('', 'j')
+    vim.keymap.del('', '$')
+    vim.keymap.del('', '0')
+    vim.keymap.del('', '^')
 end, {})
 
 vim.api.nvim_create_user_command('Config', function ()
     vim.cmd.tabnew()
     vim.cmd.tcd(vim.fn.stdpath('config'))
+    vim.cmd.normal(vim.g.mapleader .. 'e')
 end, {})
 
-vim.api.nvim_create_user_command('Find', function (opts)
-    local command = {'fd', '-t', 'f', '--', table.concat(opts.fargs, ' ')}
-
+--- Quickfix list facilities
+local function cmd_to_qflist(command, handler)
     vim.fn.setqflist({}, 'r')
+    vim.system(
+        command, 
+        { 
+            stdout = function(err, data)
+                if data and data ~= '' then
+                    vim.schedule(function() handler(data) end)
+                end
+            end,
+            text = true,
+        }, 
+        function (out) 
+            if out.code == 0 then
+                vim.schedule(vim.cmd.copen)
+            elseif out.stderr and out.stderr ~= '' then
+                vim.print(out.stderr)
+            end
+        end
+    )
+end
 
-    vim.system(command, { stdout = function(err, data)
-        print(data) 
 
-    end}, function(...) end)
+vim.api.nvim_create_user_command('Find', function (opts)
+    local command = { 'fd', '-t', 'f', '--', table.concat(opts.fargs, ' ') }
+        
+    cmd_to_qflist(command, function (data)
+        filenames = {}
+        for s in vim.gsplit(data, '\n', { plain=true, trimempty = true }) do
+            table.insert(filenames, { filename = s })
+        end
+        vim.fn.setqflist(filenames, 'a')
+    end)
+end, { nargs = '+' })
 
-    local qflist = {}
-    for i, s in ipairs(files) do
-        qflist[i] = { filename = s }
-    end
 
-    vim.fn.setqflist(qflist)
-    vim.cmd.copen()
-end, { nargs='+' })
+vim.api.nvim_create_user_command('Grep', function (opts)
+    local command = { 'rg', '--vimgrep', '--', table.concat(opts.fargs, ' ') }
 
-vim.cmd.cabbrev('fd', 'Find')
+    cmd_to_qflist(command, function (data)
+        lines = {}
+        for s in vim.gsplit(data, '\n', { plain=true, trimempty = true}) do
+            table.insert(lines, s)
+        end
+        vim.fn.setqflist({}, 'a', { lines = lines, nr = 0, })
+    end)
+
+end, { nargs = '+' })
+
 vim.cmd.cabbrev('find', 'Find')
-vim.cmd.cabbrev('rg', 'grep')
-
+vim.cmd.cabbrev('fd', 'Find')
+vim.cmd.cabbrev('grep', 'Grep')
+vim.cmd.cabbrev('gr', 'Grep')
+vim.cmd.cabbrev('rg', 'Grep')

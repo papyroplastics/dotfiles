@@ -5,8 +5,9 @@ return {
             default_file_explorer = false,
             keymaps = {
                 ["<bs>"]      = { "actions.parent",         mode = "n" },
-                ["H"]         = { "actions.toggle_hidden",  mode = "n" },
+                ["<C-H>"]         = { "actions.toggle_hidden",  mode = "n" },
                 ["<leader>o"] = { "actions.close",          mode = "n" },
+                ["<leader>e"] = { "actions.close",          mode = "n" },
                 ["<esc>"]     = { "actions.close",          mode = "n" },
             },
             view_options = {

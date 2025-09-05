@@ -1,8 +1,8 @@
 
 -- General
-vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch, { desc = 'Clean search' })
-vim.keymap.set('', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy Panel' })
-vim.keymap.set('', '<leader>e', '<cmd>25Lex<cr>')
+vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch,  { desc = 'Clean search' })
+vim.keymap.set('', '<leader>L', '<cmd>Lazy<cr>',  { desc = 'Lazy Panel' })
+vim.keymap.set('', '<leader>e', '<cmd>25Lex<cr>', { desc = ''})
 
 -- New lines
 vim.keymap.set('i', '<S-CR>', function() vim.cmd.norm({'O', bang = true}) end)
@@ -20,7 +20,7 @@ vim.keymap.set('', '<C-l>', '20l', { remap = true })
 
 vim.keymap.set('', '¿', '^', { remap = true })
 
--- Windows
+-- Tabs
 local function close_tab()
     if (vim.fn.winnr('$') ~= 1) then
         vim.cmd.quit()
@@ -31,17 +31,12 @@ local function close_tab()
     end
 end
 
-vim.keymap.set('', '<M-h>', '<C-w>h')
-vim.keymap.set('', '<M-j>', '<C-w>j')
-vim.keymap.set('', '<M-k>', '<C-w>k')
-vim.keymap.set('', '<M-l>', '<C-w>l')
-vim.keymap.set('', '<M-l>', '<C-w>l')
-
--- Tabs
-vim.keymap.set('', '<C-t>', vim.cmd.tabnew,        { desc = 'New tab' })
-vim.keymap.set('', '<C-q>', close_tab,             { desc = 'Close tab' })
-vim.keymap.set('', '<Tab>', vim.cmd.tabnext,       { desc = 'Next tab' })
-vim.keymap.set('', '<S-Tab>', vim.cmd.tabprevious, { desc = 'Previous tab' })
+vim.keymap.set('', '<C-t>',   vim.cmd.tabnew,      { desc = 'New tab' })
+vim.keymap.set('', '<C-q>',   close_tab,           { desc = 'Close tab' })
+vim.keymap.set('', 'L',       vim.cmd.tabnext,     { desc = 'Next tab' })
+vim.keymap.set('', 'H',       vim.cmd.tabprevious, { desc = 'Previous tab' })
+vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end, { desc = 'Move tab left' })
+vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end, { desc = 'Move tab right' })
 
 -- Quickfix
 local function ctoggle ()
@@ -75,7 +70,7 @@ vim.keymap.set('', '<leader>$', function()
     end)
 end)
 
-vim.keymap.set('', '<leader>g', ':grep ')
+vim.keymap.set('', '<leader>g', ':Grep ')
 vim.keymap.set('', '<leader>f', ':Find ')
 vim.keymap.set('', '<leader>n', '<cmd>cnext<cr>')
 vim.keymap.set('', '<leader>N', '<cmd>cprevious<cr>')

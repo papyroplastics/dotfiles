@@ -47,7 +47,7 @@ return {
             { '<leader>lt', vim.lsp.buf.type_definition,    desc = 'Type definition' },
             { '<leader>lu', vim.lsp.buf.references,         desc = 'Type definition' },
             { '<leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Type definition' },
-            { '<leader>lq', vim.diagnostic.setqflist,       desc = 'Go to declaration' },
+            { '<leader>lq', vim.diagnostic.setloclist,      desc = 'Go to declaration' },
         },
     },
     {
