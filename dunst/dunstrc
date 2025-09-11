@@ -5,10 +5,10 @@
 
     markup = full
     ellipsize = end
-    format = "%s (%a)\n%b"
+    format = "<b>%s</b>  -  <span color='#a6adc8'>%a</span>\n%b"
 
     width = (350, 500)
-    height = 100
+    height = 120
     origin = top-right
     offset = 15x30
     corner_radius = 8
@@ -24,18 +24,19 @@
     separator_height = 1
     separator_color = frame
 
-    min_icon_size = 20
-    max_icon_size = 40
+    min_icon_size = 30
+    max_icon_size = 60
+    default_icon = "/usr/share/icons/Tela-dracula-dark/24/actions/bell.svg"
 
     transparency = 1
 
-    background = "#1e1e2ef6"
-    foreground = "#cdd6f4"
-    frame_color = "#181825"
-    highlight = "#BD93F9"
+    background =  "#1e1e2ef6" # Base
+    foreground =  "#cdd6f4"   # Text
+    frame_color = "#181825"   # Mantle
+    highlight =   "#BD93F9"   # Mauve (modified)
 
 [urgency_low]
-    timeout = 2
+    timeout = 3
 
 [urgency_normal]
     timeout = 3

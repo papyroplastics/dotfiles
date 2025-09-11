@@ -1,24 +1,20 @@
 
 -- General
-vim.keymap.set('n', '<esc>', vim.cmd.nohlsearch,  { desc = 'Clean search' })
-vim.keymap.set('', '<leader>L', '<cmd>Lazy<cr>',  { desc = 'Lazy Panel' })
-vim.keymap.set('', '<leader>e', '<cmd>25Lex<cr>', { desc = ''})
-
--- New lines
-vim.keymap.set('i', '<S-CR>', function() vim.cmd.norm({'O', bang = true}) end)
-vim.keymap.set('i', '<C-CR>', function() vim.cmd.norm({'o', bang = true}) end)
+vim.keymap.set('n', '<Esc>', vim.cmd.nohlsearch,  { desc = 'Clean search' })
+vim.keymap.set('', '<Leader>L', '<CMD>Lazy<CR>',  { desc = 'Lazy Panel' })
+vim.keymap.set('', '<Leader>e', '<CMD>25Lex<CR>', { desc = 'Open Netrw'})
 
 -- Fast movement
-vim.keymap.set('', '<C-j>', '4j',  { remap = true })
-vim.keymap.set('', '<C-k>', '4k',  { remap = true })
+vim.keymap.set('', '<C-j>', '4gj')
+vim.keymap.set('', '<C-k>', '4gk')
 
-vim.keymap.set('', '<C-n>', '8j',  { remap = true })
-vim.keymap.set('', '<C-p>', '8k',  { remap = true })
+vim.keymap.set('', '<C-n>', '8gj')
+vim.keymap.set('', '<C-p>', '8gk')
 
-vim.keymap.set('', '<C-h>', '20h', { remap = true })
-vim.keymap.set('', '<C-l>', '20l', { remap = true })
+vim.keymap.set('', '<C-h>', '20h')
+vim.keymap.set('', '<C-l>', '20l')
 
-vim.keymap.set('', '¿', '^', { remap = true })
+vim.keymap.set('', '¿', '^')
 
 -- Tabs
 local function close_tab()
@@ -48,9 +44,9 @@ local function ctoggle ()
     end
 end
 
-vim.keymap.set('', '<leader>q', ctoggle)
+vim.keymap.set('', '<Leader>q', ctoggle)
 
-vim.keymap.set('', '<leader>$', function()
+vim.keymap.set('', '<Leader>$', function()
     vim.ui.input({ prompt = '$' }, function (input)
         if not input or input == '' then
             print("Invalid command.")
@@ -70,10 +66,11 @@ vim.keymap.set('', '<leader>$', function()
     end)
 end)
 
-vim.keymap.set('', '<leader>g', ':Grep ')
-vim.keymap.set('', '<leader>f', ':Find ')
-vim.keymap.set('', '<leader>n', '<cmd>cnext<cr>')
-vim.keymap.set('', '<leader>N', '<cmd>cprevious<cr>')
+vim.keymap.set('', '<Leader>g', ':Grep ')
+vim.keymap.set('', '<Leader>f', ':Find ')
+vim.keymap.set('', '<Leader>n', '<CMD>cnext<CR>')
+vim.keymap.set('', '<Leader>N', '<CMD>cprevious<CR>')
+vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
 
 -- Outline
 local function outline_toggle()
@@ -81,12 +78,50 @@ local function outline_toggle()
     vim.cmd.normal({'gO', bang = true})
     if (prev_wincnt == vim.fn.winnr('$') and vim.o.filetype == "qf") then
         local prev_winnr = vim.fn.winnr()
-        vim.cmd.normal({'<c-w>k', bang = true})
+        vim.cmd.normal({'<C-w>k', bang = true})
         vim.cmd(string.format('%iquit', prev_winnr))
     end
 end
 
-vim.keymap.set('', '<leader>u', outline_toggle, { desc = 'Buffer outline' })
+vim.keymap.set('', '<Leader>u', outline_toggle, { desc = 'Buffer outline' })
 vim.keymap.set('', 'gO', outline_toggle, { desc = 'Buffer outline' })
 
+-- Readline-like keymaps
+vim.keymap.set('!', '<C-p>', '<Up>')
+vim.keymap.set('!', '<C-n>', '<Down>')
+
+vim.keymap.set('!', '<C-f>', '<Right>')
+vim.keymap.set('!', '<M-f>', '<C-Right>')
+vim.keymap.set('!', '<C-b>', '<Left>')
+vim.keymap.set('!', '<M-b>', '<C-Left>')
+
+vim.keymap.set('!', '<C-d>', '<Delete>')
+vim.keymap.set('i', '<M-d>', '<C-o>dw')
+vim.keymap.set('c', '<M-d>', '<C-Right><C-w>')
+vim.keymap.set('!', '<M-h>', '<C-w>')
+vim.keymap.set('!', '<C-BS>','<C-w>')
+vim.keymap.set('!', '<M-BS>','<C-w>')
+vim.keymap.set('i', '<C-k>', '<C-o>d$')
+vim.keymap.set('c', '<C-k>', function ()
+    vim.fn.setcmdline(string.sub(vim.fn.getcmdline(), 1, vim.fn.getcmdpos()-1))
+end)
+
+local ctrl_e_bytes = vim.api.nvim_replace_termcodes("<C-e>", true, false, true)
+local end_bytes = vim.api.nvim_replace_termcodes("<End>", true, false, true)
+
+vim.keymap.set('!', '<C-a>', '<Home>')
+vim.keymap.set('!', '<C-e>', function ()
+    if vim.fn.pumvisible() ~= 0 then
+        vim.api.nvim_feedkeys(ctrl_e_bytes, "n", true)
+    else 
+        vim.api.nvim_feedkeys(end_bytes, "n", true)
+    end
+end)
+
+vim.keymap.set('i', '<C-CR>', '<C-e><C-o>o')
+vim.keymap.set('i', '<S-CR>', '<C-e><C-o>O')
+
+-- Command line
+vim.keymap.set('c', '<C-j>', '<C-n>')
+vim.keymap.set('c', '<C-k>', '<C-p>')
 
