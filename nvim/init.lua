@@ -1,5 +1,4 @@
 
-require('filetypes')
 require('options')
 require('commands')
 require('keymaps')

@@ -9,10 +9,11 @@ floating_modifier $mod
 default_border pixel 0
 font pango:Noto Sans 0
 
+exec --no-startup-id picom
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 exec --no-startup-id i3lock -ni ~/.config/i3/blur.png
-exec --no-startup-id xrandr --output eDP1 --gamma 1:0.95:0.85 --brightness 1 &
-exec --no-startup-id xwallpaper --zoom ~/.config/i3/background.jpg &
+exec --no-startup-id xrandr --output eDP1 --gamma 1:0.95:0.85 --brightness 1
+exec --no-startup-id xwallpaper --zoom ~/.config/i3/background.jpg
 
 #picom
 #redshift

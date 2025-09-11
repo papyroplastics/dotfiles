@@ -1,5 +1,10 @@
 return {
     {
+        'windwp/nvim-autopairs',
+        event = 'InsertEnter',
+        opts = {}
+    },
+    {
         'kylechui/nvim-surround',
         version = '*',
         opts = {
@@ -22,42 +27,39 @@ return {
             'ds', 'cs', 'cS',
         },
     },
-
     {
-        'windwp/nvim-autopairs',
-        event = 'InsertEnter',
-        opts = {}
+        'stevearc/oil.nvim',
+        opts = {
+            default_file_explorer = false,
+            keymaps = {
+                ["<Bs>"]      = { "actions.parent",         mode = "n" },
+                ["<C-H>"]         = { "actions.toggle_hidden",  mode = "n" },
+                ["<Leader>o"] = { "actions.close",          mode = "n" },
+                ["<Leader>e"] = { "actions.close",          mode = "n" },
+                ["<Esc>"]     = { "actions.close",          mode = "n" },
+            },
+            view_options = {
+                is_always_hidden = function(name, bufnr)
+                    return name == '..'
+                end,
+            },
+        },
+        keys = {
+            { "<Leader>o", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
+            { "<Leader>e", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
+        }
     },
-
     {
-        'hiberabyss/readline.nvim',
-        event = { 'InsertEnter', 'CmdlineEnter' },
-        config = function ()
-            Readline = require('readline')
-            vim.keymap.set('!', '<C-p>', '<Up>')
-            vim.keymap.set('!', '<C-n>', '<Down>')
-
-            vim.keymap.set('!', '<M-f>', Readline.forward_word)
-            vim.keymap.set('!', '<M-b>', Readline.backward_word)
-            vim.keymap.set('!', '<C-f>', '<Right>')
-            vim.keymap.set('!', '<C-b>', '<Left>')
-
-            vim.keymap.set('!', '<C-a>', Readline.dwim_beginning_of_line)
-            vim.keymap.set('!', '<C-e>', Readline.end_of_line)
-
-            vim.keymap.set('!', '<M-d>', Readline.kill_word)
-            vim.keymap.set('!', '<C-d>', '<Del>')
-            vim.keymap.set('!', '<C-h>', '<BS>')
-            vim.keymap.set('!', '<M-h>', Readline.backward_kill_word)
-
-            vim.keymap.set('!', '<M-BS>',Readline.backward_kill_word)
-            vim.keymap.set('!', '<C-BS>',Readline.backward_kill_word)
-            vim.keymap.set('!', '<C-w>', Readline.unix_word_rubout)
-
-            vim.keymap.set('!', '<M-k>', Readline.kill_line)
-            vim.keymap.set('!', '<C-u>', Readline.backward_kill_line)
-
-            vim.keymap.set('!', '<M-m>', Readline.back_to_indentation)
+        'folke/flash.nvim',
+        version = '*',
+        opts = function ()
+            Flash = require('flash')
+            Flash.setup({})
         end,
-    },
+        keys = {
+            'f', 'F', 't', 'T',
+            { '<Leader>s', function () Flash.jump() end, mode = '', desc = 'Flash' },
+            { '<Leader>a', function () Flash.treesitter_search() end, mode = '', desc = 'Flash Arround' },
+        },
+    }
 }

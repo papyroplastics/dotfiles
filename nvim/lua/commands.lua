@@ -1,22 +1,24 @@
 
 vim.cmd.cabbrev('S', '%s')
 
-vim.api.nvim_create_user_command('Wrapon', function ()
-    vim.o.wrap = true
-    vim.keymap.set('', 'k', 'gk')
-    vim.keymap.set('', 'j', 'gj')
-    vim.keymap.set('', '$', 'g$')
-    vim.keymap.set('', '0', 'g0')
-    vim.keymap.set('', '^', 'g^')
-end, {})
-
-vim.api.nvim_create_user_command('Wrapoff', function()
-    vim.o.wrap = false
-    vim.keymap.del('', 'k')
-    vim.keymap.del('', 'j')
-    vim.keymap.del('', '$')
-    vim.keymap.del('', '0')
-    vim.keymap.del('', '^')
+vim.api.nvim_create_user_command('Wrap', function ()
+    if vim.o.wrap then
+        vim.o.wrap = false
+        print('  nowrap')
+        vim.keymap.del('', 'k')
+        vim.keymap.del('', 'j')
+        vim.keymap.del('', '$')
+        vim.keymap.del('', '0')
+        vim.keymap.del('', '^')
+    else
+        vim.o.wrap = true
+        print('  wrap')
+        vim.keymap.set('', 'k', 'gk')
+        vim.keymap.set('', 'j', 'gj')
+        vim.keymap.set('', '$', 'g$')
+        vim.keymap.set('', '0', 'g0')
+        vim.keymap.set('', '^', 'g^')
+    end
 end, {})
 
 vim.api.nvim_create_user_command('Config', function ()
@@ -28,20 +30,24 @@ end, {})
 --- Quickfix list facilities
 local function cmd_to_qflist(command, handler)
     vim.fn.setqflist({}, 'r')
-    vim.system(
-        command, 
+    local no_output = true
+    vim.system(command, 
         { 
             stdout = function(err, data)
                 if data and data ~= '' then
-                    vim.schedule(function() handler(data) end)
+                    vim.schedule(function() 
+                        handler(data)
+                        if no_output then
+                            vim.schedule(vim.cmd.copen)
+                            no_output = false
+                        end
+                    end)
                 end
             end,
             text = true,
         }, 
         function (out) 
-            if out.code == 0 then
-                vim.schedule(vim.cmd.copen)
-            elseif out.stderr and out.stderr ~= '' then
+            if out.code ~= 0 and out.stderr and out.stderr ~= '' then
                 vim.print(out.stderr)
             end
         end

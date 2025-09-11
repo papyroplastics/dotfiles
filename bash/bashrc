@@ -11,7 +11,8 @@
 # globstar: ** matches files on subdirectories
 shopt -s autocd cdspell histappend checkwinsize globstar
 
-bind '"\eh":backward-kill-word'
+bind '"\eh": backward-kill-word'
+bind '"\C-q": "\C-a\C-k\C-d"'
 
 stty -ixon
 
@@ -164,7 +165,7 @@ function pyactivate {
 
     local script_path="$(back-search -f "$venv_dir/bin/activate")"
 
-    if [[ $? == 0 ]]; then
+    if [[ ! -z $script_path ]]; then
         source $script_path
         echo "VIRTUAL_ENV=$(pretty_path $VIRTUAL_ENV)"
         return 0
