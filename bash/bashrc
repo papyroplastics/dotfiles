@@ -79,6 +79,12 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
+function new-gcc-export {
+    export PATH="$HOME/Programs/gcc-15/bin:$HOME/Programs/binutils/bin:$PATH"
+    export LD_LIBRARY_PATH="$HOME/Programs/gcc-15/lib64/:$LD_LIBRARY_PATH"
+    unset -f new-gcc-export
+}
+
 function idf-export {
     source $HOME/Repos/esp-idf/export.sh
     unset -f idf-export
@@ -92,7 +98,7 @@ function xampp-export {
 
 function just {
     $@ &>/dev/null &
-    disown '%$@';
+    disown '%%';
 }
 
 function back-search {
@@ -124,6 +130,7 @@ function envexport {
         set -o allexport
         source "$env_path"
         set +o allexport
+        cat "$env_path"
         return 0
     fi
 

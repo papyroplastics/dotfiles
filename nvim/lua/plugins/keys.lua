@@ -2,7 +2,7 @@ return {
     {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
-        opts = {}
+        opts = {},
     },
     {
         'kylechui/nvim-surround',
@@ -29,13 +29,12 @@ return {
     },
     {
         'stevearc/oil.nvim',
+        version = '*',
         opts = {
-            default_file_explorer = false,
             keymaps = {
-                ["<Bs>"]      = { "actions.parent",         mode = "n" },
-                ["<C-H>"]         = { "actions.toggle_hidden",  mode = "n" },
+                -- ["<Bs>"]      = { "actions.parent",         mode = "n" },
+                ["<C-H>"]     = { "actions.toggle_hidden",  mode = "n" },
                 ["<Leader>o"] = { "actions.close",          mode = "n" },
-                ["<Leader>e"] = { "actions.close",          mode = "n" },
                 ["<Esc>"]     = { "actions.close",          mode = "n" },
             },
             view_options = {
@@ -46,20 +45,6 @@ return {
         },
         keys = {
             { "<Leader>o", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
-            { "<Leader>e", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
-        }
-    },
-    {
-        'folke/flash.nvim',
-        version = '*',
-        opts = function ()
-            Flash = require('flash')
-            Flash.setup({})
-        end,
-        keys = {
-            'f', 'F', 't', 'T',
-            { '<Leader>s', function () Flash.jump() end, mode = '', desc = 'Flash' },
-            { '<Leader>a', function () Flash.treesitter_search() end, mode = '', desc = 'Flash Arround' },
         },
-    }
+    },
 }

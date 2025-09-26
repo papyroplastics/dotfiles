@@ -2,7 +2,7 @@
 -- General
 vim.keymap.set('n', '<Esc>', vim.cmd.nohlsearch,  { desc = 'Clean search' })
 vim.keymap.set('', '<Leader>L', '<CMD>Lazy<CR>',  { desc = 'Lazy Panel' })
-vim.keymap.set('', '<Leader>e', '<CMD>25Lex<CR>', { desc = 'Open Netrw'})
+vim.keymap.set('', '<Leader>o', '<CMD>Explore<CR>', { desc = 'Open Netrw'})
 
 -- Fast movement
 vim.keymap.set('', '<C-j>', '4gj')
@@ -49,13 +49,13 @@ vim.keymap.set('', '<Leader>q', ctoggle)
 vim.keymap.set('', '<Leader>$', function()
     vim.ui.input({ prompt = '$' }, function (input)
         if not input or input == '' then
-            print("Invalid command.")
+            print('Invalid command.')
             return
         end
 
         local result = vim.fn.systemlist(input)
         if not result or  result == '' then
-            print("No output.")
+            print('No output.')
             return
         end
 
@@ -76,7 +76,7 @@ vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
 local function outline_toggle()
     local prev_wincnt = vim.fn.winnr('$')
     vim.cmd.normal({'gO', bang = true})
-    if (prev_wincnt == vim.fn.winnr('$') and vim.o.filetype == "qf") then
+    if (prev_wincnt == vim.fn.winnr('$') and vim.o.filetype == 'qf') then
         local prev_winnr = vim.fn.winnr()
         vim.cmd.normal({'<C-w>k', bang = true})
         vim.cmd(string.format('%iquit', prev_winnr))
@@ -101,27 +101,42 @@ vim.keymap.set('c', '<M-d>', '<C-Right><C-w>')
 vim.keymap.set('!', '<M-h>', '<C-w>')
 vim.keymap.set('!', '<C-BS>','<C-w>')
 vim.keymap.set('!', '<M-BS>','<C-w>')
+
+local ctrl_p_bytes = vim.api.nvim_replace_termcodes('<C-p>', true, false, true)
+
 vim.keymap.set('i', '<C-k>', '<C-o>d$')
+vim.keymap.set('c', '<C-j>', '<C-n>')
 vim.keymap.set('c', '<C-k>', function ()
-    vim.fn.setcmdline(string.sub(vim.fn.getcmdline(), 1, vim.fn.getcmdpos()-1))
+    if vim.fn.pumvisible() ~= 0 or vim.fn.getcmdpos() - 1 == string.len(vim.fn.getcmdline()) then
+        vim.api.nvim_feedkeys(ctrl_p_bytes, 'n', false)
+    else
+        vim.fn.setcmdline(string.sub(vim.fn.getcmdline(), 1, vim.fn.getcmdpos()-1))
+    end
 end)
 
-local ctrl_e_bytes = vim.api.nvim_replace_termcodes("<C-e>", true, false, true)
-local end_bytes = vim.api.nvim_replace_termcodes("<End>", true, false, true)
+local ctrl_e_bytes = vim.api.nvim_replace_termcodes('<C-e>', true, false, true)
+local end_bytes = vim.api.nvim_replace_termcodes('<End>', true, false, true)
 
 vim.keymap.set('!', '<C-a>', '<Home>')
 vim.keymap.set('!', '<C-e>', function ()
     if vim.fn.pumvisible() ~= 0 then
-        vim.api.nvim_feedkeys(ctrl_e_bytes, "n", true)
+        vim.api.nvim_feedkeys(ctrl_e_bytes, 'n', false)
     else 
-        vim.api.nvim_feedkeys(end_bytes, "n", true)
+        vim.api.nvim_feedkeys(end_bytes, 'n', false)
+    end
+end)
+
+local cr_bytes = vim.api.nvim_replace_termcodes('<CR>', true, false, true)
+local ctrl_y_bytes = vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
+
+vim.keymap.set('c', '<CR>', function()
+    if vim.fn.pumvisible() ~= 0 then
+        vim.api.nvim_feedkeys(ctrl_y_bytes, 'n', false)
+    else 
+        vim.api.nvim_feedkeys(cr_bytes, 'n', false)
     end
 end)
 
 vim.keymap.set('i', '<C-CR>', '<C-e><C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-e><C-o>O')
-
--- Command line
-vim.keymap.set('c', '<C-j>', '<C-n>')
-vim.keymap.set('c', '<C-k>', '<C-p>')
 
