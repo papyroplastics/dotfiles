@@ -1,4 +1,5 @@
 
+vim.g.netrw_banner = 0
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.c_syntax_for_h = true
@@ -24,20 +25,15 @@ vim.opt.wrap = false
 vim.opt.mouse = ''
 
 vim.opt.pumblend = 7
-vim.opt.completeopt = {"fuzzy", "menu", "menuone", "noinsert", "popup", "preview"}
+vim.opt.completeopt = {'fuzzy', 'menu', 'menuone', 'noinsert', 'popup', 'preview'}
 
 vim.opt.laststatus = 3
+vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
 
 if not vim.g.as_pager then
     vim.opt.number = true
     vim.opt.relativenumber = true
 end
-
-vim.g.netrw_banner = 0
-vim.g.netrw_browse_split=4
-vim.g.netrw_altv = 1
-vim.g.netrw_liststyle = 3
-vim.g.netrw_special_syntax = true
 
 vim.filetype.add({
     extension = {

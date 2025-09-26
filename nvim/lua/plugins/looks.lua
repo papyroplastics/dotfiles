@@ -36,11 +36,11 @@ return {
     {
         'HiPhish/rainbow-delimiters.nvim',
         lazy = false,
-        priority = 800,
         cond = colorterm,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
+        version = '*',
         main = 'ibl',
         event = 'VeryLazy',
         cond = colorterm,
@@ -52,7 +52,6 @@ return {
         'nvim-treesitter/nvim-treesitter',
         lazy = false,
         build = ':TSUpdate',
-        priority = 1000,
         main = 'nvim-treesitter.configs',
         opts = {
             ensure_installed = {

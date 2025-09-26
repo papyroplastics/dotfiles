@@ -57,9 +57,12 @@ return {
         config = function()
             local cmp = require('cmp')
 
-            local function select_prev_item (_)
-                cmp.complete()
-                cmp.select_prev_item()
+            local function select_prev_item (callback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                else 
+                    callback()
+                end
             end
 
             local function select_next_item (_)

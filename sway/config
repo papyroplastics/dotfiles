@@ -2,7 +2,7 @@
 # variables
 set $mod Mod4
 
-set $background ~/.config/i3/background.jpg
+set $background ~/.config/sway/background.jpg
 set $lock_image ~/.config/i3/blur.png
 set $lock_command swaylock --daemonize \
     --image $lock_image --scaling fill \
@@ -29,8 +29,8 @@ exec swayidle -w \
 
 # keymaps
 bindsym {
-    $mod+t exec wofi --show drun
-    $mod+d exec kitty
+    $mod+t exec kitty
+    $mod+d exec wofi --show drun
     $mod+e exec nemo
     $mod+v exec pavucontrol
     $mod+b exec flatpak run org.mozilla.firefox
