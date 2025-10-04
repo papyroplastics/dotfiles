@@ -34,17 +34,22 @@ return {
             })
         end,
         keys = {
-            { '<Leader>lh', vim.lsp.buf.hover,              desc = 'Show hover' },
-            { '<Leader>la', vim.lsp.buf.code_action,        desc = 'Code action' },
+            { '<Leader>lk', vim.lsp.buf.hover,              desc = 'Show hover' },
+            { '<Leader>ls', vim.lsp.buf.signature_help,     desc = 'Signature help' },
+
             { '<Leader>ld', vim.lsp.buf.definition,         desc = 'Go to definition' },
             { '<Leader>li', vim.lsp.buf.implementation,     desc = 'Go to implementation' },
-            { '<Leader>le', vim.lsp.buf.declaration,        desc = 'Go to declaration' },
-            { '<Leader>lr', vim.lsp.buf.rename,             desc = 'Rename symbol' },
-            { '<Leader>lf', vim.lsp.buf.format,             desc = 'Format document' },
-            { '<Leader>ls', vim.lsp.buf.signature_help,     desc = 'Signature help' },
+            { '<Leader>lh', vim.lsp.buf.declaration,        desc = 'Go to declaration' },
             { '<Leader>lt', vim.lsp.buf.type_definition,    desc = 'Type definition' },
+
             { '<Leader>lu', vim.lsp.buf.references,         desc = 'Type definition' },
             { '<Leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Type definition' },
+
+            { '<Leader>lr', vim.lsp.buf.rename,             desc = 'Rename symbol' },
+            { '<Leader>lf', vim.lsp.buf.format,             desc = 'Format document' },
+            { '<Leader>la', vim.lsp.buf.code_action,        desc = 'Code action' },
+
+            { '<Leader>le', vim.diagnostic.open_float,      desc = 'Go to declaration' },
             { '<Leader>lq', vim.diagnostic.setloclist,      desc = 'Go to declaration' },
         },
     },

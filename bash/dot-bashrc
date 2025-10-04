@@ -126,7 +126,7 @@ function envexport {
 
     local env_path="$(back-search -f "$env_filename")"
 
-    if [[ $? == 0 ]]; then
+    if [[ ! -z $env_path ]]; then
         set -o allexport
         source "$env_path"
         set +o allexport

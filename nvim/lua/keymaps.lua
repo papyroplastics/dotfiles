@@ -35,10 +35,16 @@ vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end, { desc = 'Mov
 vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end, { desc = 'Move tab right' })
 
 -- Quickfix
-local function ctoggle ()
-    local qfix = vim.fn.getqflist({ winid = 0 })
-    if qfix.winid == 0 then
-        vim.cmd.copen()
+local function ctoggle()
+    local qflist = vim.fn.getqflist({ winid = 0 })
+
+    if qflist.winid == 0 then
+        local loclist = vim.fn.getloclist(vim.fn.winnr(), { winid = 0 })
+        if loclist.winid == 0 then
+            vim.cmd.copen()
+        else
+            vim.cmd.lclose()
+        end
     else
         vim.cmd.cclose()
     end
@@ -74,17 +80,15 @@ vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
 
 -- Outline
 local function outline_toggle()
-    local prev_wincnt = vim.fn.winnr('$')
-    vim.cmd.normal({'gO', bang = true})
-    if (prev_wincnt == vim.fn.winnr('$') and vim.o.filetype == 'qf') then
-        local prev_winnr = vim.fn.winnr()
-        vim.cmd.normal({'<C-w>k', bang = true})
-        vim.cmd(string.format('%iquit', prev_winnr))
+    if vim.o.filetype == 'qf' then
+        return '<C-w>q' .. vim.fn.winnr() - 1 .. '<C-w>' .. 'w'
+    else 
+        return 'gO'
     end
 end
 
-vim.keymap.set('', '<Leader>u', outline_toggle, { desc = 'Buffer outline' })
-vim.keymap.set('', 'gO', outline_toggle, { desc = 'Buffer outline' })
+vim.keymap.set('', '<Leader>u', outline_toggle, { expr = true, desc = 'Buffer outline' })
+vim.keymap.set('', 'gO',        outline_toggle, { expr = true, desc = 'Buffer outline' })
 
 -- Readline-like keymaps
 vim.keymap.set('!', '<C-p>', '<Up>')
