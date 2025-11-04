@@ -33,7 +33,7 @@ export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
 
-export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
+export LESS='--ignore-case --chop-long-lines --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export BAT_THEME='ansi'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 

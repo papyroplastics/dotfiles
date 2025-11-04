@@ -1,12 +1,12 @@
 
-# options
+# Options
 font monospace 0.1
 titlebar_padding 1
 default_border none 
 default_floating_border none 
 hide_edge_borders --i3 none
 
-# gtk theming
+# Theming
 set $gnome-schema org.gnome.desktop.interface
 exec {
     gsettings set $gnome-schema gtk-theme 'Dracula'
@@ -15,14 +15,32 @@ exec {
     gsettings set $gnome-schema font-name 'Noto Sans 11'
 }
 
-# colors
+seat * xcursor_theme Bibata-Modern-Classic 24
+
+# Background
+set $background ~/.config/sway/background.jpg
+output * bg $background fill
+
+# Screensaver
+set $lock_image ~/.config/sway/blur.png
+set $lock_command swaylock --daemonize \
+    --image $lock_image --scaling fill \
+    --indicator-radius 100 \
+    --indicator-thickness 6
+
+exec swayidle -w \
+    timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 300 '$lock_command' \
+    before-sleep '$lock_command'
+
+# Colors
 set $acb #44475A
 set $act #F8F8F2
 set $inb #282A36
 set $int #BFBFBF
 set $urb #FF5555
 
-# color class           brdr  bg  text ind ch_brdr
+# Color class           brdr  bg  text ind ch_brdr
 client.focused          $acb $acb $acb $acb $acb
 client.focused_inactive $acb $acb $acb $acb $acb
 client.unfocused        $inb $inb $inb $inb $inb
@@ -42,7 +60,7 @@ bar {
         statusline $act
         separator #585B70
 
-        # class            brdr  bg  text
+        # Class            brdr  bg  text
         focused_workspace  $acb $acb $act
         active_workspace   $inb $acb $act
         inactive_workspace $inb $inb $int

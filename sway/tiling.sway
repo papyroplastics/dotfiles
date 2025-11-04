@@ -1,15 +1,15 @@
 
-# options
+# Options
 workspace_layout tabbed
 floating_modifier $mod
 focus_follows_mouse no
 tiling_drag off
 
-# scratchpad:
+# Scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
-# movement
+# Movement
 bindsym {
     $mod+h focus left
     $mod+j focus down
@@ -25,19 +25,22 @@ bindsym {
     $mod+Shift+l move right
 }
 
-bindsym $mod+q kill
-bindsym $mod+f fullscreen toggle
+# Manipulation
+bindsym {
+    $mod+q kill
+    $mod+f fullscreen toggle
+   
+    $mod+Shift+space floating toggle
+    $mod+space focus mode_toggle
+   
+    $mod+s layout toggle split
+    $mod+w layout tabbed
+   
+    $mod+p focus parent
+    $mod+c focus child
+}
 
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
-
-bindsym $mod+s layout toggle split
-bindsym $mod+w layout tabbed
-
-bindsym $mod+p focus parent
-bindsym $mod+c focus child
-
-# layouts
+# Workspaces
 bindsym {
     $mod+1 workspace number 1
     $mod+2 workspace number 2
