@@ -16,5 +16,3 @@ input type:keyboard {
     xkb_layout latam
 }
 
-seat * xcursor_theme Bibata-Modern-Classic 24
-

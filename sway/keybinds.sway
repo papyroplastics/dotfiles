@@ -1,0 +1,38 @@
+# Programs
+bindsym {
+    $mod+t exec kitty
+    $mod+d exec wofi --show drun
+    $mod+e exec nemo
+    $mod+v exec pavucontrol
+    $mod+b exec flatpak run org.mozilla.firefox
+    $mod+m exec flatpak run org.mozilla.Thunderbird
+}
+
+# Volume and brightness
+set $volume_cmd pactl set-sink-volume @DEFAULT_SINK@
+set $mute_cmd   pactl set-sink-mute   @DEFAULT_SINK@
+set $bright_cmd brightnessctl set 
+bindsym {
+    XF86AudioRaiseVolume  exec $volume_cmd +5%
+    $mod+F8               exec $volume_cmd +1%
+                          
+    XF86AudioLowerVolume  exec $volume_cmd -5%
+    $mod+F7               exec $volume_cmd -1%
+                          
+    XF86AudioMute         exec $mute_cmd toggle
+    $mod+F6               exec $mute_cmd toggle
+
+    XF86MonBrightnessUp   exec $bright_cmd +1000
+    $mod+F3               exec $bright_cmd +1000
+
+    XF86MonBrightnessDown exec $bright_cmd 1000-
+    $mod+F2               exec $bright_cmd 1000-
+}
+
+# Nagbar
+bindsym $mod+Escape exec swaynag -t warning -m 'Perform an action' \
+    -Z 'Reload' 'swaymsg reload' \
+    -Z 'Exit' 'swaymsg exit' \
+    -Z 'Reboot' '/usr/sbin/shutdown --reboot now' \
+    -Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
+

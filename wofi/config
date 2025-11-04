@@ -10,10 +10,10 @@ no_actions=true
 single_click=true
 dynamic_lines=true
 
-key_up=Ctrl-k
-key_down=Ctrl-j
-key_left=Ctrl-h
-key_right=Ctrl-l
+key_up=Control_L-k
+key_down=Control_L-j
+key_left=Control_L-h
+key_right=Control_L-l
 
 allow_markup=true
 allow_images=true

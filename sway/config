@@ -1,15 +1,8 @@
 
-# variables
+# Variables
 set $mod Mod4
 
-set $background ~/.config/sway/background.jpg
-set $lock_image ~/.config/i3/blur.png
-set $lock_command swaylock --daemonize \
-    --image $lock_image --scaling fill \
-    --indicator-radius 100 \
-    --indicator-thickness 6
-
-# session setup
+# Session setup
 xwayland enable
 
 set $env_vars WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DISPLAY XAUTHORITY
@@ -20,37 +13,9 @@ exec {
     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 }
 
-output * bg $background fill
-
-exec swayidle -w \
-    timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout 300 '$lock_command' \
-    before-sleep '$lock_command'
-
-# keymaps
-bindsym {
-    $mod+t exec kitty
-    $mod+d exec wofi --show drun
-    $mod+e exec nemo
-    $mod+v exec pavucontrol
-    $mod+b exec flatpak run org.mozilla.firefox
-    $mod+m exec flatpak run org.mozilla.Thunderbird
-}
-
-bindsym {
-    XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
-    XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
-    XF86AudioMute        exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
-    XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
-}
-
-bindsym $mod+Escape exec swaynag -t warning -m 'Perform an action' \
-    -Z 'Reload' 'swaymsg reload' \
-    -Z 'Exit' 'swaymsg exit' \
-    -Z 'Reboot' '/usr/sbin/shutdown --reboot now' \
-    -Z 'Poweroff' '/usr/sbin/shutdown --poweroff now' \
-
+# Others
 include input.sway
 include looks.sway
 include tiling.sway
+include keybinds.sway
 
