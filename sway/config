@@ -5,13 +5,30 @@ set $mod Mod4
 # Session setup
 xwayland enable
 
-set $env_vars WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DISPLAY XAUTHORITY
+set $env_vars \
+    WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP \
+    DISPLAY XAUTHORITY XCURSOR_SIZE XCURSOR_THEME QT_QPA_PLATFORMTHEME
+
 exec {
     dbus-update-activation-environment --systemd $env_vars
     systemctl --user import-environment $env_vars
     systemctl --user start xdg-desktop-portal-wlr.service
     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 }
+
+# Screensaver
+set $lock_image ~/.config/sway/blur.png
+set $lock_command swaylock --daemonize \
+    --image $lock_image --scaling fill \
+    --indicator-radius 100 \
+    --indicator-thickness 6
+
+exec swayidle -w \
+    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 900 '$lock_command' \
+    before-sleep '$lock_command'
+
+exec $lock_command
 
 # Others
 include input.sway

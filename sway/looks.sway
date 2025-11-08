@@ -21,18 +21,6 @@ seat * xcursor_theme Bibata-Modern-Classic 24
 set $background ~/.config/sway/background.jpg
 output * bg $background fill
 
-# Screensaver
-set $lock_image ~/.config/sway/blur.png
-set $lock_command swaylock --daemonize \
-    --image $lock_image --scaling fill \
-    --indicator-radius 100 \
-    --indicator-thickness 6
-
-exec swayidle -w \
-    timeout 120 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout 300 '$lock_command' \
-    before-sleep '$lock_command'
-
 # Colors
 set $acb #44475A
 set $act #F8F8F2
@@ -44,10 +32,7 @@ set $urb #FF5555
 client.focused          $acb $acb $acb $acb $acb
 client.focused_inactive $acb $acb $acb $acb $acb
 client.unfocused        $inb $inb $inb $inb $inb
-client.urgent           $acb $urb $acb $urb $urb
-client.placeholder      $inb $inb $acb $inb $inb
-
-client.background       $inb
+client.urgent           $urb $urb $urb $urb $urb
 
 bar {
     status_command i3status

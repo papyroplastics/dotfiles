@@ -141,6 +141,6 @@ vim.keymap.set('c', '<CR>', function()
     end
 end)
 
-vim.keymap.set('i', '<C-CR>', '<C-e><C-o>o')
-vim.keymap.set('i', '<S-CR>', '<C-e><C-o>O')
+vim.keymap.set('i', '<C-CR>', '<C-o>o')
+vim.keymap.set('i', '<S-CR>', '<C-o>O')
 

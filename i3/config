@@ -20,7 +20,7 @@ exec --no-startup-id xwallpaper --zoom ~/.config/i3/background.jpg
 #nm-applet
 #blueman-applet
 
-set $env_vars XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DISPLAY XAUTHORITY
+set $env_vars XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE DISPLAY XAUTHORITY XCURSOR_SIZE XCURSOR_THEME QT_QPA_PLATFORMTHEME
 exec --no-startup-id dbus-update-activation-environment --systemd $env_vars
 exec --no-startup-id systemctl --user import-environment $env_vars
 
