@@ -30,10 +30,8 @@ vim.opt.completeopt = {'fuzzy', 'menu', 'menuone', 'noinsert', 'popup', 'preview
 vim.opt.laststatus = 3
 vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
 
-if not vim.g.as_pager then
-    vim.opt.number = true
-    vim.opt.relativenumber = true
-end
+vim.opt.number = true
+vim.opt.relativenumber = true
 
 vim.filetype.add({
     extension = {

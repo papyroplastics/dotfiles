@@ -42,8 +42,8 @@ return {
             { '<Leader>lh', vim.lsp.buf.declaration,        desc = 'Go to declaration' },
             { '<Leader>lt', vim.lsp.buf.type_definition,    desc = 'Type definition' },
 
-            { '<Leader>lu', vim.lsp.buf.references,         desc = 'Type definition' },
-            { '<Leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Type definition' },
+            { '<Leader>lu', vim.lsp.buf.references,         desc = 'Uses' },
+            { '<Leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Incoming calls' },
 
             { '<Leader>lr', vim.lsp.buf.rename,             desc = 'Rename symbol' },
             { '<Leader>lf', vim.lsp.buf.format,             desc = 'Format document' },
@@ -62,7 +62,7 @@ return {
         config = function()
             local cmp = require('cmp')
 
-            local function select_prev_item (callback)
+            local function select_prev_item(callback)
                 if cmp.visible() then
                     cmp.select_prev_item()
                 else 
@@ -70,12 +70,14 @@ return {
                 end
             end
 
-            local function select_next_item (_)
-                cmp.complete()
+            local function select_next_item(_)
+                if not cmp.visible() then
+                  cmp.complete()
+                end
                 cmp.select_next_item()
             end
 
-            local function toggle_docs (callback)
+            local function toggle_docs(callback)
                 if cmp.visible() then
                     if cmp.visible_docs() then
                         cmp.close_docs()
@@ -87,7 +89,7 @@ return {
                 end
             end
 
-            local function scroll_docs_up (callback)
+            local function scroll_docs_up(callback)
                 if cmp.visible_docs() then
                     cmp.scroll_docs(-4)
                 else
@@ -95,7 +97,7 @@ return {
                 end
             end
 
-            local function scroll_docs_down (callback)
+            local function scroll_docs_down(callback)
                 if cmp.visible_docs() then
                     cmp.scroll_docs(4)
                 else
@@ -103,7 +105,7 @@ return {
                 end
             end
 
-            local function confirm (callback)
+            local function confirm(callback)
                 if cmp.visible() then
                     cmp.confirm({ select = true })
                 else
@@ -111,7 +113,7 @@ return {
                 end
             end
 
-            local function toggle_complete ()
+            local function toggle_complete()
                 if cmp.visible() then
                     cmp.abort()
                 else
@@ -123,7 +125,7 @@ return {
                 view = { 
                     entries = "native",
                     docs = {
-                        auto_open = true 
+                        auto_open = false 
                     }
                 },
 
@@ -138,6 +140,7 @@ return {
                     ['<CR>']  = confirm,
                     ['<C-k>'] = select_prev_item,
                     ['<C-j>'] = select_next_item,
+                    ['<C-i>'] = toggle_docs,
                     ['<C-h>'] = scroll_docs_up,
                     ['<C-l>'] = scroll_docs_down,
                 },

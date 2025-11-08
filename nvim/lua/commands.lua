@@ -31,27 +31,26 @@ end, {})
 local function cmd_to_qflist(command, handler)
     vim.fn.setqflist({}, 'r')
     local no_output = true
-    vim.system(command, 
-        { 
-            stdout = function(err, data)
-                if data and data ~= '' then
-                    vim.schedule(function() 
-                        handler(data)
-                        if no_output then
-                            vim.schedule(vim.cmd.copen)
-                            no_output = false
-                        end
-                    end)
+
+    local function stdout_handler(err, data)
+        if data and data ~= '' then
+            vim.schedule(function() 
+                handler(data)
+                if no_output then
+                    vim.schedule(vim.cmd.copen)
+                    no_output = false
                 end
-            end,
-            text = true,
-        }, 
-        function (out) 
-            if out.code ~= 0 and out.stderr and out.stderr ~= '' then
-                vim.print(out.stderr)
-            end
+            end)
         end
-    )
+    end
+
+    local function on_exit(out) 
+        if out.code ~= 0 and out.stderr and out.stderr ~= '' then
+            vim.print(out.stderr)
+        end
+    end
+
+    vim.system(command, { stdout = stdout_handler, text = true, }, on_exit)
 end
 
 
@@ -68,7 +67,8 @@ vim.api.nvim_create_user_command('Find', function (opts)
 end, { nargs = '+' })
 
 
-vim.api.nvim_create_user_command('Grep', function (opts)
+vim.api.nvim_create_user_command('Grep',
+    function (opts)
     local command = { 'rg', '--vimgrep', '--', table.concat(opts.fargs, ' ') }
 
     cmd_to_qflist(command, function (data)
@@ -86,3 +86,26 @@ vim.cmd.cabbrev('fd', 'Find')
 vim.cmd.cabbrev('grep', 'Grep')
 vim.cmd.cabbrev('gr', 'Grep')
 vim.cmd.cabbrev('rg', 'Grep')
+
+-- For use as pager for kitty
+vim.api.nvim_create_user_command('PagerSetLine', function (opts)
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+
+    local scroll_line = tonumber(opts.fargs[1])
+
+    if (scroll_line ~= nil) then
+        local term_height = vim.o.lines
+        local half_term = math.floor(term_height / 2)
+
+        if vim.fn.getline('$') ~= '' then 
+            half_term = half_term + 1
+        end
+
+        local buf_len = vim.fn.line('$')
+
+        vim.fn.setpos('.', { 0, buf_len - (scroll_line + half_term), 0, 0 })
+    end
+        
+end, { nargs = '?' })
+
