@@ -1,0 +1,16 @@
+[user]
+    email = lucasllort@gmail.com
+    name = Lucas Llort
+[init]
+    defaultBranch = main
+[alias]
+    lg = log --graph --oneline
+[diff]
+    tool = nvimdiff
+
+[credential "https://github.com"]
+    helper = 
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = 
+    helper = !/usr/bin/gh auth git-credential

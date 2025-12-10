@@ -12,7 +12,6 @@ font pango:Noto Sans 0
 exec --no-startup-id picom
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 exec --no-startup-id i3lock -ni ~/.config/i3/blur.png
-exec --no-startup-id xrandr --output eDP1 --gamma 1:0.95:0.85 --brightness 1
 exec --no-startup-id xwallpaper --zoom ~/.config/i3/background.jpg
 
 #picom
@@ -45,8 +44,12 @@ bindsym $mod+F7 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym $mod+F6 exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
 # bindsym $mod+XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -time 0 -steps 1 +1
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -time 0 -steps 1 -1
+set $bright_cmd brightnessctl set 
+bindsym XF86MonBrightnessUp   exec --no-startup-id $bright_cmd +100
+bindsym $mod+F3               exec --no-startup-id $bright_cmd +100
+
+bindsym XF86MonBrightnessDown exec --no-startup-id $bright_cmd 100-
+bindsym $mod+F2               exec --no-startup-id $bright_cmd 100-
 
 bindsym $mod+Escape exec "i3-nagbar -t warning -m 'What to do?' \
 -B 'Reload' 'i3-msg reload' \

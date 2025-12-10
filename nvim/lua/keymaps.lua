@@ -1,23 +1,26 @@
 
--- General
-vim.keymap.set('n', '<Esc>', vim.cmd.nohlsearch,  { desc = 'Clean search' })
-vim.keymap.set('', '<Leader>L', '<CMD>Lazy<CR>',  { desc = 'Lazy Panel' })
-vim.keymap.set('', '<Leader>o', '<CMD>Explore<CR>', { desc = 'Open Netrw'})
+-- Misc
+vim.keymap.set('n', '<Esc>', vim.cmd.nohlsearch)
+vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
+vim.keymap.set('n', '<Leader>o', '<CMD>Explore<CR>')
+vim.keymap.set('n', '<Leader>O', '<CMD>Explore .<CR>')
 
--- Fast movement
+-- Basic movement
+vim.keymap.set('', 'j', 'gj')
+vim.keymap.set('', 'k', 'gk')
+vim.keymap.set('', '¿', '^')
+
 vim.keymap.set('', '<C-j>', '4gj')
 vim.keymap.set('', '<C-k>', '4gk')
 
-vim.keymap.set('', '<C-n>', '8gj')
-vim.keymap.set('', '<C-p>', '8gk')
+vim.keymap.set('', '<C-n>', '12gj')
+vim.keymap.set('', '<C-p>', '12gk')
 
-vim.keymap.set('', '<C-h>', '20h')
-vim.keymap.set('', '<C-l>', '20l')
-
-vim.keymap.set('', '¿', '^')
+vim.keymap.set('', '<C-h>', '10h')
+vim.keymap.set('', '<C-l>', '10l')
 
 -- Tabs
-local function close_tab()
+local function general_close()
     if (vim.fn.winnr('$') ~= 1) then
         vim.cmd.quit()
     elseif (vim.fn.tabpagenr('$') ~= 1) then
@@ -27,12 +30,13 @@ local function close_tab()
     end
 end
 
-vim.keymap.set('', '<C-t>',   vim.cmd.tabnew,      { desc = 'New tab' })
-vim.keymap.set('', '<C-q>',   close_tab,           { desc = 'Close tab' })
-vim.keymap.set('', 'L',       vim.cmd.tabnext,     { desc = 'Next tab' })
-vim.keymap.set('', 'H',       vim.cmd.tabprevious, { desc = 'Previous tab' })
-vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end, { desc = 'Move tab left' })
-vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end, { desc = 'Move tab right' })
+vim.keymap.set('', '<C-t>',   function() vim.cmd('tab vsplit') end)
+vim.keymap.set('', '<M-t>',   vim.cmd.tabnew)
+vim.keymap.set('', '<C-q>',   general_close)
+vim.keymap.set('', 'L',       vim.cmd.tabnext)
+vim.keymap.set('', 'H',       vim.cmd.tabprevious)
+vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end)
+vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end)
 
 -- Quickfix
 local function ctoggle()
@@ -87,8 +91,8 @@ local function outline_toggle()
     end
 end
 
-vim.keymap.set('', '<Leader>u', outline_toggle, { expr = true, desc = 'Buffer outline' })
-vim.keymap.set('', 'gO',        outline_toggle, { expr = true, desc = 'Buffer outline' })
+vim.keymap.set('', '<Leader>u', outline_toggle, { expr = true })
+vim.keymap.set('', 'gO',        outline_toggle, { expr = true })
 
 -- Readline-like keymaps
 vim.keymap.set('!', '<C-p>', '<Up>')

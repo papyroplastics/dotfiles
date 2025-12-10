@@ -11,8 +11,10 @@
 # globstar: ** matches files on subdirectories
 shopt -s autocd cdspell histappend checkwinsize globstar
 
+bind 'Control-q: "\C-a\C-k\C-d"'
 bind '"\eh": backward-kill-word'
-bind '"\C-q": "\C-a\C-k\C-d"'
+bind '"\e\t": menu-complete'
+bind '"\e\e[Z": menu-complete-backward'
 
 stty -ixon
 
@@ -33,12 +35,15 @@ export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
 
-export LESS='--ignore-case --chop-long-lines --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
+export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export BAT_THEME='ansi'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
+
+export DEBEMAIL="lucasllort@gmail.com"
+export DEBFULLNAME="Lucas Llort"
 
 # -------------
 #  Completions
@@ -46,8 +51,8 @@ export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 . /usr/share/bash-completion/bash_completion
 
-for COMPLETION in "$HOME/.local/share/bash-completion/completions/"*; do
-    [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+for completion in "$HOME/.local/share/bash-completion/completions/"*; do
+    [[ -r "$completion" ]] && source "$completion"
 done
 
 
@@ -90,6 +95,7 @@ function idf-export {
     unset -f idf-export
 }
 
+alias xampp='sudo xampp'
 function xampp-export {
     PATH="$XAMPP:$XAMPP/bin:$PATH"
     MANPATH="$XAMPP/man:$MANPATH"
@@ -120,8 +126,8 @@ function back-search {
 
 function envexport {
     local env_filename="$1"
-    if [[ -z "$1" ]]; then
-        env_filename='.env'
+    if [[ -z "$env_filename" ]]; then
+        env_filename=".env"
     fi
 
     local env_path="$(back-search -f "$env_filename")"
@@ -165,21 +171,35 @@ function pyactivate {
         return 1
     fi
 
-    local venv_dir="$1"
     if [[ -z $1 ]]; then
-        venv_dir='venv'
+        local dot_path="$(back-search -d ".venv/bin")"
+        local simple_path="$(back-search -d "venv/bin")"
+
+        if [[ ${#dot_path} -gt ${#simple_path} ]]; then
+            local script_path="$dot_path"
+        else
+            local script_path="$simple_path"
+        fi
+
+    else 
+        local script_path="$(back-search -d "$1/bin")"
     fi
 
-    local script_path="$(back-search -f "$venv_dir/bin/activate")"
-
-    if [[ ! -z $script_path ]]; then
-        source $script_path
-        echo "VIRTUAL_ENV=$(pretty_path $VIRTUAL_ENV)"
-        return 0
+    if [[ -z $script_path ]]; then
+        echo "Virtual environment not found."
+        return 1
     fi
 
-    echo "Virtual environment not found."
-    return 1
+    source "$script_path/activate"
+    echo "VIRTUAL_ENV=$(pretty_path $VIRTUAL_ENV)"
+
+    if [[ -x $script_path/pip ]]; then 
+        eval "$("$script_path/pip" completion --bash)"
+    elif [[ -x $(command -v uv) ]]; then
+        eval "$(uv generate-shell-completion bash)"
+    fi
+
+    return 0
 }
 
 # --------

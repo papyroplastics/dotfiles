@@ -41,8 +41,8 @@ return {
     {
         'lukas-reineke/indent-blankline.nvim',
         version = '*',
+        lazy = false,
         main = 'ibl',
-        event = 'VeryLazy',
         cond = colorterm,
         opts = {
             scope = { enabled = false },

@@ -8,25 +8,35 @@ bindsym {
     $mod+m exec flatpak run org.mozilla.Thunderbird
 }
 
-# Volume and brightness
+set $photo "$HOME/Media/Screenshots/grim_$(date '+%H:%M:%S_%d.%m.%y').png"
+bindsym {
+    $mod+Print       exec grimshot save active $photo
+    $mod+Shift+Print exec grimshot save area $photo
+
+}
+
+# Volume
 set $volume_cmd pactl set-sink-volume @DEFAULT_SINK@
 set $mute_cmd   pactl set-sink-mute   @DEFAULT_SINK@
-set $bright_cmd brightnessctl set 
 bindsym {
-    XF86AudioRaiseVolume  exec $volume_cmd +5%
+    XF86AudioRaiseVolume  exec $volume_cmd +1%
     $mod+F8               exec $volume_cmd +1%
                           
-    XF86AudioLowerVolume  exec $volume_cmd -5%
+    XF86AudioLowerVolume  exec $volume_cmd -1%
     $mod+F7               exec $volume_cmd -1%
                           
     XF86AudioMute         exec $mute_cmd toggle
     $mod+F6               exec $mute_cmd toggle
+}
 
+# Brightness
+set $bright_cmd brightnessctl set 
+bindsym {
     XF86MonBrightnessUp   exec $bright_cmd +1000
-    $mod+F3               exec $bright_cmd +1000
+    $mod+F3               exec $bright_cmd +100
 
     XF86MonBrightnessDown exec $bright_cmd 1000-
-    $mod+F2               exec $bright_cmd 1000-
+    $mod+F2               exec $bright_cmd 100-
 }
 
 # Nagbar

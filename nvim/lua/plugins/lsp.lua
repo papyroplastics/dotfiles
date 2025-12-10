@@ -1,3 +1,10 @@
+local function on_tab(callback)
+    return function()
+        vim.cmd('tab vsplit')
+        callback()
+    end
+end
+
 return {
     {
         'neovim/nvim-lspconfig',
@@ -23,7 +30,7 @@ return {
             local _ = require('lspconfig')
 
             vim.lsp.enable({
-                'basedpyright',
+                'pyrefly',
                 'clangd',
                 'svlangserver',
                 'ts_ls',
@@ -34,23 +41,28 @@ return {
             })
         end,
         keys = {
-            { '<Leader>lk', vim.lsp.buf.hover,              desc = 'Show hover' },
-            { '<Leader>ls', vim.lsp.buf.signature_help,     desc = 'Signature help' },
+            { '<Leader>lk', vim.lsp.buf.hover },
+            { '<Leader>ls', vim.lsp.buf.signature_help },
 
-            { '<Leader>ld', vim.lsp.buf.definition,         desc = 'Go to definition' },
-            { '<Leader>li', vim.lsp.buf.implementation,     desc = 'Go to implementation' },
-            { '<Leader>lh', vim.lsp.buf.declaration,        desc = 'Go to declaration' },
-            { '<Leader>lt', vim.lsp.buf.type_definition,    desc = 'Type definition' },
+            { '<Leader>ld', vim.lsp.buf.definition },
+            { '<Leader>li', vim.lsp.buf.implementation },
+            { '<Leader>lh', vim.lsp.buf.declaration },
+            { '<Leader>lt', vim.lsp.buf.type_definition },
 
-            { '<Leader>lu', vim.lsp.buf.references,         desc = 'Uses' },
-            { '<Leader>lc', vim.lsp.buf.incoming_calls,     desc = 'Incoming calls' },
+            { '<Leader>lD', on_tab(vim.lsp.buf.definition) },
+            { '<Leader>lI', on_tab(vim.lsp.buf.implementation) },
+            { '<Leader>lH', on_tab(vim.lsp.buf.declaration) },
+            { '<Leader>lT', on_tab(vim.lsp.buf.type_definition) },
 
-            { '<Leader>lr', vim.lsp.buf.rename,             desc = 'Rename symbol' },
-            { '<Leader>lf', vim.lsp.buf.format,             desc = 'Format document' },
-            { '<Leader>la', vim.lsp.buf.code_action,        desc = 'Code action' },
+            { '<Leader>lu', vim.lsp.buf.references },
+            { '<Leader>lc', vim.lsp.buf.incoming_calls },
 
-            { '<Leader>le', vim.diagnostic.open_float,      desc = 'Go to declaration' },
-            { '<Leader>lq', vim.diagnostic.setloclist,      desc = 'Go to declaration' },
+            { '<Leader>lr', vim.lsp.buf.rename },
+            { '<Leader>lf', vim.lsp.buf.format },
+            { '<Leader>la', vim.lsp.buf.code_action },
+
+            { '<Leader>le', vim.diagnostic.open_float },
+            { '<Leader>lq', vim.diagnostic.setloclist },
         },
     },
     {
