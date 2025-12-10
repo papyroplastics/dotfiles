@@ -21,7 +21,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.virtualedit = 'block'
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.mouse = ''
 
 vim.opt.pumblend = 7
