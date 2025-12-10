@@ -33,9 +33,8 @@ return {
         opts = {
             keymaps = {
                 -- ["<Bs>"]      = { "actions.parent",         mode = "n" },
-                ["<C-H>"]     = { "actions.toggle_hidden",  mode = "n" },
+                ["<C-h>"]     = { "actions.toggle_hidden",  mode = "n" },
                 ["<Leader>o"] = { "actions.close",          mode = "n" },
-                ["<Esc>"]     = { "actions.close",          mode = "n" },
             },
             view_options = {
                 is_always_hidden = function(name, bufnr)
@@ -44,7 +43,8 @@ return {
             },
         },
         keys = {
-            { "<Leader>o", "<CMD>Oil<CR>", desc = "Open oil.nvim" },
+            { "<Leader>o", "<CMD>Oil<CR>" },
+            { "<Leader>O", "<CMD>Oil .<CR>" },
         },
     },
 }
