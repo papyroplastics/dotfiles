@@ -7,8 +7,8 @@
     urgent-background: #FF5555;
     urgent-foreground: #282A36;
     selected-background: @active-background;
-    selected-urgent-background: @urgent-background;
     selected-active-background: @active-background;
+    selected-urgent-background: @urgent-background;
     separatorcolor: @active-background;
     bordercolor: @active-background;
 }
@@ -41,8 +41,9 @@
     padding:      2px 0px 0px ;
 }
 #element {
-    border:  0;
-    padding: 3px ;
+    border: 1px;
+    padding: 5px ;
+    border-radius: 4px;
 }
 #element.normal.normal {
     background-color: @background-color;
