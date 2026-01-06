@@ -1,0 +1,8 @@
+[Context]
+filesystems=xdg-config/gtk-3.0:ro;xdg-data/icons:ro;~/.icons:ro;
+
+[Environment]
+XCURSOR_THEME=Bibata-Modern-Classic
+XCURSOR_SIZE=24
+XCURSOR_PATH=~/.icons
+
