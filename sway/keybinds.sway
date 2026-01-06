@@ -1,7 +1,7 @@
 # Programs
 bindsym {
     $mod+t exec kitty
-    $mod+d exec wofi --show drun
+    $mod+d exec rofi -show
     $mod+e exec nemo
     $mod+v exec pavucontrol
     $mod+b exec flatpak run org.mozilla.firefox
