@@ -9,12 +9,12 @@ vim.opt.cursorlineopt = 'number'
 vim.opt.scrolloff = 20
 vim.opt.sidescrolloff = 5
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
+vim.opt.tabstop = 8
+vim.opt.softtabstop = 0
 vim.opt.shiftwidth = 4
-vim.opt.shiftround = true
 vim.opt.expandtab = true
 vim.opt.smarttab = true
+vim.opt.shiftround = false
 
 vim.opt.gdefault = true
 vim.opt.ignorecase = true

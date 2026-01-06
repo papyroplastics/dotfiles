@@ -26,7 +26,6 @@ unset MAIL MAILCHECK
 
 export NPM_PREFIX="$HOME/Programs/node-v24.5.0"
 export COMPOSER_HOME="$HOME/.config/composer"
-export XAMPP="/opt/lampp"
 
 export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$COMPOSER_HOME/vendor/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
@@ -86,20 +85,18 @@ fi
 
 function new-gcc-export {
     export PATH="$HOME/Programs/gcc-15/bin:$HOME/Programs/binutils/bin:$PATH"
-    export LD_LIBRARY_PATH="$HOME/Programs/gcc-15/lib64/:$LD_LIBRARY_PATH"
     unset -f new-gcc-export
+}
+
+function cross-gcc-export {
+    new-gcc-export 
+    export PATH="$HOME/Programs/cross-toolchain/bin:$PATH"
+    unset -f cross-gcc-export
 }
 
 function idf-export {
     source $HOME/Repos/esp-idf/export.sh
     unset -f idf-export
-}
-
-alias xampp='sudo xampp'
-function xampp-export {
-    PATH="$XAMPP:$XAMPP/bin:$PATH"
-    MANPATH="$XAMPP/man:$MANPATH"
-    unset -f xampp-export
 }
 
 function just {
