@@ -33,5 +33,5 @@ configuration{
     }
 }
 
-@theme "themes/dracula.rasi"
+@theme "theme.rasi"
 

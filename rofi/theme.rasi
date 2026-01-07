@@ -41,8 +41,7 @@
     padding:      2px 0px 0px ;
 }
 #element {
-    border: 1px;
-    padding: 5px ;
+    padding: 4px ;
     border-radius: 4px;
 }
 #element.normal.normal {
