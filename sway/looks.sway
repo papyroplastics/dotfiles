@@ -13,17 +13,17 @@ set $background ~/.config/sway/background.jpg
 output * bg $background fill
 
 # Colors
-set $acb #44475A
-set $act #F8F8F2
-set $inb #282A36
-set $int #BFBFBF
-set $urb #FF5555
+set $acbg #44475A
+set $acfg #F8F8F2
+set $inbg #282A36
+set $infg #BFBFBF
+set $urbg #FF5555
 
-# Color class           brdr  bg  text ind ch_brdr
-client.focused          $acb $acb $acb $acb $acb
-client.focused_inactive $acb $acb $acb $acb $acb
-client.unfocused        $inb $inb $inb $inb $inb
-client.urgent           $urb $urb $urb $urb $urb
+# Color class           brdr   bg   text   ind  ch_brdr
+client.focused          $acbg $acbg $acbg $acbg $acbg
+client.focused_inactive $acbg $acbg $acbg $acbg $acbg
+client.unfocused        $inbg $inbg $inbg $inbg $inbg
+client.urgent           $urbg $urbg $urbg $urbg $urbg
 
 bar {
     status_command i3status
@@ -32,16 +32,16 @@ bar {
     font pango:DroidSansM Nerd Font 11
     separator_symbol " ❯ "
     colors {
-        background $inb
-        statusline $act
+        background $inbg
+        statusline $acfg
         separator #585B70
 
         # Class            brdr  bg  text
-        focused_workspace  $acb $acb $act
-        active_workspace   $inb $acb $act
-        inactive_workspace $inb $inb $int
-        urgent_workspace   $urb $urb $act
-        binding_mode       $urb $urb $act
+        focused_workspace  $acbg $acbg $acfg
+        active_workspace   $inbg $acbg $acfg
+        inactive_workspace $inbg $inbg $infg
+        urgent_workspace   $urbg $urbg $acfg
+        binding_mode       $urbg $urbg $acfg
     }
 }
 

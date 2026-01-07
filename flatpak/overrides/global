@@ -4,7 +4,6 @@ filesystems=xdg-data/themes:ro;xdg-home/.themes:ro;xdg-data/icons:ro;xdg-home/.i
 [Environment]
 XCURSOR_THEME=Bibata-Modern-Classic
 XCURSOR_SIZE=24
-XCURSOR_PATH=~/.local/share/icons
 QT_QPA_PLATGORMTHEME=qt6ct
 QT_STYLE_OVERRIDE=kvantum-dark
 
