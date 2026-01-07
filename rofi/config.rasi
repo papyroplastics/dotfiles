@@ -4,10 +4,12 @@ configuration{
     matching: "fuzzy";
     terminal: "kitty";
 
+    drun-use-desktop-cache: true;
     disable-history: false;
     hide-scrollbar: true;
     sidebar-mode: false;
     show-icons: true;
+    icon-theme: "Dracula";
 
     display-drun: " ";
     display-filebrowser: " ";
