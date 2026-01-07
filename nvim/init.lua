@@ -8,7 +8,7 @@ local load_plugins = vim.fn.filereadable(plugin_mark) == 1
 
 if load_plugins and not vim.g.vscode then
     local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-    if not vim.fn.filereadable(lazypath) then
+    if vim.fn.filereadable(lazypath) == 0 then
         vim.fn.system({
             'git',
             'clone',

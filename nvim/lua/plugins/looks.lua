@@ -51,38 +51,16 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         lazy = false,
-        build = ':TSUpdate',
-        main = 'nvim-treesitter.configs',
-        opts = {
-            ensure_installed = {
+        build = function() 
+            local ts = require('nvim-treesitter')
+            ts.update()
+            ts.install({
                 'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
                 'python', 'bash', 'rust', 'gitignore', 'gitcommit', 'markdown',
-                'markdown_inline', 'make', 'cmake', 'typst', 'verilog', 'kotlin',
+                'markdown_inline', 'make', 'cmake', 'typst', 'systemverilog',
                 'dockerfile', 'yaml', 'xml', 'json', 'javascript', 'typescript',
-                'tsx', 'html', 'htmldjango', 'css'
-            },
-            sync_install = false,
-            auto_install = false ,
-            ignore_install = {},
-            modules = {},
-
-            highlight = {
-                enable = true,
-            },
-
-            indent = {
-                enable = true,
-            },
-
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = '<Leader>t',
-                    node_incremental = '<Leader>ti',
-                    scope_incremental = '<Leader>ts',
-                    node_decremental = '<Leader>td',
-                },
-            },
-        } ,
+                'tsx', 'html', 'htmldjango', 'css' 
+            })
+        end,
     },
 }

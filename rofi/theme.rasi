@@ -1,6 +1,6 @@
 
 * {
-    font: "JetBrainsMono Nerd Font SemiBold 12";
+    font: "Noto Sans Bold 12";
     foreground: #f8f8f2;
     background-color: #282A36;
     active-background: #44475A;
@@ -41,8 +41,9 @@
     padding:      2px 0px 0px ;
 }
 #element {
-    padding: 4px ;
-    border-radius: 4px;
+    padding: 5px;
+    border: 2px;
+    border-radius: 6px;
 }
 #element.normal.normal {
     background-color: @background-color;
@@ -123,4 +124,5 @@
 element-text, element-icon {
     background-color: inherit;
     text-color: inherit;
+    size: 1em;
 }
