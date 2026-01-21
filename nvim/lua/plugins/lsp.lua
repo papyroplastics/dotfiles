@@ -14,7 +14,7 @@ return {
             'hrsh7th/cmp-nvim-lsp',
         },
         ft = {
-            'python', 'c', 'cpp', 'verilog', 'systemverilog',
+            'python', 'c', 'cpp', 'verilog', 'systemverilog', 'cmake',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
             'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh'
         },
@@ -37,6 +37,7 @@ return {
                 'tinymist',
                 'texlab',
                 'bashls',
+                'neocmake',
             })
         end,
         keys = {

@@ -22,12 +22,12 @@ stty -ixon
 #  Environment
 # -------------
 
+export BAT_THEME='ansi'
+export CONAN_HOME="$HOME/.local/share/conan2"
+
 unset MAIL MAILCHECK
 
-export NPM_PREFIX="$HOME/Programs/node-v24.5.0"
-export COMPOSER_HOME="$HOME/.config/composer"
-
-export PATH="$HOME/.local/bin:$NPM_PREFIX/bin:$COMPOSER_HOME/vendor/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
@@ -35,7 +35,6 @@ export EDITOR=vim
 export SUDO_EDITOR=vim
 
 export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
-export BAT_THEME='ansi'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -59,14 +58,15 @@ done
 #  Aliases
 # ---------
 
-alias l='ls'
-alias sl='ls'
 alias mna='man'
 alias atp='apt'
+alias cim='vim'
 alias nivm='nvim'
 alias ncim='nvim'
 alias suod='sudo'
 
+alias l='ls'
+alias sl='ls'
 alias ls='ls --color=auto --hyperlink=auto --classify=auto'
 alias ll='ls -l --human-readable'
 alias la='ls --all'
@@ -83,42 +83,19 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
-function new-gcc-export {
-    export PATH="$HOME/Programs/gcc-15/bin:$HOME/Programs/binutils/bin:$PATH"
-    unset -f new-gcc-export
+function export-vulkan {
+    source "$HOME/Programs/vulkansdk-1.4.335.0/setup-env.sh"
+    unset -f $FUNCNAME
 }
 
-function cross-gcc-export {
-    new-gcc-export 
-    export PATH="$HOME/Programs/cross-toolchain/bin:$PATH"
-    unset -f cross-gcc-export
-}
-
-function idf-export {
+function export-idf {
     source $HOME/Repos/esp-idf/export.sh
-    unset -f idf-export
+    unset -f $FUNCNAME
 }
 
 function just {
     $@ &>/dev/null &
     disown '%%';
-}
-
-function back-search {
-    local current_dir="$PWD"
-
-    while [[ -n "$current_dir" ]]; do
-        local found_path="$current_dir/$2" 
-
-        if test $1 "$found_path"; then
-            echo $found_path
-            return 0
-        fi
-
-        current_dir=${current_dir%/*}
-    done
-
-    return 1
 }
 
 function envexport {
@@ -141,25 +118,21 @@ function envexport {
     return 1
 }
 
-function pretty_path {
-    local res=${1#$PWD}
-    if [[ $res != $1 ]]; then
-        echo ".$res"
-        return
+function project-source {
+    local proj_filename="$1"
+    if [[ -z "$proj_filename" ]]; then
+        proj_filename=".proj"
     fi
 
-    local prev_dir=${PWD%/*}
-    res=${1#$prev_dir}
-    if [[ $res != $1 ]]; then
-        echo "..$res"
-        return
+    local proj_path="$(back-search -f "$proj_filename")"
+
+    if [[ ! -z $proj_path ]]; then
+        source "$proj_path"
+        return 0
     fi
 
-    res=${1#$HOME}
-    if [[ $res != $1 ]]; then
-        echo "~$res"
-        return
-    fi
+    echo "File \"$proj_filename\" not found."
+    return 1
 }
 
 function pyactivate {
@@ -198,6 +171,45 @@ function pyactivate {
 
     return 0
 }
+
+function back-search {
+    local current_dir="$PWD"
+
+    while [[ -n "$current_dir" ]]; do
+        local found_path="$current_dir/$2" 
+
+        if test $1 "$found_path"; then
+            echo $found_path
+            return 0
+        fi
+
+        current_dir=${current_dir%/*}
+    done
+
+    return 1
+}
+
+function pretty_path {
+    local res=${1#$PWD}
+    if [[ $res != $1 ]]; then
+        echo ".$res"
+        return
+    fi
+
+    local prev_dir=${PWD%/*}
+    res=${1#$prev_dir}
+    if [[ $res != $1 ]]; then
+        echo "..$res"
+        return
+    fi
+
+    res=${1#$HOME}
+    if [[ $res != $1 ]]; then
+        echo "~$res"
+        return
+    fi
+}
+
 
 # --------
 #  Prompt

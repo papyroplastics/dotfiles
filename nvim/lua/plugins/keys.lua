@@ -30,21 +30,30 @@ return {
     {
         'stevearc/oil.nvim',
         version = '*',
+        lazy = false,
+        config = function(plug, opts)
+            Oil = require('oil')
+            Oil.setup(opts)
+
+            if vim.fn.argc() == 0 then
+                Oil.open('.')
+            end
+        end,
         opts = {
             keymaps = {
-                -- ["<Bs>"]      = { "actions.parent",         mode = "n" },
-                ["<C-h>"]     = { "actions.toggle_hidden",  mode = "n" },
-                ["<Leader>o"] = { "actions.close",          mode = "n" },
+                ['<C-h>']     = { 'actions.toggle_hidden',  mode = 'n' },
+                ['<Leader>o'] = { 'actions.close',          mode = 'n' },
             },
             view_options = {
                 is_always_hidden = function(name, bufnr)
                     return name == '..'
                 end,
             },
+            skip_confirm_for_simple_edits = true,
         },
         keys = {
-            { "<Leader>o", "<CMD>Oil<CR>" },
-            { "<Leader>O", "<CMD>Oil .<CR>" },
+            { '<Leader>o', function() Oil.open() end },
+            { '<Leader>O', function() Oil.open('.') end },
         },
     },
 }
