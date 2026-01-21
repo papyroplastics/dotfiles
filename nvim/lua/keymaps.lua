@@ -1,6 +1,11 @@
 
 -- Misc
-vim.keymap.set('n', '<Esc>', vim.cmd.nohlsearch)
+local function clear_highlights()
+    vim.cmd.nohlsearch()
+    vim.snippet.stop()
+end
+
+vim.keymap.set('n', '<Esc>', clear_highlights)
 vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
 vim.keymap.set('n', '<Leader>o', '<CMD>Explore<CR>')
 vim.keymap.set('n', '<Leader>O', '<CMD>Explore .<CR>')

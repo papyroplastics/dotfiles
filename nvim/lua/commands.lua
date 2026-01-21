@@ -67,8 +67,7 @@ vim.api.nvim_create_user_command('Find', function (opts)
 end, { nargs = '+' })
 
 
-vim.api.nvim_create_user_command('Grep',
-    function (opts)
+vim.api.nvim_create_user_command('Grep', function (opts)
     local command = { 'rg', '--vimgrep', '--', table.concat(opts.fargs, ' ') }
 
     cmd_to_qflist(command, function (data)
