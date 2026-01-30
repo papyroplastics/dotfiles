@@ -21,10 +21,11 @@ vim.api.nvim_create_user_command('Wrap', function ()
     end
 end, {})
 
+-- Edit Neovim config
 vim.api.nvim_create_user_command('Config', function ()
     vim.cmd.tabnew()
     vim.cmd.tcd(vim.fn.stdpath('config'))
-    vim.cmd.normal(vim.g.mapleader .. 'e')
+    vim.cmd.edit('.')
 end, {})
 
 --- Quickfix list facilities
@@ -32,9 +33,9 @@ local function cmd_to_qflist(command, handler)
     vim.fn.setqflist({}, 'r')
     local no_output = true
 
-    local function stdout_handler(err, data)
+    local function stdout_handler(_, data)
         if data and data ~= '' then
-            vim.schedule(function() 
+            vim.schedule(function()
                 handler(data)
                 if no_output then
                     vim.schedule(vim.cmd.copen)
@@ -44,7 +45,7 @@ local function cmd_to_qflist(command, handler)
         end
     end
 
-    local function on_exit(out) 
+    local function on_exit(out)
         if out.code ~= 0 and out.stderr and out.stderr ~= '' then
             vim.print(out.stderr)
         end
@@ -56,9 +57,9 @@ end
 
 vim.api.nvim_create_user_command('Find', function (opts)
     local command = { 'fd', '-t', 'f', '--', table.concat(opts.fargs, ' ') }
-        
+
     cmd_to_qflist(command, function (data)
-        filenames = {}
+        local filenames = {}
         for s in vim.gsplit(data, '\n', { plain=true, trimempty = true }) do
             table.insert(filenames, { filename = s })
         end
@@ -71,7 +72,7 @@ vim.api.nvim_create_user_command('Grep', function (opts)
     local command = { 'rg', '--vimgrep', '--', table.concat(opts.fargs, ' ') }
 
     cmd_to_qflist(command, function (data)
-        lines = {}
+        local lines = {}
         for s in vim.gsplit(data, '\n', { plain=true, trimempty = true}) do
             table.insert(lines, s)
         end
@@ -97,7 +98,7 @@ vim.api.nvim_create_user_command('PagerSetLine', function (opts)
         local term_height = vim.o.lines
         local half_term = math.floor(term_height / 2)
 
-        if vim.fn.getline('$') ~= '' then 
+        if vim.fn.getline('$') ~= '' then
             half_term = half_term + 1
         end
 
@@ -105,6 +106,6 @@ vim.api.nvim_create_user_command('PagerSetLine', function (opts)
 
         vim.fn.setpos('.', { 0, buf_len - (scroll_line + half_term), 0, 0 })
     end
-        
+
 end, { nargs = '?' })
 

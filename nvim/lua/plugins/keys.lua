@@ -1,6 +1,7 @@
 return {
     {
         'windwp/nvim-autopairs',
+        version = '*',
         event = 'InsertEnter',
         opts = {},
     },
@@ -30,30 +31,32 @@ return {
     {
         'stevearc/oil.nvim',
         version = '*',
-        lazy = false,
-        config = function(plug, opts)
-            Oil = require('oil')
-            Oil.setup(opts)
-
-            if vim.fn.argc() == 0 then
-                Oil.open('.')
-            end
-        end,
+        event = 'VeryLazy',
         opts = {
             keymaps = {
                 ['<C-h>']     = { 'actions.toggle_hidden',  mode = 'n' },
                 ['<Leader>o'] = { 'actions.close',          mode = 'n' },
             },
             view_options = {
-                is_always_hidden = function(name, bufnr)
+                is_always_hidden = function(name, _)
                     return name == '..'
                 end,
             },
             skip_confirm_for_simple_edits = true,
         },
+        config = function (_, opts)
+            local oil = require('oil')
+            oil.setup(opts)
+
+            if vim.fn.argc() == 0
+                and vim.fn.getbufinfo(vim.fn.bufnr())[1].changed == 0
+                and vim.fn.wordcount()['bytes'] == 0 then
+                vim.schedule(oil.open)
+            end
+        end,
         keys = {
-            { '<Leader>o', function() Oil.open() end },
-            { '<Leader>O', function() Oil.open('.') end },
+            { '<Leader>o', '<CMD>Oil<CR>' },
+            { '<Leader>O', '<CMD>Oil .<CR>' },
         },
     },
 }
