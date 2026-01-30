@@ -25,19 +25,9 @@ vim.keymap.set('', '<C-h>', '10h')
 vim.keymap.set('', '<C-l>', '10l')
 
 -- Tabs
-local function general_close()
-    if (vim.fn.winnr('$') ~= 1) then
-        vim.cmd.quit()
-    elseif (vim.fn.tabpagenr('$') ~= 1) then
-        vim.cmd.tabclose()
-    else
-        vim.cmd.quitall()
-    end
-end
-
 vim.keymap.set('', '<C-t>',   function() vim.cmd('tab vsplit') end)
 vim.keymap.set('', '<M-t>',   vim.cmd.tabnew)
-vim.keymap.set('', '<C-q>',   general_close)
+vim.keymap.set('', '<C-q>',   vim.cmd.quit)
 vim.keymap.set('', 'L',       vim.cmd.tabnext)
 vim.keymap.set('', 'H',       vim.cmd.tabprevious)
 vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end)
@@ -91,7 +81,7 @@ vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
 local function outline_toggle()
     if vim.o.filetype == 'qf' then
         return '<C-w>q' .. vim.fn.winnr() - 1 .. '<C-w>' .. 'w'
-    else 
+    else
         return 'gO'
     end
 end
@@ -134,7 +124,7 @@ vim.keymap.set('!', '<C-a>', '<Home>')
 vim.keymap.set('!', '<C-e>', function ()
     if vim.fn.pumvisible() ~= 0 then
         vim.api.nvim_feedkeys(ctrl_e_bytes, 'n', false)
-    else 
+    else
         vim.api.nvim_feedkeys(end_bytes, 'n', false)
     end
 end)
@@ -145,11 +135,35 @@ local ctrl_y_bytes = vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
 vim.keymap.set('c', '<CR>', function()
     if vim.fn.pumvisible() ~= 0 then
         vim.api.nvim_feedkeys(ctrl_y_bytes, 'n', false)
-    else 
+    else
         vim.api.nvim_feedkeys(cr_bytes, 'n', false)
     end
 end)
 
 vim.keymap.set('i', '<C-CR>', '<C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-o>O')
+
+-- Find modified buffers
+vim.keymap.set('n', '<Leader>b', function ()
+    local bufinfo = vim.fn.getbufinfo()
+    local buflist = {}
+
+    for _, buf in ipairs(bufinfo) do
+        if buf['changed'] == 1 then
+            local name = buf['name']
+            if name == "" then
+                name = '[No Name]'
+            end
+
+            table.insert(buflist, {
+                bufnr = buf['bufnr'],
+                filename = name,
+            })
+        end
+    end
+
+    vim.fn.setqflist(buflist)
+    vim.cmd.copen()
+end)
+
 

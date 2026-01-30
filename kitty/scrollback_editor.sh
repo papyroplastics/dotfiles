@@ -1,2 +1,2 @@
 #!/bin/sh
-ansifilter | nvim -c "PagerSetLine $@" -R -
+ansifilter | nvim -R -c "PagerSetLine $@"

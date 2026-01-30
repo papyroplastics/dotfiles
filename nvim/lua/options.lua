@@ -1,7 +1,8 @@
 
-vim.g.netrw_banner = 0
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+vim.g.netrw_banner = 0
 vim.g.c_syntax_for_h = true
 
 vim.opt.cursorline = true
@@ -23,9 +24,6 @@ vim.opt.smartcase = true
 vim.opt.virtualedit = 'block'
 vim.opt.wrap = true
 vim.opt.mouse = ''
-
-vim.opt.pumblend = 7
-vim.opt.completeopt = {'fuzzy', 'menu', 'menuone', 'noinsert', 'popup', 'preview'}
 
 vim.opt.laststatus = 3
 vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'

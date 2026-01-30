@@ -1,6 +1,6 @@
 local function on_tab(callback)
     return function()
-        vim.cmd('tab vsplit')
+        vim.cmd('tab split')
         callback()
     end
 end
@@ -10,11 +10,10 @@ return {
         'neovim/nvim-lspconfig',
         varsion = '*',
         dependencies = {
-            'hrsh7th/nvim-cmp',
-            'hrsh7th/cmp-nvim-lsp',
+            'saghen/blink.cmp',
         },
         ft = {
-            'python', 'c', 'cpp', 'verilog', 'systemverilog', 'cmake',
+            'python', 'c', 'cpp', 'verilog', 'systemverilog', 'cmake', 'lua',
             'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
             'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh'
         },
@@ -38,6 +37,7 @@ return {
                 'texlab',
                 'bashls',
                 'neocmake',
+                'lua_ls',
             })
         end,
         keys = {
@@ -66,97 +66,11 @@ return {
         },
     },
     {
-        'hrsh7th/nvim-cmp',
+        'saghen/blink.cmp',
+        version = '*',
         event = 'InsertEnter',
-        dependencies = {
-            'hrsh7th/cmp-buffer',
+        opts = {
+            keymap = { preset = 'enter' },
         },
-        config = function()
-            local cmp = require('cmp')
-
-            local function select_prev_item(callback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                else 
-                    callback()
-                end
-            end
-
-            local function select_next_item(_)
-                if not cmp.visible() then
-                  cmp.complete()
-                end
-                cmp.select_next_item()
-            end
-
-            local function toggle_docs(callback)
-                if cmp.visible() then
-                    if cmp.visible_docs() then
-                        cmp.close_docs()
-                    else
-                        cmp.open_docs()
-                    end
-                else
-                    callback()
-                end
-            end
-
-            local function scroll_docs_up(callback)
-                if cmp.visible_docs() then
-                    cmp.scroll_docs(-4)
-                else
-                    callback()
-                end
-            end
-
-            local function scroll_docs_down(callback)
-                if cmp.visible_docs() then
-                    cmp.scroll_docs(4)
-                else
-                    callback()
-                end
-            end
-
-            local function confirm(callback)
-                if cmp.visible() then
-                    cmp.confirm({ select = true })
-                else
-                    callback()
-                end
-            end
-
-            local function toggle_complete()
-                if cmp.visible() then
-                    cmp.abort()
-                else
-                    cmp.complete()
-                end
-            end
-
-            cmp.setup({
-                view = { 
-                    entries = "native",
-                    docs = {
-                        auto_open = false 
-                    }
-                },
-
-                sources = {
-                    { name = 'nvim_lsp' },
-                    { name = 'buffer' },
-                },
-
-                mapping = {
-                    ['<C-Space>'] = toggle_complete,
-                    ['<Tab>'] = confirm,
-                    ['<CR>']  = confirm,
-                    ['<C-k>'] = select_prev_item,
-                    ['<C-j>'] = select_next_item,
-                    ['<C-i>'] = toggle_docs,
-                    ['<C-h>'] = scroll_docs_up,
-                    ['<C-l>'] = scroll_docs_down,
-                },
-            })
-        end,
     },
 }
