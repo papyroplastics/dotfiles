@@ -22,10 +22,11 @@ stty -ixon
 #  Environment
 # -------------
 
+unset MAIL MAILCHECK
+export HISTFILESIZE=2000
+
 export BAT_THEME='ansi'
 export CONAN_HOME="$HOME/.local/share/conan2"
-
-unset MAIL MAILCHECK
 
 export PATH="$HOME/.local/bin:$PATH"
 export MANPATH="$HOME/.local/share/man:$MANPATH"
