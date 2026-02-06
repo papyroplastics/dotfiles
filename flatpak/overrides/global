@@ -1,9 +1,8 @@
 [Context]
-filesystems=xdg-data/themes:ro;xdg-home/.themes:ro;xdg-data/icons:ro;xdg-home/.icons:ro;xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;
+filesystems=xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;xdg-data/themes:ro;xdg-data/icons:ro;xdg-data/fonts:ro;
 
 [Environment]
-XCURSOR_THEME=Bibata-Modern-Classic
 XCURSOR_SIZE=24
+XCURSOR_THEME=Bibata-Modern-Classic
 QT_QPA_PLATGORMTHEME=qt6ct
 QT_STYLE_OVERRIDE=kvantum-dark
-
