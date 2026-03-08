@@ -25,6 +25,8 @@ vim.opt.virtualedit = 'block'
 vim.opt.wrap = true
 vim.opt.mouse = ''
 
+vim.opt.path='**3,./**2'
+
 vim.opt.laststatus = 3
 vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
 
