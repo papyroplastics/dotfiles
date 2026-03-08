@@ -27,9 +27,10 @@ export HISTFILESIZE=2000
 
 export BAT_THEME='ansi'
 export CONAN_HOME="$HOME/.local/share/conan2"
+export NODE_HOME="$HOME/Programs/node-v24.13.1-linux-x64"
 
-export PATH="$HOME/.local/bin:$PATH"
-export MANPATH="$HOME/.local/share/man:$MANPATH"
+export PATH="$NODE_HOME/bin:$HOME/.local/bin:$PATH"
+export MANPATH="$NODE_HOME/share/man:$HOME/.local/share/man:$MANPATH"
 
 export VISUAL=vim
 export EDITOR=vim
@@ -61,9 +62,10 @@ done
 
 alias mna='man'
 alias atp='apt'
+alias v='vi'
 alias cim='vim'
-alias nivm='nvim'
 alias ncim='nvim'
+alias nivm='nvim'
 alias suod='sudo'
 
 alias l='ls'
@@ -84,19 +86,22 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
-function export-vulkan {
+function just {
+    $@ &>/dev/null &
+    disown '%%';
+}
+
+function vkexport {
     source "$HOME/Programs/vulkansdk-1.4.335.0/setup-env.sh"
     unset -f $FUNCNAME
 }
 
-function export-idf {
+function idfexport {
+    export IDF_PATH="$HOME/Repos/esp-idf"
+    export IDF_TOOLS_PATH="$HOME/Programs/esp-idf"
+    export IDF_PATH_FORCE=1
     source $HOME/Repos/esp-idf/export.sh
     unset -f $FUNCNAME
-}
-
-function just {
-    $@ &>/dev/null &
-    disown '%%';
 }
 
 function envexport {
@@ -119,7 +124,7 @@ function envexport {
     return 1
 }
 
-function project-source {
+function projexport {
     local proj_filename="$1"
     if [[ -z "$proj_filename" ]]; then
         proj_filename=".proj"
@@ -136,7 +141,7 @@ function project-source {
     return 1
 }
 
-function pyactivate {
+function pyexport {
     if [[ -v VIRTUAL_ENV ]]; then
         echo "Enviroment variable VIRTUAL_ENV is set, deactivate the current virtual environment."
         return 1

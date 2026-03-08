@@ -5,6 +5,16 @@ local function on_tab(callback)
     end
 end
 
+local function docsymbol(options)
+    vim.fn.setloclist(0, {}, ' ', options)
+    vim.cmd.lopen()
+    vim.cmd.Lfilter('Function\\|Method\\|Class\\|Constructor')
+end
+
+local function lsp_outline()
+    vim.lsp.buf.document_symbol({ on_list = docsymbol })
+end
+
 return {
     {
         'neovim/nvim-lspconfig',
@@ -13,9 +23,11 @@ return {
             'saghen/blink.cmp',
         },
         ft = {
-            'python', 'c', 'cpp', 'verilog', 'systemverilog', 'cmake', 'lua',
-            'javascript', 'javascriptreact', 'javascript.jsx', 'typescript',
-            'typescriptreact', 'typescript.tsx', 'typst', 'tex', 'bash', 'sh'
+            'python', 'lua', 'php', 'bash', 'sh',
+            'c', 'cpp', 'cmake', 'verilog', 'systemverilog',
+            'javascript', 'javascriptreact', 'javascript.jsx',
+            'typescript', 'typescriptreact', 'typescript.tsx',
+            'typst', 'tex', 'html', 'css', 'json',
         },
         config = function()
             vim.lsp.log.set_level(vim.lsp.log.levels.ERROR)
@@ -30,14 +42,19 @@ return {
 
             vim.lsp.enable({
                 'pyrefly',
+                'lua_ls',
+                'intelephense',
+                'bashls',
                 'clangd',
+                'neocmake',
                 'svlangserver',
                 'ts_ls',
+                'eslint',
                 'tinymist',
                 'texlab',
-                'bashls',
-                'neocmake',
-                'lua_ls',
+                'html',
+                'cssls',
+                'jsonls',
             })
         end,
         keys = {
@@ -61,8 +78,11 @@ return {
             { '<Leader>lf', vim.lsp.buf.format },
             { '<Leader>la', vim.lsp.buf.code_action },
 
+            { '<Leader>lo', vim.lsp.buf.document_symbol },
+            { '<Leader>lO', lsp_outline },
             { '<Leader>le', vim.diagnostic.open_float },
             { '<Leader>lq', vim.diagnostic.setloclist },
+
         },
     },
     {

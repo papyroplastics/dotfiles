@@ -36,6 +36,7 @@ return {
             keymaps = {
                 ['<C-h>']     = { 'actions.toggle_hidden',  mode = 'n' },
                 ['<Leader>o'] = { 'actions.close',          mode = 'n' },
+                ['<Leader>y'] = { 'actions.yank_entry',     mode = 'n', opts = { modify = ':.' } },
             },
             view_options = {
                 is_always_hidden = function(name, _)

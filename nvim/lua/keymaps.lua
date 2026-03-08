@@ -34,22 +34,56 @@ vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end)
 vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end)
 
 -- Quickfix
-local function ctoggle()
+local function ccheck()
     local qflist = vim.fn.getqflist({ winid = 0 })
+    return qflist.winid ~= 0
+end
 
-    if qflist.winid == 0 then
-        local loclist = vim.fn.getloclist(vim.fn.winnr(), { winid = 0 })
-        if loclist.winid == 0 then
-            vim.cmd.copen()
-        else
-            vim.cmd.lclose()
-        end
-    else
+local function lcheck()
+    local loclist = vim.fn.getloclist(vim.fn.winnr(), { winid = 0 })
+    return loclist.winid ~= 0
+end
+
+local function lsclose()
+    if ccheck() then
         vim.cmd.cclose()
+        return true
+    end
+
+    if lcheck() then
+        vim.cmd.lclose()
+        return true
+    end
+
+    return false
+end
+
+local function ctoggle()
+    if not lsclose() then
+        vim.cmd.copen()
     end
 end
 
+local function ltoggle()
+    if not lsclose() then
+        vim.cmd.lopen()
+    end
+end
+
+local function cfilter_interactive()
+    vim.cmd.copen()
+    vim.api.nvim_feedkeys(':Cfilter ', 'n', true)
+end
+
+local function lfilter_interactive()
+    vim.cmd.lopen()
+    vim.api.nvim_feedkeys(':Lfilter ', 'n', true)
+end
+
 vim.keymap.set('', '<Leader>q', ctoggle)
+vim.keymap.set('', '<Leader>Q', cfilter_interactive)
+vim.keymap.set('', '<Leader>w', ltoggle)
+vim.keymap.set('', '<Leader>W', lfilter_interactive)
 
 vim.keymap.set('', '<Leader>$', function()
     vim.ui.input({ prompt = '$' }, function (input)
@@ -145,6 +179,8 @@ vim.keymap.set('i', '<S-CR>', '<C-o>O')
 
 -- Find modified buffers
 vim.keymap.set('n', '<Leader>b', function ()
+    if lsclose() then return end
+
     local bufinfo = vim.fn.getbufinfo()
     local buflist = {}
 
@@ -166,4 +202,18 @@ vim.keymap.set('n', '<Leader>b', function ()
     vim.cmd.copen()
 end)
 
+-- Copy buffer name to clipboard
+local function yank_file()
+    vim.fn.setreg(vim.v.register, vim.fn.expand('%:.'))
+end
+
+local function yank_pos()
+    local bufinfo = vim.fn.getbufinfo(vim.fn.bufnr())
+    local col = bufinfo[1]['lnum']
+
+    vim.fn.setreg(vim.v.register, vim.fn.expand('%:.') .. ':' .. col)
+end
+
+vim.keymap.set('n', '<Leader>y', yank_file)
+vim.keymap.set('n', '<Leader>Y', yank_pos)
 
