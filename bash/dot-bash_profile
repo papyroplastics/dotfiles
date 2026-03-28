@@ -6,5 +6,4 @@ elif [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty3 ]]; then
     exec startx &>/dev/null
 fi
 
-source $HOME/.bashrc
-
+source "$HOME/.bashrc"

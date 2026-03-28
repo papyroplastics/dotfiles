@@ -1,3 +1,4 @@
+vim.g.nvim_surround_no_mappings = true
 return {
     {
         'windwp/nvim-autopairs',
@@ -9,23 +10,19 @@ return {
         'kylechui/nvim-surround',
         version = '*',
         opts = {
-            keymaps = {
-                insert = '<C-g>s',
-                insert_line = '<C-g>S',
-                normal = 's',
-                normal_cur = 'ss',
-                normal_line = 'S',
-                normal_cur_line = 'SS',
-                visual = 's',
-                visual_line = 'S',
-                delete = 'ds',
-                change = 'cs',
-                change_line = 'cS',
-            },
+            move_cursor = 'sticky',
         },
         keys = {
-            {'s', mode=''}, {'S', mode=''},
-            'ds', 'cs', 'cS',
+            {"<Leader>s",  "<Plug>(nvim-surround-normal)",           mode="n"},
+            {"<Leader>ss", "<Plug>(nvim-surround-normal-cur)",       mode="n"},
+            {"<Leader>S",  "<Plug>(nvim-surround-normal)$",          mode="n"},
+
+            {"ds", "<Plug>(nvim-surround-delete)",      mode="n"},
+            {"cs", "<Plug>(nvim-surround-change)",      mode="n"},
+            {"cS", "<Plug>(nvim-surround-change-line)", mode="n"},
+
+            {"s",  "<Plug>(nvim-surround-visual)",      mode="x"},
+            {"S",  "<Plug>(nvim-surround-visual-line)", mode="x"},
         },
     },
     {

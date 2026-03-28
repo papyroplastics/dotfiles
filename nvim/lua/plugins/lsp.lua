@@ -8,7 +8,7 @@ end
 local function docsymbol(options)
     vim.fn.setloclist(0, {}, ' ', options)
     vim.cmd.lopen()
-    vim.cmd.Lfilter('Function\\|Method\\|Class\\|Constructor')
+    vim.cmd.Lfilter('\\[\\(Function\\|Method\\|Class\\|Constructor\\)\\]')
 end
 
 local function lsp_outline()
@@ -19,16 +19,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         varsion = '*',
-        dependencies = {
-            'saghen/blink.cmp',
-        },
-        ft = {
-            'python', 'lua', 'php', 'bash', 'sh',
-            'c', 'cpp', 'cmake', 'verilog', 'systemverilog',
-            'javascript', 'javascriptreact', 'javascript.jsx',
-            'typescript', 'typescriptreact', 'typescript.tsx',
-            'typst', 'tex', 'html', 'css', 'json',
-        },
+        event = 'VeryLazy',
         config = function()
             vim.lsp.log.set_level(vim.lsp.log.levels.ERROR)
             vim.diagnostic.config({
@@ -37,8 +28,6 @@ return {
                 update_in_insert = false,
                 signs = false,
             })
-
-            local _ = require('lspconfig')
 
             vim.lsp.enable({
                 'pyrefly',
@@ -91,6 +80,11 @@ return {
         event = 'InsertEnter',
         opts = {
             keymap = { preset = 'enter' },
+            cmdline = {
+                keymap = {
+                    preset = 'inherit'
+                }
+            }
         },
     },
 }
