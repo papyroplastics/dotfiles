@@ -54,7 +54,7 @@ end, { nargs = '?' })
 
 --- Quickfix list facilities
 local function cmd_to_qflist(command, handler)
-    vim.fn.setqflist({}, 'r')
+    vim.fn.setqflist({})
     local no_output = true
 
     local function stdout_handler(_, data)
@@ -72,6 +72,8 @@ local function cmd_to_qflist(command, handler)
     local function on_exit(out)
         if out.code ~= 0 and out.stderr and out.stderr ~= '' then
             vim.print(out.stderr)
+        elseif no_output then
+            vim.print('No output')
         end
     end
 
@@ -120,11 +122,4 @@ vim.api.nvim_create_user_command('Grep', function (opts)
         vim.fn.setqflist({}, 'a', { lines = lines, nr = 0, })
     end)
 end, { nargs = '+' })
-
-
-vim.cmd.cabbrev('find', 'Find')
-vim.cmd.cabbrev('fd', 'Find')
-vim.cmd.cabbrev('grep', 'Grep')
-vim.cmd.cabbrev('gr', 'Grep')
-vim.cmd.cabbrev('rg', 'Grep')
 

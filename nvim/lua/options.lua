@@ -11,11 +11,14 @@ vim.opt.scrolloff = 20
 vim.opt.sidescrolloff = 5
 
 vim.opt.tabstop = 8
-vim.opt.softtabstop = 0
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = -1
 vim.opt.expandtab = true
-vim.opt.smarttab = true
-vim.opt.shiftround = false
+vim.opt.shiftround = true
+vim.opt.smarttab = false
+
+vim.opt.cindent = false
+vim.opt.smartindent = false
 
 vim.opt.gdefault = true
 vim.opt.ignorecase = true

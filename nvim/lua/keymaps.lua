@@ -1,4 +1,3 @@
-
 -- Misc
 local function clear_highlights()
     vim.cmd.nohlsearch()
@@ -6,6 +5,7 @@ local function clear_highlights()
 end
 
 vim.keymap.set('n', '<Esc>', clear_highlights)
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
 vim.keymap.set('n', '<Leader>o', '<CMD>Explore<CR>')
 vim.keymap.set('n', '<Leader>O', '<CMD>Explore .<CR>')
@@ -177,7 +177,29 @@ end)
 vim.keymap.set('i', '<C-CR>', '<C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-o>O')
 
--- Find modified buffers
+-- Get buffers
+vim.keymap.set('n', '<Leader>B', function ()
+    if lsclose() then return end
+
+    local bufinfo = vim.fn.getbufinfo()
+    local buflist = {}
+
+    for _, buf in ipairs(bufinfo) do
+        local name = buf['name']
+        local changed = buf['changed'] == 1
+        if vim.fn.filereadable(name) == 1 or changed then
+            table.insert(buflist, {
+                bufnr = buf['bufnr'],
+                filename = name,
+                text = changed and '[+]' or '',
+            })
+        end
+    end
+
+    vim.fn.setqflist(buflist)
+    vim.cmd.copen()
+end)
+
 vim.keymap.set('n', '<Leader>b', function ()
     if lsclose() then return end
 
@@ -202,7 +224,7 @@ vim.keymap.set('n', '<Leader>b', function ()
     vim.cmd.copen()
 end)
 
--- Copy buffer name to clipboard
+-- Yank buffer file name
 local function yank_file()
     vim.fn.setreg(vim.v.register, vim.fn.expand('%:.'))
 end

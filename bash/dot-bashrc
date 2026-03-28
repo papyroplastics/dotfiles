@@ -25,17 +25,21 @@ stty -ixon
 unset MAIL MAILCHECK
 export HISTFILESIZE=2000
 
-export BAT_THEME='ansi'
-export CONAN_HOME="$HOME/.local/share/conan2"
-export NODE_HOME="$HOME/Programs/node-v24.13.1-linux-x64"
+export PROGRAMS=$HOME/Programs
 
-export PATH="$NODE_HOME/bin:$HOME/.local/bin:$PATH"
-export MANPATH="$NODE_HOME/share/man:$HOME/.local/share/man:$MANPATH"
+export NODE_HOME=$PROGRAMS/node-v24.13.1-linux-x64
+export CONAN_HOME=$HOME/.local/share/conan2
+export COPILOT_HOME=$HOME/.local/share/copilot
+export GRADLE_USER_HOME=$HOME/.local/share/gradle
+
+export PATH=$NODE_HOME/bin:$HOME/.local/bin:$PATH
+export MANPATH=$NODE_HOME/share/man:$HOME/.local/share/man:$MANPATH
 
 export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
 
+export BAT_THEME=ansi
 export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
@@ -62,11 +66,8 @@ done
 
 alias mna='man'
 alias atp='apt'
-alias v='vi'
-alias cim='vim'
-alias ncim='nvim'
-alias nivm='nvim'
 alias suod='sudo'
+alias cd..='cd ..'
 
 alias l='ls'
 alias sl='ls'
@@ -76,7 +77,10 @@ alias la='ls --all'
 alias lal='ll --all'
 alias lla='lal'
 
-alias cd..='cd ..'
+alias v='vi'
+alias cim='vim'
+alias ncim='nvim'
+alias nivm='nvim'
 
 alias shimbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
@@ -86,31 +90,54 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
+alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
+
 function just {
-    $@ &>/dev/null &
+    "$@" &>/dev/null &
     disown '%%';
 }
 
 function vkexport {
-    source "$HOME/Programs/vulkansdk-1.4.335.0/setup-env.sh"
-    unset -f $FUNCNAME
+    source "$PROGRAMS/vulkansdk-1.4.335.0/setup-env.sh"
+    _unsetfunc
 }
 
 function idfexport {
-    export IDF_PATH="$HOME/Repos/esp-idf"
-    export IDF_TOOLS_PATH="$HOME/Programs/esp-idf"
+    export IDF_PATH=$HOME/Repos/esp-idf
+    export IDF_TOOLS_PATH=$PROGRAMS/esp-idf
     export IDF_PATH_FORCE=1
-    source $HOME/Repos/esp-idf/export.sh
-    unset -f $FUNCNAME
+    source "$HOME/Repos/esp-idf/export.sh"
+    _unsetfunc
+}
+
+function sdkexport {
+    export SDKMAN_DIR=$HOME/.local/share/sdkman
+    source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    _unsetfunc
+}
+
+function androidexport {
+    type sdkexport &>/dev/null && sdkexport
+
+    # this next thing is weird but it's for backwards compatibility
+    export ANDROID_SDK_HOME=$HOME/.local/share/android 
+    export ANDROID_USER_HOME=$ANDROID_SDK_HOME/.android
+    export ANDROID_HOME=$PROGRAMS/android_sdk
+    PATH=$ANDROID_HOME/build-tools/36.1.0:$PATH
+    PATH=$ANDROID_HOME/platform-tools:$PATH
+    PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+
+    alias gradlew='./gradlew'
+    _unsetfunc
 }
 
 function envexport {
-    local env_filename="$1"
+    local env_filename=$1
     if [[ -z "$env_filename" ]]; then
         env_filename=".env"
     fi
 
-    local env_path="$(back-search -f "$env_filename")"
+    local env_path=$(back-search -f "$env_filename")
 
     if [[ ! -z $env_path ]]; then
         set -o allexport
@@ -125,12 +152,12 @@ function envexport {
 }
 
 function projexport {
-    local proj_filename="$1"
+    local proj_filename=$1
     if [[ -z "$proj_filename" ]]; then
         proj_filename=".proj"
     fi
 
-    local proj_path="$(back-search -f "$proj_filename")"
+    local proj_path=$(back-search -f "$proj_filename")
 
     if [[ ! -z $proj_path ]]; then
         source "$proj_path"
@@ -148,17 +175,17 @@ function pyexport {
     fi
 
     if [[ -z $1 ]]; then
-        local dot_path="$(back-search -d ".venv/bin")"
-        local simple_path="$(back-search -d "venv/bin")"
+        local dot_path=$(back-search -d ".venv/bin")
+        local simple_path=$(back-search -d "venv/bin")
 
         if [[ ${#dot_path} -gt ${#simple_path} ]]; then
-            local script_path="$dot_path"
+            local script_path=$dot_path
         else
-            local script_path="$simple_path"
+            local script_path=$simple_path
         fi
 
     else 
-        local script_path="$(back-search -d "$1/bin")"
+        local script_path=$(back-search -d "$1/bin")
     fi
 
     if [[ -z $script_path ]]; then
@@ -167,7 +194,7 @@ function pyexport {
     fi
 
     source "$script_path/activate"
-    echo "VIRTUAL_ENV=$(pretty_path $VIRTUAL_ENV)"
+    echo "VIRTUAL_ENV=$(pretty_path "$VIRTUAL_ENV")"
 
     if [[ -x $script_path/pip ]]; then 
         eval "$("$script_path/pip" completion --bash)"
@@ -179,13 +206,13 @@ function pyexport {
 }
 
 function back-search {
-    local current_dir="$PWD"
+    local current_dir=$PWD
 
     while [[ -n "$current_dir" ]]; do
-        local found_path="$current_dir/$2" 
+        local found_path=$current_dir/$2 
 
-        if test $1 "$found_path"; then
-            echo $found_path
+        if test "$1" "$found_path"; then
+            echo "$found_path"
             return 0
         fi
 
@@ -196,21 +223,21 @@ function back-search {
 }
 
 function pretty_path {
-    local res=${1#$PWD}
-    if [[ $res != $1 ]]; then
+    local res=${1#"$PWD"}
+    if [[ $res != "$1" ]]; then
         echo ".$res"
         return
     fi
 
     local prev_dir=${PWD%/*}
-    res=${1#$prev_dir}
-    if [[ $res != $1 ]]; then
+    res=${1#"$prev_dir"}
+    if [[ $res != "$1" ]]; then
         echo "..$res"
         return
     fi
 
-    res=${1#$HOME}
-    if [[ $res != $1 ]]; then
+    res=${1#"$HOME"}
+    if [[ $res != "$1" ]]; then
         echo "~$res"
         return
     fi
@@ -230,13 +257,13 @@ bright_magenta=$'\e[95m'
 bright_cyan=$'\e[96m'
 bright_white=$'\e[97m'
 
-logo_col="$bright_red"
-host_col="$bright_blue"
-dir_col="$bright_magenta"
-git_col="$bright_cyan"
-exit_col="$bright_red"
-prompt_col="$bright_white"
-no_col="$reset"
+logo_col=$bright_red
+host_col=$bright_blue
+dir_col=$bright_magenta
+git_col=$bright_cyan
+exit_col=$bright_red
+prompt_col=$bright_white
+no_col=$reset
 
 prompt_icon='$'
 dir_sep='...'
@@ -312,7 +339,7 @@ function update_prompt {
     fi
 
     # update formatted dir
-    short_dir="$PWD"
+    short_dir=$PWD
     if [[ $short_dir == '/' ]]; then
         short_dir='/'
     else
