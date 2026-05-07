@@ -28,7 +28,7 @@ return {
     {
         'stevearc/oil.nvim',
         version = '*',
-        event = 'VeryLazy',
+        lazy = false,
         opts = {
             keymaps = {
                 ['<C-h>']     = { 'actions.toggle_hidden',  mode = 'n' },

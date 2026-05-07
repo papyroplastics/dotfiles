@@ -44,28 +44,21 @@ local function lcheck()
     return loclist.winid ~= 0
 end
 
-local function lsclose()
+local function ctoggle()
     if ccheck() then
         vim.cmd.cclose()
-        return true
-    end
-
-    if lcheck() then
+    elseif lcheck() then
         vim.cmd.lclose()
-        return true
-    end
-
-    return false
-end
-
-local function ctoggle()
-    if not lsclose() then
+    else
         vim.cmd.copen()
     end
 end
 
 local function ltoggle()
-    if not lsclose() then
+    if lcheck() then
+        vim.cmd.lclose()
+    else
+        vim.cmd.cclose()
         vim.cmd.lopen()
     end
 end
@@ -84,6 +77,19 @@ vim.keymap.set('', '<Leader>q', ctoggle)
 vim.keymap.set('', '<Leader>Q', cfilter_interactive)
 vim.keymap.set('', '<Leader>w', ltoggle)
 vim.keymap.set('', '<Leader>W', lfilter_interactive)
+
+vim.keymap.set('', '<Leader>n', '<CMD>cnext<CR>')
+vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
+vim.keymap.set('', '<Leader>N', '<CMD>lnext<CR>')
+vim.keymap.set('', '<Leader>P', '<CMD>lprevious<CR>')
+
+vim.keymap.set('', '<Leader><Leader>n', '<CMD>cnewer<CR>')
+vim.keymap.set('', '<Leader><Leader>p', '<CMD>colder<CR>')
+vim.keymap.set('', '<Leader><Leader>N', '<CMD>lnewer<CR>')
+vim.keymap.set('', '<Leader><Leader>P', '<CMD>lolder<CR>')
+
+vim.keymap.set('', '<Leader>g', ':Grep ')
+vim.keymap.set('', '<Leader>f', ':Find ')
 
 vim.keymap.set('', '<Leader>$', function()
     vim.ui.input({ prompt = '$' }, function (input)
@@ -105,11 +111,6 @@ vim.keymap.set('', '<Leader>$', function()
     end)
 end)
 
-vim.keymap.set('', '<Leader>g', ':Grep ')
-vim.keymap.set('', '<Leader>f', ':Find ')
-vim.keymap.set('', '<Leader>n', '<CMD>cnext<CR>')
-vim.keymap.set('', '<Leader>N', '<CMD>cprevious<CR>')
-vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
 
 -- Outline
 local function outline_toggle()
@@ -178,9 +179,8 @@ vim.keymap.set('i', '<C-CR>', '<C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-o>O')
 
 -- Get buffers
-vim.keymap.set('n', '<Leader>B', function ()
-    if lsclose() then return end
 
+vim.keymap.set('n', '<Leader>B', function ()
     local bufinfo = vim.fn.getbufinfo()
     local buflist = {}
 
@@ -201,8 +201,6 @@ vim.keymap.set('n', '<Leader>B', function ()
 end)
 
 vim.keymap.set('n', '<Leader>b', function ()
-    if lsclose() then return end
-
     local bufinfo = vim.fn.getbufinfo()
     local buflist = {}
 
