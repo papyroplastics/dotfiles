@@ -9,8 +9,19 @@ hide_edge_borders --i3 none
 seat * xcursor_theme Bibata-Modern-Classic 24
 
 # Background
-set $background ~/.config/sway/background.jpg
+set $background ../$assets_dir/background.jpg
 output * bg $background fill
+
+# Screensaver
+set $lock_command swaylock \
+    --daemonize --ignore-empty-passwor \
+    --indicator-radius 120 --indicator-thickness 6 \
+    --image $(~/.config/sway/$assets_dir/screenblur.sh) --scaling fill
+
+exec swayidle -w \
+    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 900 '$lock_command' \
+    before-sleep '$lock_command'
 
 # Colors
 set $acbg #44475A
@@ -19,7 +30,7 @@ set $inbg #282A36
 set $infg #BFBFBF
 set $urbg #FF5555
 
-# Color class           brdr   bg   text   ind  ch_brdr
+# Color classes         brdr   bg   text   ind  ch_brdr
 client.focused          $acbg $acbg $acbg $acbg $acbg
 client.focused_inactive $acbg $acbg $acbg $acbg $acbg
 client.unfocused        $inbg $inbg $inbg $inbg $inbg
