@@ -1,6 +1,8 @@
 
-# Variables
+# Global variables
 set $mod Mod4
+set $config_dir sway.d
+set $assets_dir assets
 
 # Session setup
 xwayland enable
@@ -16,21 +18,9 @@ exec {
     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 }
 
-# Screensaver
-set $lock_image ~/.config/sway/blur.png
-set $lock_command swaylock --daemonize \
-    --image $lock_image --scaling fill \
-    --indicator-radius 100 \
-    --indicator-thickness 6
-
-exec swayidle -w \
-    timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout 900 '$lock_command' \
-    before-sleep '$lock_command'
-
 # Others
-include input.sway
-include looks.sway
-include tiling.sway
-include keybinds.sway
+include $config_dir/input.sway
+include $config_dir/looks.sway
+include $config_dir/tiling.sway
+include $config_dir/keybinds.sway
 

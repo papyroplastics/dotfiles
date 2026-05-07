@@ -90,6 +90,9 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
+alias startxampp='sudo xampp startapache; sudo xampp startmysql'
+alias reloadxampp='sudo xampp reloadapache; sudo xampp reloadmysql'
+
 alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
 
 function just {
@@ -98,7 +101,13 @@ function just {
 }
 
 function vkexport {
-    source "$PROGRAMS/vulkansdk-1.4.335.0/setup-env.sh"
+    source "$PROGRAMS/vulkansdk-1.4.341.1/setup-env.sh"
+    _unsetfunc
+}
+
+function xamppexport {
+    PATH=/opt/lampp:/opt/lampp/bin:$PATH
+    MANPATH=/opt/lampp/share/man:$MANPATH
     _unsetfunc
 }
 
