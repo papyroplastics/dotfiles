@@ -90,9 +90,6 @@ if [[ $TERM == 'xterm-kitty' ]]; then
     bind -x '"\C-l":echo; clear'
 fi
 
-alias startxampp='sudo xampp startapache; sudo xampp startmysql'
-alias reloadxampp='sudo xampp reloadapache; sudo xampp reloadmysql'
-
 alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
 
 function just {
@@ -105,16 +102,8 @@ function vkexport {
     _unsetfunc
 }
 
-function xamppexport {
-    PATH=/opt/lampp:/opt/lampp/bin:$PATH
-    MANPATH=/opt/lampp/share/man:$MANPATH
-    _unsetfunc
-}
-
 function idfexport {
-    export IDF_PATH=$HOME/Repos/esp-idf
     export IDF_TOOLS_PATH=$PROGRAMS/esp-idf
-    export IDF_PATH_FORCE=1
     source "$HOME/Repos/esp-idf/export.sh"
     _unsetfunc
 }
