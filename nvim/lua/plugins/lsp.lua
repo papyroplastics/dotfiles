@@ -79,12 +79,9 @@ return {
         version = '*',
         event = 'InsertEnter',
         opts = {
-            keymap = { preset = 'enter' },
-            cmdline = {
-                keymap = {
-                    preset = 'inherit'
-                }
-            }
+            keymap = { preset = 'enter', },
+            cmdline = { enabled = false },
+            fuzzy = { implementation = "prefer_rust_with_warning" },
         },
     },
 }

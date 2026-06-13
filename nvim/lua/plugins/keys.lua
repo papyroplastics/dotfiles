@@ -49,6 +49,7 @@ return {
             if vim.fn.argc() == 0
                 and vim.fn.getbufinfo(vim.fn.bufnr())[1].changed == 0
                 and vim.fn.wordcount()['bytes'] == 0 then
+
                 vim.schedule(oil.open)
             end
         end,

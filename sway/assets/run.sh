@@ -9,8 +9,9 @@ export XCURSOR_THEME='Bibata-Modern-Classic'
 
 export QT_QPA_PLATFORMTHEME='qt6ct'
 
-eval "$(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh 2>/dev/null)"
-export SSH_AUTH_SOCK
+set -o allexport
+eval "$(gnome-keyring-daemon 2>/dev/null)"
+set +o allexport
 
 exec sway
 
