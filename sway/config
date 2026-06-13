@@ -1,7 +1,6 @@
 
 # Global variables
 set $mod Mod4
-set $config_dir sway.d
 set $assets_dir assets
 
 # Session setup
@@ -14,13 +13,8 @@ set $env_vars \
 exec {
     dbus-update-activation-environment --systemd $env_vars
     systemctl --user import-environment $env_vars
-    systemctl --user start xdg-desktop-portal-wlr.service
     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 }
 
-# Others
-include $config_dir/input.sway
-include $config_dir/looks.sway
-include $config_dir/tiling.sway
-include $config_dir/keybinds.sway
-
+# Include configs
+include sway.d/*.sway

@@ -1,0 +1,4 @@
+# add this to /etc/pam.d/login to unlock gnome keyring on startup
+
+auth       optional   pam_gnome_keyring.so
+session    optional   pam_gnome_keyring.so auto_start

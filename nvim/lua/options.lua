@@ -36,6 +36,8 @@ vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+vim.opt.shortmess:append('I')
+
 vim.filetype.add({
     extension = {
         sway = 'swayconfig',
