@@ -13,7 +13,7 @@ set $env_vars \
 exec {
     dbus-update-activation-environment --systemd $env_vars
     systemctl --user import-environment $env_vars
-    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+    mate-polkit
 }
 
 # Include configs

@@ -43,6 +43,7 @@ export BAT_THEME=ansi
 export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
+export PIP_REQUIRE_VENV=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 
@@ -69,13 +70,14 @@ alias atp='apt'
 alias suod='sudo'
 alias cd..='cd ..'
 
-alias l='ls'
-alias sl='ls'
 alias ls='ls --color=auto --hyperlink=auto --classify=auto'
+alias sl='ls'
+alias l='ls'
 alias ll='ls -l --human-readable'
-alias la='ls --all'
-alias lal='ll --all'
+alias la='ls --almost-all'
+alias lal='ll --almost-all'
 alias lla='lal'
+
 
 alias v='vi'
 alias cim='vim'

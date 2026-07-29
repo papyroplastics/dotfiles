@@ -44,6 +44,7 @@ return {
                 'html',
                 'cssls',
                 'jsonls',
+                'texlab'
             })
         end,
         keys = {
