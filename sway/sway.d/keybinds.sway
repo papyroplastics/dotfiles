@@ -7,7 +7,7 @@ bindsym {
     $mod+e exec nemo
     $mod+v exec pavucontrol
     $mod+b exec flatpak run org.mozilla.firefox
-    $mod+m exec flatpak run org.mozilla.Thunderbird
+    $mod+m exec flatpak run org.mozilla.thunderbird_esr
 }
 
 bindsym {
