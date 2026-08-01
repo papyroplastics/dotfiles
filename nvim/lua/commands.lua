@@ -31,8 +31,16 @@ end, {})
 
 -- For use as pager for kitty
 vim.api.nvim_create_user_command('PagerSetLine', function (opts)
-    vim.opt.number = false
-    vim.opt.relativenumber = false
+    vim.cmd.file('scrollback')
+    vim.opt_local.buftype = 'nofile'
+    vim.opt_local.bufhidden = 'hide'
+    vim.opt_local.swapfile = false
+
+    vim.opt_local.readonly = true
+    vim.opt_local.modifiable = false
+
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
 
     local scroll_line = tonumber(opts.fargs[1])
 
@@ -52,7 +60,7 @@ vim.api.nvim_create_user_command('PagerSetLine', function (opts)
 end, { nargs = '?' })
 
 
---- Quickfix list facilities
+--- Quickfix list utilities
 local function cmd_to_qflist(command, handler)
     vim.fn.setqflist({})
     local no_output = true
@@ -62,7 +70,7 @@ local function cmd_to_qflist(command, handler)
             vim.schedule(function()
                 handler(data)
                 if no_output then
-                    vim.schedule(vim.cmd.copen)
+                    vim.cmd.copen()
                     no_output = false
                 end
             end)
@@ -81,7 +89,7 @@ local function cmd_to_qflist(command, handler)
 end
 
 local function oil_path(args)
-    local bufname = vim.fn.expand('%')
+    local bufname = vim.fn.bufname()
     vim.print(bufname)
     local dir, matches = string.gsub(bufname, '^oil://', '', 1)
 
