@@ -45,13 +45,14 @@ return {
         config = function (_, opts)
             local oil = require('oil')
             oil.setup(opts)
+            vim.schedule(function ()
+                local empty_buf = vim.fn.wordcount()['bytes'] == 0
+                local unchanged = vim.fn.getbufinfo(vim.fn.bufnr())[1].changed == 0
 
-            if vim.fn.argc() == 0
-                and vim.fn.getbufinfo(vim.fn.bufnr())[1].changed == 0
-                and vim.fn.wordcount()['bytes'] == 0 then
-
-                vim.schedule(oil.open)
-            end
+                if vim.fn.argc() == 0 and empty_buf and unchanged then
+                    oil.open()
+                end
+            end)
         end,
         keys = {
             { '<Leader>o', '<CMD>Oil<CR>' },

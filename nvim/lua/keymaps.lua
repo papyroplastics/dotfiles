@@ -155,7 +155,6 @@ vim.keymap.set('', '<Leader>u', outline_toggle, { expr = true })
 vim.keymap.set('', 'gO',        outline_toggle, { expr = true })
 
 -- Get buffers
-
 vim.keymap.set('n', '<Leader>B', function ()
     local bufinfo = vim.fn.getbufinfo()
     local buflist = {}
