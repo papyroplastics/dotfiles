@@ -1,0 +1,50 @@
+set muttlisp_inline_eval
+
+source ~/.config/mutt/credentials.muttrc
+
+# IMAP
+set imap_user = "$my_username"
+set imap_pass = "$my_password"
+set folder = "imaps://$my_service/"
+set spoolfile = +Mail/Inbox
+set record = +Mail/Sent
+set postponed = +Mail/Drafts
+set trash = +Mail/Trash
+
+# SMTP
+set smtp_url = "smtp://$my_username@$my_service"
+set smtp_pass = "$my_password"
+set smtp_authenticators = plain
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+# Editing
+set editor = nvim
+set edit_headers = yes
+set charset = UTF-8
+
+# Composition
+set realname = "$my_fullname"
+set from = "$my_username@$my_email_at"
+set use_from = yes
+set use_domain = no
+
+# Colors
+color status bold blue color234
+
+set header_color_partial
+color hdrdefault color7 default
+color header bold green default ^[[:alnum:]]*:
+
+color normal default default
+color body default default .
+
+set tilde
+color tilde lightblack default
+color markers lightblack default
+color signature standout color15 default
+
+color index bold blue default ~N
+color index bold red default ~D
+color indicator bold white color24
+color tree default default
