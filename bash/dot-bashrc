@@ -57,7 +57,6 @@ for completion in "$HOME/.local/share/bash-completion/completions/"*; do
     [[ -r "$completion" ]] && source "$completion"
 done
 
-
 # ---------
 #  Aliases
 # ---------
@@ -94,6 +93,10 @@ alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
 function just {
     "$@" &>/dev/null &
     disown '%%';
+}
+
+function nixexport {
+    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 }
 
 function vkexport {
