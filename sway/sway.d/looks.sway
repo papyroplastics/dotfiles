@@ -1,4 +1,3 @@
-
 # Options
 font monospace 0.1
 titlebar_padding 1
@@ -11,20 +10,6 @@ seat * xcursor_theme Bibata-Modern-Classic 24
 # Background
 set $background ../$assets_dir/background.jpg
 output * bg $background fill
-
-# Screensaver
-set $command_lock swaylock \
-    --daemonize --ignore-empty-passwor \
-    --indicator-radius 120 --indicator-thickness 6 \
-    --image $(~/.config/sway/$assets_dir/screenblur.sh) --scaling fill
-
-set $command_screen_off swaymsg "output * dpms off"
-set $command_screen_on  swaymsg "output * dpms on"
-
-exec swayidle -w \
-    timeout 600 '$command_screen_off' resume '$command_screen_on' \
-    timeout 900 '$command_lock' \
-    before-sleep '$command_lock'
 
 # Colors
 set $acbg #44475A
