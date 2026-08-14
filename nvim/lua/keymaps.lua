@@ -1,3 +1,13 @@
+-- Miscellaneous
+local function clear_highlights()
+    vim.cmd.nohlsearch()
+    vim.snippet.stop()
+end
+
+vim.keymap.set('n', '<Esc>', clear_highlights)
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
+
 -- Normal mode movement
 vim.keymap.set('', 'j', 'gj')
 vim.keymap.set('', 'k', 'gk')
@@ -48,19 +58,6 @@ vim.keymap.set('c', '<C-k>', function ()
     vim.fn.setcmdline(until_cursor)
 end)
 
-
--- Editor state
-local function clear_highlights()
-    vim.cmd.nohlsearch()
-    vim.snippet.stop()
-end
-
-vim.keymap.set('n', '<Esc>', clear_highlights)
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
-vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
-vim.keymap.set('n', '<Leader>o', '<CMD>Explore<CR>')
-vim.keymap.set('n', '<Leader>O', '<CMD>Explore .<CR>')
-
 -- Tabs
 vim.keymap.set('', '<C-t>',   function() vim.cmd('tab vsplit') end)
 vim.keymap.set('', '<M-t>',   vim.cmd.tabnew)
@@ -69,6 +66,53 @@ vim.keymap.set('', 'L',       vim.cmd.tabnext)
 vim.keymap.set('', 'H',       vim.cmd.tabprevious)
 vim.keymap.set('', '<M-h>',   function() vim.cmd.tabmove('-') end)
 vim.keymap.set('', '<M-l>',   function() vim.cmd.tabmove('+') end)
+
+-- Netrw
+local scopes = {'b', 'w', 't', 'g'}
+local function get_ret_buf()
+    for _, s in ipairs(scopes) do
+        local buf = vim[s].my_netrw_ret_buf
+        if buf and vim.fn.bufexists(buf) then
+            return buf
+        end
+    end
+end
+local function set_ret_buf()
+    local buf = vim.api.nvim_get_current_buf()
+    for _, s in ipairs(scopes) do
+        vim[s].my_netrw_ret_buf = buf
+    end
+end
+
+vim.keymap.set('n', '<Leader>o', function ()
+    if vim.o.filetype ~= 'netrw' then
+        local filepath = vim.fn.expand('%')
+        local filename = vim.fn.expand('%:t')
+        set_ret_buf()
+
+        vim.cmd.Explore()
+
+        if vim.uv.fs_stat(filepath) then
+            vim.fn.cursor(1,1)
+            local pattern = '^\\C\\V' .. filename .. '\\m$'
+            vim.fn.search(pattern, 'c', 200)
+        end
+    else
+        local buf = get_ret_buf()
+        if buf then
+            vim.api.nvim_set_current_buf(buf)
+        else
+            vim.cmd.enew()
+        end
+    end
+end)
+vim.keymap.set('n', '<Leader>O', function ()
+    if vim.o.filetype ~= 'netrw' then
+        set_ret_buf()
+    end
+    vim.cmd.Explore(vim.fn.getcwd())
+end)
+
 
 -- Quickfix
 local function ccheck()
@@ -147,7 +191,6 @@ vim.keymap.set('', '<Leader>$', function()
         vim.api.nvim_buf_set_lines(0, 0, -1, false, result)
     end)
 end)
-
 
 -- Outline
 local function outline_toggle()
