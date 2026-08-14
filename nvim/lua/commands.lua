@@ -1,6 +1,5 @@
 
 vim.cmd.cabbrev('S', '%s')
-vim.cmd.packadd('cfilter')
 
 vim.api.nvim_create_user_command('Wrap', function ()
     if vim.o.wrap then
@@ -87,6 +86,17 @@ local function cmd_to_qflist(command, handler)
 
     vim.system(command, { stdout = stdout_handler, text = true, }, on_exit)
 end
+
+function get_search_path()
+    local current_dir = vim.fn.expand('%:p:h')
+    local no_proto = string.gsub(current_dir, '^%l*://', '', 1)
+    local relative = vim.fs.relpath(vim.fn.getcwd(), no_proto, {})
+    return relative or no_proto
+end
+
+vim.api.nvim_create_user_command('SearhPath', function (opts)
+    vim.print(get_search_path())
+end, {})
 
 local function oil_path(args)
     local bufname = vim.fn.bufname()
