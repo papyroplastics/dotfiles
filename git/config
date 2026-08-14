@@ -1,9 +1,13 @@
 [init]
 	defaultBranch = main
-[alias]
-	lg = log --graph --oneline
 [diff]
 	tool = nvimdiff
+
+[difftool "nvim_difftool"]
+	cmd = nvim -c \"packadd nvim.difftool\" -d \"$LOCAL\" \"$REMOTE\"
+[alias]
+	lg = log --graph --oneline
+	diffdir = difftool --tool=nvim_difftool --dir-diff
 
 [credential "https://github.com"]
 	helper = 

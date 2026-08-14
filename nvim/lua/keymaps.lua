@@ -15,6 +15,13 @@ vim.keymap.set('!', '<M-f>', '<C-Right>')
 vim.keymap.set('!', '<C-b>', '<Left>')
 vim.keymap.set('!', '<M-b>', '<C-Left>')
 
+vim.keymap.set('i', '<C-n>', function ()
+    return vim.fn.pumvisible() == 0 and '<Down>' or '<C-n>'
+end, { expr = true })
+vim.keymap.set('i', '<C-p>', function ()
+    return vim.fn.pumvisible() == 0 and '<Up>' or '<C-p>'
+end, { expr = true })
+
 vim.keymap.set('!', '<M-h>', '<C-w>')
 vim.keymap.set('!', '<C-BS>','<C-w>')
 vim.keymap.set('!', '<M-BS>','<C-w>')
