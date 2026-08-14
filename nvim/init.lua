@@ -1,4 +1,7 @@
 
+Colorterm = os.getenv('COLORTERM') == 'truecolor'
+Catppuccin = os.getenv('TERM') == 'xterm-kitty'
+
 require('options')
 require('commands')
 require('keymaps')
@@ -36,3 +39,15 @@ vim.schedule(function ()
         vim.cmd.edit('.')
     end
 end)
+
+
+if Colorterm then
+    vim.cmd.colorscheme(Catppuccin and 'catppuccin' or 'retrobox')
+
+    local highlights = vim.fn.execute('highlight')
+    local guibg_match = string.match(highlights, '\nNormal [^\n]*guibg=#(%x%x%x%x%x%x)')
+
+    for hl_group in string.gmatch(highlights, "\n(%w+) [^\n]*guibg=%#" .. guibg_match) do
+        vim.cmd.highlight(hl_group .. " guibg=none")
+    end
+end
