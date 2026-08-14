@@ -39,7 +39,6 @@ export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
 
-export BAT_THEME=ansi
 export LESS='--ignore-case --incsearch --mouse --use-color --RAW-CONTROL-CHARS'
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat --style=plain --paging=always --language=man'"
 
@@ -49,6 +48,10 @@ export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 export DEBEMAIL="lucasllort@gmail.com"
 export DEBFULLNAME="Lucas Llort"
+
+if [[ $TERM == 'xterm-kitty' ]]; then 
+    export BAT_THEME=OneHalfDark
+fi
 
 # -------------
 #  Completions
@@ -86,12 +89,16 @@ alias nivm='nvim'
 alias shimbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
 
+alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
+
 if [[ $TERM == 'xterm-kitty' ]]; then 
     alias clear="printf '\e[H\e[22J'"
     bind -x '"\C-l":echo; clear'
 fi
 
-alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
+# -----------
+#  Functions
+# -----------
 
 function just {
     "$@" &>/dev/null &
@@ -246,7 +253,6 @@ function pretty_path {
     fi
 }
 
-
 # --------
 #  Prompt
 # --------
@@ -279,7 +285,7 @@ git_end=')'
 exit_icon='(e:'
 exit_end=')'
 
-if [[ "$TERM" == "xterm-kitty" ]]; then
+if [[ $TERM == "xterm-kitty" ]]; then
     logo_icon=' '
     prompt_icon=''
     dir_sep='....'

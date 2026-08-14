@@ -1,10 +1,11 @@
-local colorterm = os.getenv('COLORTERM') ~= nil
+local colorterm = os.getenv('COLORTERM') == 'truecolor'
+local kitty = os.getenv('TERM') == 'xterm-kitty'
 
 return {
     {
         'catppuccin/nvim',
         name = 'catppuccin',
-        cond = colorterm,
+        cond = kitty,
         version = '*',
         lazy = false,
         opts = {
