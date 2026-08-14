@@ -59,11 +59,28 @@ vim.api.nvim_create_user_command('PagerSetLine', function (opts)
 end, { nargs = '?' })
 
 
---- Quickfix list utilities
-local function cmd_to_qflist(command, handler)
-    vim.fn.setqflist({})
-    local no_output = true
+--- Filesystem search utilities
+function get_search_path()
+    local current_dir = vim.fn.expand('%:p:h')
+    local no_proto = string.gsub(current_dir, '^%l*://', '', 1)
+    --local relative = vim.fs.relpath(vim.fn.getcwd(), no_proto, {})
+    return no_proto
+end
 
+vim.api.nvim_create_user_command('SearchPath', function (_)
+    vim.print(get_search_path())
+end, {})
+
+local function cmd_to_qflist(cmd_prefix, args, handler)
+    local command = cmd_prefix
+    for _, arg in ipairs(args) do
+        table.insert(command, arg)
+    end
+    table.insert(command, get_search_path())
+
+    vim.fn.setqflist({})
+
+    local no_output = true
     local function stdout_handler(_, data)
         if data and data ~= '' then
             vim.schedule(function()
@@ -84,60 +101,34 @@ local function cmd_to_qflist(command, handler)
         end
     end
 
-    vim.system(command, { stdout = stdout_handler, text = true, }, on_exit)
-end
-
-function get_search_path()
-    local current_dir = vim.fn.expand('%:p:h')
-    local no_proto = string.gsub(current_dir, '^%l*://', '', 1)
-    local relative = vim.fs.relpath(vim.fn.getcwd(), no_proto, {})
-    return relative or no_proto
-end
-
-vim.api.nvim_create_user_command('SearhPath', function (opts)
-    vim.print(get_search_path())
-end, {})
-
-local function oil_path(args)
-    local bufname = vim.fn.bufname()
-    vim.print(bufname)
-    local dir, matches = string.gsub(bufname, '^oil://', '', 1)
-
-    if matches ~= 0 then
-        table.insert(args, dir)
-    end
-
-    return args
+    vim.print(table.concat(command, ' ') .. '\n .')
+    vim.system(command, { stdout = stdout_handler, text = true }, on_exit)
 end
 
 vim.api.nvim_create_user_command('Find', function (opts)
-    local command = {'fd', '--type', 'file'}
-    for _, arg in ipairs(oil_path(opts.fargs)) do
-        table.insert(command, arg)
-    end
-
-    cmd_to_qflist(command, function (data)
-        local filenames = {}
-        for s in vim.gsplit(data, '\n', { plain=true, trimempty = true }) do
-            table.insert(filenames, { filename = s })
+    cmd_to_qflist(
+        {'fd'}, opts.fargs,
+        function (data)
+            local filenames = {}
+            for s in vim.gsplit(data, '\n', { plain=true, trimempty = true }) do
+                table.insert(filenames, { filename = s })
+            end
+            vim.fn.setqflist(filenames, 'a')
         end
-        vim.fn.setqflist(filenames, 'a')
-    end)
+    )
 end, { nargs = '+' })
 
 
 vim.api.nvim_create_user_command('Grep', function (opts)
-    local command = {'rg', '--vimgrep', '--smart-case'}
-    for _, arg in ipairs(oil_path(opts.fargs)) do
-        table.insert(command, arg)
-    end
-
-    cmd_to_qflist(command, function (data)
-        local lines = {}
-        for s in vim.gsplit(data, '\n', { plain=true, trimempty = true}) do
-            table.insert(lines, s)
+    cmd_to_qflist(
+        {'rg', '--vimgrep', '--smart-case'}, opts.fargs,
+        function (data)
+            local lines = {}
+            for s in vim.gsplit(data, '\n', { plain=true, trimempty = true}) do
+                table.insert(lines, s)
+            end
+            vim.fn.setqflist({}, 'a', { lines = lines, nr = 0, })
         end
-        vim.fn.setqflist({}, 'a', { lines = lines, nr = 0, })
-    end)
+    )
 end, { nargs = '+' })
 

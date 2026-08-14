@@ -1,11 +1,8 @@
-local colorterm = os.getenv('COLORTERM') == 'truecolor'
-local kitty = os.getenv('TERM') == 'xterm-kitty'
-
 return {
     {
         'catppuccin/nvim',
         name = 'catppuccin',
-        cond = kitty,
+        cond = Catppuccin,
         version = '*',
         lazy = false,
         opts = {
@@ -13,30 +10,19 @@ return {
             show_end_of_buffer = true,
             default_integrations = false,
             auto_integrations = true,
-            custom_highlights = function(colors)
-                return {
-                    Normal   = { fg = colors.none, bg = colors.none   },
-                    NormalNC = { fg = colors.none, bg = colors.none   },
-                    NonText  = { fg = colors.none, bg = colors.none   },
-                }
-            end
         },
-        config = function (_, opts)
-            require("catppuccin").setup(opts)
-            vim.cmd.colorscheme("catppuccin")
-        end
     },
     {
         'HiPhish/rainbow-delimiters.nvim',
         lazy = false,
-        cond = colorterm,
+        cond = Colorterm,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
         version = '*',
         lazy = false,
         main = 'ibl',
-        cond = colorterm,
+        cond = Colorterm,
         opts = {
             scope = { enabled = false },
         },

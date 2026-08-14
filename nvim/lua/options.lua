@@ -4,6 +4,7 @@ vim.g.maplocalleader = ' '
 
 vim.g.c_syntax_for_h = true
 vim.g.netrw_banner = 0
+vim.g.netrw_list_hide = '^\\..*'
 
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = 'number'
@@ -45,14 +46,4 @@ vim.filetype.add({
         v = 'verilog',
     },
 })
-
-vim.cmd.colorscheme('retrobox')
-
-local highlights = vim.fn.execute('highlight')
-local guibg_match = string.match(highlights, '\nNormal [^\n]*guibg=#(%x%x%x%x%x%x)')
-
-for hl_group in string.gmatch(highlights, "\n(%w+) [^\n]*guibg=%#" .. guibg_match) do
-    vim.cmd.highlight(hl_group .. " guibg=none")
-end
-
 
