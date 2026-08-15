@@ -1,8 +1,10 @@
 vim.g.nvim_surround_no_mappings = true
+
 return {
     {
         'windwp/nvim-autopairs',
         version = '*',
+        cond = false,
         event = 'InsertEnter',
         opts = {},
     },
@@ -31,6 +33,12 @@ return {
         version = '*',
         lazy = false,
         opts = {
+            buf_options = {
+                buflisted = false,
+                bufhidden = "hide",
+                modifiable = true,
+                readonly = false,
+            },
             keymaps = {
                 ['<C-h>']     = { 'actions.toggle_hidden',  mode = 'n' },
                 ['<Leader>o'] = { 'actions.close',          mode = 'n' },
