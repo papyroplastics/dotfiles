@@ -13,16 +13,44 @@ return {
         },
     },
     {
+        'saghen/blink.pairs',
+        version = '*',
+        lazy = false,
+        dependencies = 'saghen/blink.lib',
+        build = function()
+            require('blink.pairs').download():pwait(60000)
+        end,
+        opts = {
+            mappings = {
+                wrap = {
+                    ['<C-b>'] = nil,
+                    ['<C-S-b>'] = nil,
+                }
+            }
+        },
+    },
+    {
+        'saghen/blink.indent',
+        version = '*',
+        lazy = false,
+        conf = Colorterm,
+        opts = {
+            scope = {
+                enabled = false
+            },
+        },
+    },
+    {
         'HiPhish/rainbow-delimiters.nvim',
         lazy = false,
-        cond = Colorterm,
+        cond = Colorterm and false,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
         version = '*',
         lazy = false,
         main = 'ibl',
-        cond = Colorterm,
+        cond = Colorterm and false,
         opts = {
             scope = { enabled = false },
         },
@@ -41,5 +69,10 @@ return {
                 'tsx', 'html', 'htmldjango', 'css'
             })
         end,
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        lazy = false,
+        dependencies = 'nvim-treesitter/nvim-treesitter',
     },
 }
