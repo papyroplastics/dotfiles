@@ -25,11 +25,11 @@ vim.keymap.set('!', '<M-f>', '<C-Right>')
 vim.keymap.set('!', '<C-b>', '<Left>')
 vim.keymap.set('!', '<M-b>', '<C-Left>')
 
-vim.keymap.set('i', '<C-n>', function ()
-    return vim.fn.pumvisible() == 0 and '<Down>' or '<C-n>'
+vim.keymap.set('!', '<C-n>', function ()
+    return (vim.fn.pumvisible() == 0) and '<Down>' or '<C-n>'
 end, { expr = true })
-vim.keymap.set('i', '<C-p>', function ()
-    return vim.fn.pumvisible() == 0 and '<Up>' or '<C-p>'
+vim.keymap.set('!', '<C-p>', function ()
+    return (vim.fn.pumvisible() == 0) and '<Up>' or '<C-p>'
 end, { expr = true })
 
 vim.keymap.set('!', '<M-h>', '<C-w>')
@@ -40,13 +40,10 @@ vim.keymap.set('!', '<C-d>', '<Delete>')
 vim.keymap.set('i', '<M-d>', '<C-o>dw')
 vim.keymap.set('c', '<M-d>', '<C-Right><C-w>')
 
-vim.keymap.set('!', '<C-a>', '<Home>')
+vim.keymap.set('i', '<C-a>', '<Home><C-o>w')
+vim.keymap.set('c', '<C-a>', '<Home>')
 vim.keymap.set('!', '<C-e>', function ()
     return vim.fn.pumvisible() == 0 and '<End>' or '<C-e>'
-end, { expr = true })
-
-vim.keymap.set('c', '<CR>', function ()
-    return vim.fn.pumvisible() == 0 and '<CR>' or '<C-y>'
 end, { expr = true })
 
 vim.keymap.set('i', '<C-CR>', '<C-o>o')
