@@ -1,10 +1,9 @@
 
 # Global variables
 set $mod Mod4
-set $assets_dir assets
 
 # Session setup
-xwayland enable
+xwayland disable
 
 set $env_vars \
     WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP \
@@ -17,21 +16,16 @@ exec {
 }
 
 # Lock screen
-set $command_lock swaylock \
-    --daemonize --ignore-empty-passwor \
-    --indicator-radius 120 --indicator-thickness 6 \
-    --image $(~/.config/sway/$assets_dir/screenblur.sh) --scaling fill
-
-set $command_screen_off swaymsg "output * dpms off"
-set $command_screen_on  swaymsg "output * dpms on"
+set $command_lock ~/.config/sway/assets/lockscreen.sh*
+set $command_off swaymsg "output * dpms off"
+set $command_on  swaymsg "output * dpms on"
 
 exec swayidle -w \
-    timeout 600 '$command_screen_off' resume '$command_screen_on' \
+    timeout 600 '$command_off' resume '$command_on' \
     timeout 900 '$command_lock' \
     before-sleep '$command_lock' \
     lock '$command_lock' \
     idlehint 1200
-
 
 # Include configs
 include sway.d/*.sway

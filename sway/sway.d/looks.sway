@@ -8,7 +8,7 @@ hide_edge_borders --i3 none
 seat * xcursor_theme Bibata-Modern-Classic 24
 
 # Background
-set $background ../$assets_dir/background.jpg
+set $background ../assets/background.jpg
 output * bg $background fill
 
 # Colors
