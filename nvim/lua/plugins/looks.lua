@@ -74,5 +74,9 @@ return {
         'nvim-treesitter/nvim-treesitter-context',
         lazy = false,
         dependencies = 'nvim-treesitter/nvim-treesitter',
+        opts = {
+            max_lines = '15%',
+            multiline_threshold = 2,
+        }
     },
 }

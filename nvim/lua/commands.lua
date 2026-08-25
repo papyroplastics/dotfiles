@@ -1,5 +1,7 @@
 
 vim.cmd.cabbrev('S', '%s')
+vim.cmd.cabbrev('man', 'Man')
+vim.cmd.cabbrev('f-', 'Lfilter! ^-')
 
 vim.api.nvim_create_user_command('Wrap', function ()
     if vim.o.wrap then
@@ -60,75 +62,82 @@ end, { nargs = '?' })
 
 
 --- Filesystem search utilities
-function get_search_path()
-    local current_dir = vim.fn.expand('%:p:h')
-    local no_proto = string.gsub(current_dir, '^%l*://', '', 1)
-    --local relative = vim.fs.relpath(vim.fn.getcwd(), no_proto, {})
-    return no_proto
-end
-
-vim.api.nvim_create_user_command('SearchPath', function (_)
-    vim.print(get_search_path())
-end, {})
-
-local function cmd_to_qflist(cmd_prefix, args, handler)
+local function cmd_to_qflist(cmd_prefix, args, efm)
     local command = cmd_prefix
     for _, arg in ipairs(args) do
         table.insert(command, arg)
     end
-    table.insert(command, get_search_path())
 
-    vim.fn.setqflist({})
+    local line_limit = 50000
+    local time_limit = 1000
 
-    local no_output = true
-    local function stdout_handler(_, data)
-        if data and data ~= '' then
-            vim.schedule(function()
-                handler(data)
-                if no_output then
-                    vim.cmd.copen()
-                    no_output = false
+    local cmd_bin = cmd_prefix[1]
+    local cmd_str = table.concat(command, ' ')
+    local cmd_ind = "cmd: " .. cmd_str
+
+    local raw_cwd = vim.fn.expand('%:p:h')
+    local cwd = string.gsub(raw_cwd, '^%l*://', '', 1)
+    local cwd_relative = vim.fn.fnamemodify(cwd, ':~:.')
+    local cwd_ind = "cwd: " .. cwd_relative
+
+    local function on_exit(out)
+        if out.code ~= 0 and out.stderr and out.stderr ~= '' then
+            vim.print(
+                cmd_bin .. ' exited an error\n'
+                .. 'code:' .. out.code .. '\n'
+                .. cmd_ind .. '\n'
+                .. cwd_ind .. '\n'
+                .. 'stderr:' .. out.stderr
+            )
+        end
+
+        if not out.stdout or out.stdout == '' then
+            vim.print(
+                cmd_bin .. ' had no output\n'
+                .. cmd_ind .. '\n'
+                .. cwd_ind .. '\n'
+            )
+        else
+            vim.schedule(function ()
+                local lines = { cmd_ind, cwd_ind }
+                local line_count = 0
+
+                for s in vim.gsplit(out.stdout, '\n', { plain=true, trimempty = true }) do
+                    table.insert(lines, s)
+
+                    line_count = line_count + 1
+                    if line_count >= line_limit then
+                        vim.print(cmd_bin .. ' outputted too many lines,stopping at ' .. line_limit)
+                        break
+                    end
                 end
+
+                vim.fn.setqflist({})
+                vim.fn.setqflist({}, 'a', {
+                    efm =  '%Dcwd: %f,%+Gcmd: %.%#,' .. efm,
+                    lines = lines,
+                    nr = 0,
+                })
+                vim.cmd.copen()
             end)
         end
     end
 
-    local function on_exit(out)
-        if out.code ~= 0 and out.stderr and out.stderr ~= '' then
-            vim.print(out.stderr)
-        elseif no_output then
-            vim.print('No output')
-        end
-    end
-
-    vim.print(table.concat(command, ' ') .. '\n .')
-    vim.system(command, { stdout = stdout_handler, text = true }, on_exit)
+    local cmd_opts = {
+        cwd = cwd,
+        stdout = true,
+        text = false,
+        timeout = time_limit,
+    }
+    vim.system(command, cmd_opts, on_exit)
 end
 
 vim.api.nvim_create_user_command('Find', function (opts)
-    cmd_to_qflist(
-        {'fd'}, opts.fargs,
-        function (data)
-            local filenames = {}
-            for s in vim.gsplit(data, '\n', { plain=true, trimempty = true }) do
-                table.insert(filenames, { filename = s })
-            end
-            vim.fn.setqflist(filenames, 'a')
-        end
-    )
+    cmd_to_qflist({'fd'}, opts.fargs, '%f')
 end, { nargs = '+' })
 
-
 vim.api.nvim_create_user_command('Grep', function (opts)
-    cmd_to_qflist(
-        {'rg', '--vimgrep', '--smart-case'}, opts.fargs,
-        function (data)
-            local lines = {}
-            for s in vim.gsplit(data, '\n', { plain=true, trimempty = true}) do
-                table.insert(lines, s)
-            end
-            vim.fn.setqflist({}, 'a', { lines = lines, nr = 0, })
-        end
-    )
+    local cmd = {'rg', '--vimgrep', '--smart-case'}
+    cmd_to_qflist(cmd, opts.fargs, '%f:%l:%c:%m')
 end, { nargs = '+' })
 

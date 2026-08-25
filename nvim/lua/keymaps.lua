@@ -45,7 +45,7 @@ vim.keymap.set('!', '<C-e>', function ()
     return vim.fn.pumvisible() == 0 and '<End>' or '<C-e>'
 end, { expr = true })
 
-vim.keymap.set('c', '<CR>', function()
+vim.keymap.set('c', '<CR>', function ()
     return vim.fn.pumvisible() == 0 and '<CR>' or '<C-y>'
 end, { expr = true })
 
@@ -84,7 +84,7 @@ local function set_ret_buf()
     end
 end
 
-vim.keymap.set('n', '<Leader>o', function ()
+local function open_explorer()
     if vim.o.filetype ~= 'netrw' then
         local filepath = vim.fn.expand('%')
         local filename = vim.fn.expand('%:t')
@@ -105,13 +105,17 @@ vim.keymap.set('n', '<Leader>o', function ()
             vim.cmd.enew()
         end
     end
-end)
-vim.keymap.set('n', '<Leader>O', function ()
+end
+
+local function open_explorer_cwd()
     if vim.o.filetype ~= 'netrw' then
         set_ret_buf()
     end
     vim.cmd.Explore(vim.fn.getcwd())
-end)
+end
+
+vim.keymap.set('n', '<Leader>o', open_explorer)
+vim.keymap.set('n', '<Leader>O', open_explorer_cwd)
 
 
 -- Quickfix
@@ -172,7 +176,8 @@ vim.keymap.set('', '<Leader><Leader>P', '<CMD>lolder<CR>')
 vim.keymap.set('', '<Leader>g', ':Grep ')
 vim.keymap.set('', '<Leader>f', ':Find ')
 
-vim.keymap.set('', '<Leader>$', function()
+-- Run command
+local function cmd_to_scratchbuf()
     vim.ui.input({ prompt = '$' }, function (input)
         if not input or input == '' then
             print('Invalid command.')
@@ -190,7 +195,8 @@ vim.keymap.set('', '<Leader>$', function()
         vim.bo.bufhidden = 'wipe'
         vim.api.nvim_buf_set_lines(0, 0, -1, false, result)
     end)
-end)
+end
+vim.keymap.set('', '<Leader>$', cmd_to_scratchbuf)
 
 -- Outline
 local function outline_toggle()
@@ -204,28 +210,8 @@ end
 vim.keymap.set('', '<Leader>u', outline_toggle, { expr = true })
 vim.keymap.set('', 'gO',        outline_toggle, { expr = true })
 
--- Get buffers
-vim.keymap.set('n', '<Leader>B', function ()
-    local bufinfo = vim.fn.getbufinfo()
-    local buflist = {}
-
-    for _, buf in ipairs(bufinfo) do
-        local name = buf['name']
-        local changed = buf['changed'] == 1
-        if vim.fn.filereadable(name) == 1 or changed then
-            table.insert(buflist, {
-                bufnr = buf['bufnr'],
-                filename = name,
-                text = changed and '[+]' or '',
-            })
-        end
-    end
-
-    vim.fn.setqflist(buflist)
-    vim.cmd.copen()
-end)
-
-vim.keymap.set('n', '<Leader>b', function ()
+-- Get buffer list
+local function changed_to_qflist()
     local bufinfo = vim.fn.getbufinfo()
     local buflist = {}
 
@@ -245,20 +231,43 @@ vim.keymap.set('n', '<Leader>b', function ()
 
     vim.fn.setqflist(buflist)
     vim.cmd.copen()
-end)
+end
+local function open_files_to_qflist()
+    local bufinfo = vim.fn.getbufinfo()
+    local buflist = {}
+
+    for _, buf in ipairs(bufinfo) do
+        local name = buf['name']
+        local changed = buf['changed'] == 1
+        if vim.fn.filereadable(name) == 1 or changed then
+            table.insert(buflist, {
+                bufnr = buf['bufnr'],
+                filename = name,
+                text = changed and '[+]' or '',
+            })
+        end
+    end
+
+    vim.fn.setqflist(buflist)
+    vim.cmd.copen()
+end
+
+vim.keymap.set('n', '<Leader>b', changed_to_qflist)
+vim.keymap.set('n', '<Leader>B', open_files_to_qflist)
 
 -- Yank buffer file name
-local function yank_file()
-    vim.fn.setreg(vim.v.register, vim.fn.expand('%:.'))
+
+local function yank_file(absolute)
+    local filename = vim.fn.expand('%')
+
+    if vim.o.filetype == 'netrw' then
+        filename = vim.fs.joinpath(filename, vim.fn.expand('<cfile>'))
+    end
+
+    filename = vim.fn.fnamemodify(filename, absolute and ':p:~' or ':~:.')
+    vim.fn.setreg(vim.v.register, filename)
 end
 
-local function yank_pos()
-    local bufinfo = vim.fn.getbufinfo(vim.fn.bufnr())
-    local col = bufinfo[1]['lnum']
-
-    vim.fn.setreg(vim.v.register, vim.fn.expand('%:.') .. ':' .. col)
-end
-
-vim.keymap.set('n', '<Leader>y', yank_file)
-vim.keymap.set('n', '<Leader>Y', yank_pos)
+vim.keymap.set('n', '<Leader>y', function() yank_file(false) end)
+vim.keymap.set('n', '<Leader>Y', function() yank_file(true) end)
 

@@ -107,10 +107,6 @@ function just {
 
 function nixexport {
     source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-}
-
-function vkexport {
-    source "$PROGRAMS/vulkansdk-1.4.341.1/setup-env.sh"
     _unsetfunc
 }
 
