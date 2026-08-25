@@ -99,7 +99,7 @@ local function cmd_to_qflist(cmd_prefix, args, efm)
             )
         else
             vim.schedule(function ()
-                local lines = { cmd_ind, cwd_ind }
+                local lines = {}
                 local line_count = 0
 
                 for s in vim.gsplit(out.stdout, '\n', { plain=true, trimempty = true }) do
@@ -112,9 +112,13 @@ local function cmd_to_qflist(cmd_prefix, args, efm)
                     end
                 end
 
-                vim.fn.setqflist({})
+                vim.fn.setqflist({}, ' ', {
+                    efm =  '%Dcwd: %f,%+Gcmd: %.%#,',
+                    lines = { cmd_ind, cwd_ind },
+                    nr = 0,
+                })
                 vim.fn.setqflist({}, 'a', {
-                    efm =  '%Dcwd: %f,%+Gcmd: %.%#,' .. efm,
+                    efm =  efm,
                     lines = lines,
                     nr = 0,
                 })
@@ -141,3 +145,22 @@ vim.api.nvim_create_user_command('Grep', function (opts)
     cmd_to_qflist(cmd, opts.fargs, '%f:%l:%c:%m')
 end, { nargs = '+' })
 
+
+-- Jumplist to quickfix list
+vim.api.nvim_create_user_command('Jumplist', function (_)
+    local jumplist = vim.fn.getjumplist()
+    local idx = jumplist[2] + 1
+    jumplist = jumplist[1]
+
+    if idx <= #jumplist then
+        jumplist[idx]['text'] = '<-'
+    end
+
+    vim.fn.getqflist({ winid = 0 })
+
+    vim.fn.setloclist(0, jumplist)
+    local bufnr = vim.fn.getloclist(0, { qfbufnr = true })['qfbufnr']
+
+    vim.cmd.lopen()
+    vim.fn.setpos('.', { bufnr, idx, 1, 0 })
+end, {})
