@@ -6,7 +6,6 @@ end
 
 vim.keymap.set('n', '<Esc>', clear_highlights)
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
-vim.keymap.set('n', '<Leader>L', '<CMD>Lazy<CR>')
 
 -- Normal mode movement
 vim.keymap.set('', 'j', 'gj')
