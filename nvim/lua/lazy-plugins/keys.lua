@@ -2,13 +2,6 @@ vim.g.nvim_surround_no_mappings = true
 
 return {
     {
-        'windwp/nvim-autopairs',
-        version = '*',
-        cond = false,
-        event = 'InsertEnter',
-        opts = {},
-    },
-    {
         'kylechui/nvim-surround',
         version = '*',
         opts = {
@@ -31,6 +24,7 @@ return {
     {
         'stevearc/oil.nvim',
         version = '*',
+        cond = false,
         lazy = false,
         opts = {
             buf_options = {
