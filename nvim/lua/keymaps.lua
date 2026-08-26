@@ -1,4 +1,10 @@
 -- Miscellaneous
+local function keymap_set_pum(mode, lhs, rhs, rhs_pum)
+    vim.keymap.set(mode, lhs, function ()
+        return vim.fn.pumvisible() ~= 0 and rhs_pum or rhs
+    end, { expr = true })
+end
+
 local function clear_highlights()
     vim.cmd.nohlsearch()
     vim.snippet.stop()
@@ -24,12 +30,8 @@ vim.keymap.set('!', '<M-f>', '<C-Right>')
 vim.keymap.set('!', '<C-b>', '<Left>')
 vim.keymap.set('!', '<M-b>', '<C-Left>')
 
-vim.keymap.set('!', '<C-n>', function ()
-    return (vim.fn.pumvisible() == 0) and '<Down>' or '<C-n>'
-end, { expr = true })
-vim.keymap.set('!', '<C-p>', function ()
-    return (vim.fn.pumvisible() == 0) and '<Up>' or '<C-p>'
-end, { expr = true })
+vim.keymap.set('!', '<C-n>', '<Down>')
+vim.keymap.set('!', '<C-p>', '<Up>')
 
 vim.keymap.set('!', '<M-h>', '<C-w>')
 vim.keymap.set('!', '<C-BS>','<C-w>')
@@ -40,19 +42,26 @@ vim.keymap.set('i', '<M-d>', '<C-o>dw')
 vim.keymap.set('c', '<M-d>', '<C-Right><C-w>')
 
 vim.keymap.set('i', '<C-a>', '<Home><C-o>w')
+keymap_set_pum('!', '<C-e>', '<End>', '<C-e>')
 vim.keymap.set('c', '<C-a>', '<Home>')
-vim.keymap.set('!', '<C-e>', function ()
-    return vim.fn.pumvisible() == 0 and '<End>' or '<C-e>'
-end, { expr = true })
 
+keymap_set_pum('!', '<CR>', '<CR>', '<C-y>')
 vim.keymap.set('i', '<C-CR>', '<C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-o>O')
 
-vim.keymap.set('i', '<C-k>', '<C-o>d$')
+keymap_set_pum('i', '<C-j>', '<C-j>', '<C-n>')
+vim.keymap.set('c', '<C-j>', '<C-n>')
+
+keymap_set_pum('i', '<C-k>', '<C-o>d$', '<C-p>')
 vim.keymap.set('c', '<C-k>', function ()
-    local until_cursor = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos()-1)
-    vim.fn.setcmdline(until_cursor)
-end)
+    if vim.fn.pumvisible() == 0 then
+        local until_cursor = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos()-1)
+        vim.fn.setcmdline(until_cursor)
+        return nil
+    else
+        return '<C-p>'
+    end
+end, { expr = true })
 
 -- Tabs
 vim.keymap.set('', '<C-t>',   function() vim.cmd('tab vsplit') end)
@@ -144,20 +153,22 @@ local function ltoggle()
     end
 end
 
-local function cfilter_interactive()
+local function cfilter()
+    vim.cmd.lclose()
     vim.cmd.copen()
     vim.api.nvim_feedkeys(':Cfilter ', 'n', true)
 end
 
-local function lfilter_interactive()
+local function lfilter()
+    vim.cmd.cclose()
     vim.cmd.lopen()
     vim.api.nvim_feedkeys(':Lfilter ', 'n', true)
 end
 
 vim.keymap.set('', '<Leader>q', ctoggle)
-vim.keymap.set('', '<Leader>Q', cfilter_interactive)
+vim.keymap.set('', '<Leader>Q', cfilter)
 vim.keymap.set('', '<Leader>w', ltoggle)
-vim.keymap.set('', '<Leader>W', lfilter_interactive)
+vim.keymap.set('', '<Leader>W', lfilter)
 
 vim.keymap.set('', '<Leader>n', '<CMD>cnext<CR>')
 vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
