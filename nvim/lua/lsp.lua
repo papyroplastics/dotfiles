@@ -11,19 +11,19 @@ vim.diagnostic.config({
 vim.lsp.enable({
     'pyrefly',
     'lua_ls',
-    'intelephense',
     'bashls',
+
     'clangd',
     'neocmake',
-    'svlangserver',
-    'ts_ls',
-    'eslint',
+
     'tinymist',
     'texlab',
+
+    'ts_ls',
+    'eslint',
     'html',
     'cssls',
     'jsonls',
-    'texlab'
 })
 
 local function on_tab(callback)
