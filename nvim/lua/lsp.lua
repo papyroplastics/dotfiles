@@ -19,7 +19,7 @@ vim.lsp.enable({
     'tinymist',
     'texlab',
 
-    'ts_ls',
+    'tsc',
     'eslint',
     'html',
     'cssls',
@@ -66,12 +66,11 @@ vim.keymap.set('n', '<Leader>lO', lsp_outline)
 vim.keymap.set('n', '<Leader>le', vim.diagnostic.open_float)
 vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setloclist)
 
--- Configure autocomplete
+-- Autocomplete
 vim.opt.complete = {'.' , 'o' }
 vim.opt.completeopt = { 'fuzzy', 'menuone', 'noinsert', 'popup' }
 vim.opt.autocomplete = true
 vim.opt.pumheight = 10
-vim.opt.pumblend = 10
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
@@ -79,4 +78,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
             autotrigger = true,
         })
     end,
+})
+
+-- Server specific configs
+
+vim.pack.add({
+    {
+        src = 'https://github.com/neovim/nvim-lspconfig',
+        name = 'lspconfig',
+        version = 'master',
+    },
 })
