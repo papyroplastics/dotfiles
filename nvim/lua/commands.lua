@@ -1,4 +1,8 @@
 
+vim.cmd.packadd('cfilter')
+vim.cmd.packadd('nvim.undotree')
+vim.cmd.packadd('nvim.difftool')
+
 vim.cmd.cabbrev('S', '%s')
 vim.cmd.cabbrev('man', 'Man')
 vim.cmd.cabbrev('f-', 'Lfilter! ^-')

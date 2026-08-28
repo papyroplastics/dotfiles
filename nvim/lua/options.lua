@@ -1,10 +1,11 @@
+vim.g.c_syntax_for_h = true
+
+vim.g.netrw_banner = 0
+vim.g.netrw_list_hide = '^\\..*'
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
-vim.g.c_syntax_for_h = true
-vim.g.netrw_banner = 0
-vim.g.netrw_list_hide = '^\\..*'
+vim.opt.cedit = '^L'
 
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = 'number'
