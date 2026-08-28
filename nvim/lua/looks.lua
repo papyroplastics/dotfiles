@@ -1,11 +1,3 @@
-vim.cmd.packadd('cfilter')
-vim.cmd.packadd('nvim.undotree')
-vim.cmd.packadd('nvim.difftool')
-
--- local datapath = vim.fn.stdpath('data')
--- local packpath = vim.fs.joinpath(datapath, 'site')
--- vim.opt.packpath:append(packpath)
-
 vim.pack.add({
     {
         src = 'https://github.com/catppuccin/nvim',
@@ -31,11 +23,6 @@ vim.pack.add({
         src = 'https://github.com/HiPhish/rainbow-delimiters.nvim',
         name = 'rainbow-delimiters',
         version = vim.version.range('*'),
-    },
-    {
-        src = 'https://github.com/neovim/nvim-lspconfig',
-        name = 'lspconfig',
-        version = vim.version.range('2.*'),
     },
 })
 

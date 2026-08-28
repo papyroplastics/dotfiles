@@ -1,8 +1,7 @@
-
 require('options')
 require('commands')
 require('keymaps')
-require('plugins')
+require('looks')
 require('lsp')
 
 -- local plugin_mark = vim.fn.stdpath('config') .. '/.load_plugins'

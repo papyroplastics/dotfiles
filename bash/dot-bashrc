@@ -27,13 +27,12 @@ export HISTFILESIZE=2000
 
 export PROGRAMS=$HOME/Programs
 
-export NODE_HOME=$PROGRAMS/node-v24.13.1-linux-x64
 export CONAN_HOME=$HOME/.local/share/conan2
 export COPILOT_HOME=$HOME/.local/share/copilot
 export GRADLE_USER_HOME=$HOME/.local/share/gradle
 
-export PATH=$NODE_HOME/bin:$HOME/.local/bin:$PATH
-export MANPATH=$NODE_HOME/share/man:$HOME/.local/share/man:$MANPATH
+export PATH=$HOME/.local/bin:$PATH
+export MANPATH=$HOME/.local/share/man:$MANPATH
 
 export VISUAL=vim
 export EDITOR=vim
