@@ -1,4 +1,6 @@
 # ~/.bash_profile
+export PATH=$HOME/.local/bin:$PATH
+export MANPATH=$HOME/.local/share/man:$MANPATH
 
 if [[ -z $WAYLAND_DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
     exec ~/.config/sway/assets/run.sh &>/dev/null

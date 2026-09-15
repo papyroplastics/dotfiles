@@ -1,31 +1,12 @@
 
-vim.cmd.packadd('cfilter')
-vim.cmd.packadd('nvim.undotree')
-vim.cmd.packadd('nvim.difftool')
+vim.cmd.packadd({ args = {'cfilter'}, bang = true})
+vim.cmd.packadd({ args = {'nvim.undotree'}, bang = true})
+vim.cmd.packadd({ args = {'nvim.difftool'}, bang = true})
 
 vim.cmd.cabbrev('S', '%s')
 vim.cmd.cabbrev('man', 'Man')
+vim.cmd.cabbrev('lp', 'lua vim.print(')
 vim.cmd.cabbrev('f-', 'Lfilter! ^-')
-
-vim.api.nvim_create_user_command('Wrap', function ()
-    if vim.o.wrap then
-        vim.o.wrap = false
-        print('  nowrap')
-        vim.keymap.del('', 'k')
-        vim.keymap.del('', 'j')
-        vim.keymap.del('', '$')
-        vim.keymap.del('', '0')
-        vim.keymap.del('', '^')
-    else
-        vim.o.wrap = true
-        print('  wrap')
-        vim.keymap.set('', 'k', 'gk')
-        vim.keymap.set('', 'j', 'gj')
-        vim.keymap.set('', '$', 'g$')
-        vim.keymap.set('', '0', 'g0')
-        vim.keymap.set('', '^', 'g^')
-    end
-end, {})
 
 -- Edit Neovim config
 vim.api.nvim_create_user_command('Config', function ()
@@ -160,11 +141,45 @@ vim.api.nvim_create_user_command('Jumplist', function (_)
         jumplist[idx]['text'] = '<-'
     end
 
-    vim.fn.getqflist({ winid = 0 })
-
     vim.fn.setloclist(0, jumplist)
     local bufnr = vim.fn.getloclist(0, { qfbufnr = true })['qfbufnr']
 
     vim.cmd.lopen()
     vim.fn.setpos('.', { bufnr, idx, 1, 0 })
+end, {})
+
+-- Plugin management
+vim.api.nvim_create_user_command('PlugList', function (_)
+    local plugins = vim.pack.get()
+    local plug_str = ''
+
+    for i, plugin in ipairs(plugins) do
+        plug_str = plug_str
+                    .. i .. ') '
+                    .. '[' .. (plugin.active and 'active' or 'inactive') .. '] '
+                    .. plugin.spec.name
+                    .. '\n'
+    end
+
+    vim.print(plug_str)
+end, {})
+
+vim.api.nvim_create_user_command('PlugClean', function (_)
+    local inactive = vim.iter(vim.pack.get())
+        :filter(function(x) return not x.active end)
+        :map(function(x) return x.spec.name end)
+        :totable()
+
+    vim.ui.select({'yes', 'no'}, {
+        prompt = 'Delete inactive plugins? ('.. table.concat(inactive, ', ') ..')',
+    }, function (_, idx)
+        if idx == 1 then
+            vim.pack.del(inactive)
+        end
+    end
+    )
+end, {})
+
+vim.api.nvim_create_user_command('PlugUpdate', function (_)
+    vim.pack.update()
 end, {})

@@ -14,24 +14,26 @@ vim.keymap.set('n', '<Esc>', clear_highlights)
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 -- Normal mode movement
-vim.keymap.set('', 'j', 'gj')
 vim.keymap.set('', 'k', 'gk')
-vim.keymap.set('', '¿', '^')
+vim.keymap.set('', 'j', 'gj')
+vim.keymap.set('', '$', 'g$')
+vim.keymap.set('', '0', 'g0')
+vim.keymap.set('', '^', 'g^')
+vim.keymap.set('', '¿', 'g^')
 
 vim.keymap.set('', '<C-j>', '4gj')
 vim.keymap.set('', '<C-k>', '4gk')
-
 vim.keymap.set('', '<C-h>', '10h')
 vim.keymap.set('', '<C-l>', '10l')
 
 -- Insert/Cmdline movement
+vim.keymap.set('!', '<C-n>', '<Down>')
+vim.keymap.set('!', '<C-p>', '<Up>')
+
 vim.keymap.set('!', '<C-f>', '<Right>')
 vim.keymap.set('!', '<M-f>', '<C-Right>')
 vim.keymap.set('!', '<C-b>', '<Left>')
 vim.keymap.set('!', '<M-b>', '<C-Left>')
-
-vim.keymap.set('!', '<C-n>', '<Down>')
-vim.keymap.set('!', '<C-p>', '<Up>')
 
 vim.keymap.set('!', '<M-h>', '<C-w>')
 vim.keymap.set('!', '<C-BS>','<C-w>')
@@ -41,27 +43,22 @@ vim.keymap.set('!', '<C-d>', '<Delete>')
 vim.keymap.set('i', '<M-d>', '<C-o>dw')
 vim.keymap.set('c', '<M-d>', '<C-Right><C-w>')
 
-vim.keymap.set('i', '<C-a>', '<Home><C-o>w')
 keymap_set_pum('!', '<C-e>', '<End>', '<C-e>')
 vim.keymap.set('c', '<C-a>', '<Home>')
+vim.keymap.set('i', '<C-a>', function ()
+    local pos = vim.fn.getpos('.')
+    local col = pos[3]
+    return col == 1 and '<C-o>^' or '<Home>'
+end, { expr = true })
 
-keymap_set_pum('!', '<CR>', '<CR>', '<C-y>')
 vim.keymap.set('i', '<C-CR>', '<C-o>o')
 vim.keymap.set('i', '<S-CR>', '<C-o>O')
 
-keymap_set_pum('i', '<C-j>', '<C-j>', '<C-n>')
-vim.keymap.set('c', '<C-j>', '<C-n>')
-
-keymap_set_pum('i', '<C-k>', '<C-o>d$', '<C-p>')
+vim.keymap.set('i', '<C-k>', '<C-o>d$')
 vim.keymap.set('c', '<C-k>', function ()
-    if vim.fn.pumvisible() == 0 then
-        local until_cursor = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos()-1)
-        vim.fn.setcmdline(until_cursor)
-        return nil
-    else
-        return '<C-p>'
-    end
-end, { expr = true })
+    local until_cursor = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos()-1)
+    vim.fn.setcmdline(until_cursor)
+end)
 
 -- Tabs
 vim.keymap.set('', '<C-t>',   function() vim.cmd('tab vsplit') end)
@@ -98,9 +95,20 @@ local function open_explorer()
         vim.cmd.Explore()
 
         if vim.uv.fs_stat(filepath) then
+            local pattern = '^\\C\\V' .. filename .. '*\\?\\$'
+
             vim.fn.cursor(1,1)
-            local pattern = '^\\C\\V' .. filename .. '\\m$'
-            vim.fn.search(pattern, 'c', 200)
+            local res = vim.fn.search(pattern, 'c', 200)
+
+            if res == 0 then
+                local pointed = vim.uv.fs_readlink(filepath)
+                vim.print(pointed)
+                if pointed ~= nil then
+                    pattern = '^\\C\\V' .. filename .. '@\\t --> ' .. pointed
+                    vim.print(pattern)
+                    vim.fn.search(pattern, 'c', 200)
+                end
+            end
         end
     else
         local buf = get_ret_buf()
@@ -165,25 +173,31 @@ local function lfilter()
     vim.api.nvim_feedkeys(':Lfilter ', 'n', true)
 end
 
+local function mux_lists(qf_cb, loc_cb)
+    return function ()
+        if lcheck() then
+            loc_cb()
+        else
+            qf_cb()
+        end
+    end
+end
+
 vim.keymap.set('', '<Leader>q', ctoggle)
 vim.keymap.set('', '<Leader>Q', cfilter)
 vim.keymap.set('', '<Leader>w', ltoggle)
 vim.keymap.set('', '<Leader>W', lfilter)
 
-vim.keymap.set('', '<Leader>n', '<CMD>cnext<CR>')
-vim.keymap.set('', '<Leader>p', '<CMD>cprevious<CR>')
-vim.keymap.set('', '<Leader>N', '<CMD>lnext<CR>')
-vim.keymap.set('', '<Leader>P', '<CMD>lprevious<CR>')
+vim.keymap.set('', '<Leader>n', mux_lists(vim.cmd.cnext, vim.cmd.lnext))
+vim.keymap.set('', '<Leader>p', mux_lists(vim.cmd.cprevious, vim.cmd.lprevious))
 
-vim.keymap.set('', '<Leader><Leader>n', '<CMD>cnewer<CR>')
-vim.keymap.set('', '<Leader><Leader>p', '<CMD>colder<CR>')
-vim.keymap.set('', '<Leader><Leader>N', '<CMD>lnewer<CR>')
-vim.keymap.set('', '<Leader><Leader>P', '<CMD>lolder<CR>')
+vim.keymap.set('', '<Leader><Leader>n', mux_lists(vim.cmd.cnewer, vim.cmd.lnewer))
+vim.keymap.set('', '<Leader><Leader>p', mux_lists(vim.cmd.colder, vim.cmd.lolder))
 
 vim.keymap.set('', '<Leader>g', ':Grep ')
 vim.keymap.set('', '<Leader>f', ':Find ')
 
--- Run command
+-- Command to scratch buffer
 local function cmd_to_scratchbuf()
     vim.ui.input({ prompt = '$' }, function (input)
         if not input or input == '' then
@@ -203,6 +217,7 @@ local function cmd_to_scratchbuf()
         vim.api.nvim_buf_set_lines(0, 0, -1, false, result)
     end)
 end
+
 vim.keymap.set('', '<Leader>$', cmd_to_scratchbuf)
 
 -- Outline
@@ -263,11 +278,17 @@ vim.keymap.set('n', '<Leader>b', changed_to_qflist)
 vim.keymap.set('n', '<Leader>B', open_files_to_qflist)
 
 -- Yank buffer file name
-
 local function yank_file(absolute)
     local filename = vim.fn.expand('%')
+    if not filename or filename == '' then
+        filename = vim.fn.getbufinfo(vim.fn.bufnr())[1]['name']
+    end
 
     if vim.o.filetype == 'netrw' then
+        if not filename or filename == '' then
+            filename = vim.b.netrw_curdir
+        end
+
         filename = vim.fs.joinpath(filename, vim.fn.expand('<cfile>'))
     end
 
@@ -277,4 +298,17 @@ end
 
 vim.keymap.set('n', '<Leader>y', function() yank_file(false) end)
 vim.keymap.set('n', '<Leader>Y', function() yank_file(true) end)
+
+-- Surround
+vim.pack.add({
+    {
+        src = 'https://github.com/kylechui/nvim-surround',
+        name = 'surround',
+        version = vim.version.range('4.*'),
+    },
+})
+
+require('nvim-surround').setup({
+    move_cursor = 'sticky',
+})
 

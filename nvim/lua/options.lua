@@ -2,6 +2,7 @@ vim.g.c_syntax_for_h = true
 
 vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = '^\\..*'
+vim.g.netrw_sort_sequence = '\\/$,*,@$'
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -26,18 +27,16 @@ vim.opt.gdefault = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.virtualedit = 'block'
 vim.opt.wrap = true
 vim.opt.mouse = ''
-
-vim.opt.path='**3,./**2'
-
-vim.opt.laststatus = 3
-vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
+vim.opt.virtualedit = 'block'
 
 vim.opt.number = true
 vim.opt.relativenumber = false
+vim.opt.laststatus = 3
+vim.opt.statusline = '%t %h%w%m%r%=%-10.(%l %c%V%) %P'
 
+vim.opt.path='**3,./**2'
 vim.opt.shortmess:append('I')
 
 vim.filetype.add({
