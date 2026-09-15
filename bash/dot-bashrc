@@ -31,9 +31,6 @@ export CONAN_HOME=$HOME/.local/share/conan2
 export COPILOT_HOME=$HOME/.local/share/copilot
 export GRADLE_USER_HOME=$HOME/.local/share/gradle
 
-export PATH=$HOME/.local/bin:$PATH
-export MANPATH=$HOME/.local/share/man:$MANPATH
-
 export VISUAL=vim
 export EDITOR=vim
 export SUDO_EDITOR=vim
@@ -104,11 +101,6 @@ function just {
     disown '%%';
 }
 
-function nixexport {
-    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-    _unsetfunc
-}
-
 function idfexport {
     export IDF_TOOLS_PATH=$PROGRAMS/esp-idf
     source "$HOME/Repos/esp-idf/export.sh"
@@ -128,7 +120,6 @@ function androidexport {
     export ANDROID_SDK_HOME=$HOME/.local/share/android 
     export ANDROID_USER_HOME=$ANDROID_SDK_HOME/.android
     export ANDROID_HOME=$PROGRAMS/android_sdk
-    PATH=$ANDROID_HOME/build-tools/36.1.0:$PATH
     PATH=$ANDROID_HOME/platform-tools:$PATH
     PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
 
