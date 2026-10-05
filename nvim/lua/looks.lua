@@ -1,3 +1,5 @@
+require('vim._core.ui2').enable({})
+
 vim.pack.add({
     {
         src = 'https://github.com/catppuccin/nvim',
@@ -32,11 +34,14 @@ vim.pack.add({
 if os.getenv('COLORTERM') == 'truecolor' then
     if os.getenv('TERM') == 'xterm-kitty' then
         require('catppuccin').setup({
-            flavour = "mocha",
+            flavour = 'mocha',
+            compile_path = vim.fs.joinpath(vim.fn.stdpath('cache'), 'catppuccin'),
             show_end_of_buffer = true,
             default_integrations = false,
             auto_integrations = false,
             integrations = {
+                treesitter_context = true,
+                nvim_surround = true,
                 blink_cmp = true,
                 blink_indent = true,
                 blink_pairs = true,
@@ -70,7 +75,17 @@ require('treesitter-context').setup({
 })
 
 require('blink.pairs').download():pwait(60000)
-require('blink.pairs').setup()
+require('blink.pairs').setup({
+    mappings = {
+        enabled = false,
+        cmdline = false,
+    },
+    highlights = {
+        enabled = true,
+        cmdline = true,
+    }
+})
+
 require('blink.indent').setup({
     scope = { enabled = false },
 })
