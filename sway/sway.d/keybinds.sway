@@ -5,7 +5,7 @@ bindsym {
     $mod+ctrl+d exec rofi -show
     $mod+shift+d exec rofi -drun-reload-desktop-cache -show
 
-    $mod+e exec nemo
+    $mod+e exec pcmanfm
     $mod+v exec pavucontrol
     $mod+n exec blueman-manager
 

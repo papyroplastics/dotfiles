@@ -1,0 +1,6 @@
+[Match]
+Name=wlo1
+
+[Network]
+DHCP=yes
+IgnoreCarrierLoss=3s

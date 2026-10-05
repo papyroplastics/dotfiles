@@ -98,6 +98,7 @@ if use_blink then
             preset = 'enter',
             ['<C-s>'] = { 'show_signature', 'hide_signature' },
             ['<C-k>'] = false,
+            ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
         },
     })
 else

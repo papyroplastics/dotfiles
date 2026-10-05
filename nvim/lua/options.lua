@@ -20,9 +20,6 @@ vim.opt.expandtab = true
 vim.opt.shiftround = true
 vim.opt.smarttab = false
 
-vim.opt.cindent = false
-vim.opt.smartindent = false
-
 vim.opt.gdefault = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -41,9 +38,9 @@ vim.opt.shortmess:append('I')
 
 vim.filetype.add({
     extension = {
+        Containerfile = 'dockerfile',
         sway = 'swayconfig',
         sv = 'systemverilog',
         v = 'verilog',
     },
 })
-
