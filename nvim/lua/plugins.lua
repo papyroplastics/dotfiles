@@ -65,16 +65,16 @@ if os.getenv('COLORTERM') == 'truecolor' then
         }
     })
     vim.cmd.colorscheme('catppuccin')
-
-    local highlights = vim.fn.execute('highlight')
-    local guibg_match = string.match(highlights, '\nNormal [^\n]*guibg=#(%x%x%x%x%x%x)')
-
-    for hl_group in string.gmatch(highlights, "\n(%w+) [^\n]*guibg=%#" .. guibg_match) do
-        vim.cmd.highlight(hl_group .. " guibg=none")
-    end
-
-    vim.cmd.highlight('link netrwMarkFile Identifier')
 end
+
+local highlights = vim.fn.execute('highlight')
+local guibg_match = string.match(highlights, '\nNormal [^\n]*guibg=#(%x%x%x%x%x%x)')
+
+for hl_group in string.gmatch(highlights, "\n(%w+) [^\n]*guibg=%#" .. guibg_match) do
+    vim.cmd.highlight(hl_group .. " guibg=none")
+end
+
+vim.cmd.highlight('link netrwMarkFile Identifier')
 
 require('nvim-surround').setup({
     move_cursor = 'sticky',
