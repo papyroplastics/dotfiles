@@ -298,17 +298,3 @@ end
 
 vim.keymap.set('n', '<Leader>y', function() yank_file(false) end)
 vim.keymap.set('n', '<Leader>Y', function() yank_file(true) end)
-
--- Surround
-vim.pack.add({
-    {
-        src = 'https://github.com/kylechui/nvim-surround',
-        name = 'surround',
-        version = vim.version.range('4.*'),
-    },
-})
-
-require('nvim-surround').setup({
-    move_cursor = 'sticky',
-})
-

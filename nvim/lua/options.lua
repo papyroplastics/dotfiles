@@ -40,6 +40,7 @@ vim.filetype.add({
     extension = {
         Containerfile = 'dockerfile',
         sway = 'swayconfig',
+        tf = 'terraform',
         sv = 'systemverilog',
         v = 'verilog',
     },

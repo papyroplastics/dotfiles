@@ -3,7 +3,7 @@
 set $mod Mod4
 
 # Session setup
-xwayland disable
+xwayland enable
 
 set $env_vars \
     WAYLAND_DISPLAY XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP \

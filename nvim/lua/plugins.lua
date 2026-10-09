@@ -1,10 +1,23 @@
-require('vim._core.ui2').enable({})
-
 vim.pack.add({
     {
         src = 'https://github.com/catppuccin/nvim',
         name = 'catppuccin',
         version = vim.version.range('2.*'),
+    },
+    {
+        src = 'https://github.com/kylechui/nvim-surround',
+        name = 'surround',
+        version = vim.version.range('4.*'),
+    },
+    {
+        src = 'https://github.com/neovim/nvim-lspconfig',
+        name = 'lspconfig',
+        version = 'master',
+    },
+    {
+        src = 'https://github.com/rafamadriz/friendly-snippets',
+        name = 'friendly-snippets',
+        version = 'main',
     },
     {
         src = 'https://github.com/nvim-treesitter/nvim-treesitter',
@@ -29,28 +42,29 @@ vim.pack.add({
         name = 'blink.indent',
         version = vim.version.range('2.*'),
     },
+    {
+        src = 'https://github.com/saghen/blink.cmp',
+        name = 'blink.cmp',
+        version = vim.version.range('1.*'),
+    },
 })
 
 if os.getenv('COLORTERM') == 'truecolor' then
-    if os.getenv('TERM') == 'xterm-kitty' then
-        require('catppuccin').setup({
-            flavour = 'mocha',
-            compile_path = vim.fs.joinpath(vim.fn.stdpath('cache'), 'catppuccin'),
-            show_end_of_buffer = true,
-            default_integrations = false,
-            auto_integrations = false,
-            integrations = {
-                treesitter_context = true,
-                nvim_surround = true,
-                blink_cmp = true,
-                blink_indent = true,
-                blink_pairs = true,
-            }
-        })
-        vim.cmd.colorscheme('catppuccin')
-    else
-        vim.cmd.colorscheme('retrobox')
-    end
+    require('catppuccin').setup({
+        flavour = 'mocha',
+        compile_path = vim.fs.joinpath(vim.fn.stdpath('cache'), 'catppuccin'),
+        show_end_of_buffer = true,
+        default_integrations = false,
+        auto_integrations = false,
+        integrations = {
+            treesitter_context = true,
+            nvim_surround = true,
+            blink_indent = true,
+            blink_pairs = true,
+            blink_cmp = true,
+        }
+    })
+    vim.cmd.colorscheme('catppuccin')
 
     local highlights = vim.fn.execute('highlight')
     local guibg_match = string.match(highlights, '\nNormal [^\n]*guibg=#(%x%x%x%x%x%x)')
@@ -61,6 +75,10 @@ if os.getenv('COLORTERM') == 'truecolor' then
 
     vim.cmd.highlight('link netrwMarkFile Identifier')
 end
+
+require('nvim-surround').setup({
+    move_cursor = 'sticky',
+})
 
 require('nvim-treesitter').install({
     'lua', 'vim', 'vimdoc', 'query', 'c', 'cpp',
@@ -77,8 +95,15 @@ require('treesitter-context').setup({
 require('blink.pairs').download():pwait(60000)
 require('blink.pairs').setup({
     mappings = {
-        enabled = false,
-        cmdline = false,
+        enabled = true,
+        cmdline = true,
+        wrap = {
+            ['<C-b>'] = nil,
+            ['<C-S-b>'] = nil,
+
+            ['<C-l>'] = 'motion',
+            ['<C-h>'] = 'motion_reverse',
+        },
     },
     highlights = {
         enabled = true,
@@ -88,5 +113,17 @@ require('blink.pairs').setup({
 
 require('blink.indent').setup({
     scope = { enabled = false },
+})
+
+require('blink.cmp').setup({
+    cmdline = { enabled = false },
+    fuzzy = { implementation = "rust" },
+    signature = { enabled = true },
+    keymap = {
+        preset = 'enter',
+        ['<C-s>'] = { 'show_signature', 'hide_signature' },
+        ['<C-k>'] = false,
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+    },
 })
 

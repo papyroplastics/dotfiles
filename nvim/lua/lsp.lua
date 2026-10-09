@@ -66,42 +66,8 @@ vim.keymap.set('n', '<Leader>lO', lsp_outline)
 vim.keymap.set('n', '<Leader>le', vim.diagnostic.open_float)
 vim.keymap.set('n', '<Leader>lq', vim.diagnostic.setloclist)
 
--- Server specific configs
-
-vim.pack.add({
-    {
-        src = 'https://github.com/saghen/blink.cmp',
-        name = 'blink.cmp',
-        version = vim.version.range('1.*'),
-    },
-    {
-        src = 'https://github.com/neovim/nvim-lspconfig',
-        name = 'lspconfig',
-        version = 'master',
-    },
-    {
-        src = 'https://github.com/rafamadriz/friendly-snippets',
-        name = 'friendly-snippets',
-        version = 'main',
-    },
-})
-
--- Autocomplete
-local use_blink = true
-
-if use_blink then
-    require('blink.cmp').setup({
-        cmdline = { enabled = false },
-        fuzzy = { implementation = "rust" },
-        signature = { enabled = true },
-        keymap = {
-            preset = 'enter',
-            ['<C-s>'] = { 'show_signature', 'hide_signature' },
-            ['<C-k>'] = false,
-            ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-        },
-    })
-else
+-- Pluginless autocomplete
+if false then
     vim.opt.complete = {'o', '.'}
     vim.opt.completeopt = { 'fuzzy', 'menuone', 'noinsert', 'popup' }
     vim.opt.autocomplete = true

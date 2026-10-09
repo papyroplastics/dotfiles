@@ -1,8 +1,10 @@
+require('vim._core.ui2').enable({})
+
 require('options')
 require('commands')
 require('keymaps')
-require('looks')
 require('lsp')
+require('plugins')
 
 vim.schedule(function ()
     local no_args = vim.fn.argc(-1) == 0
