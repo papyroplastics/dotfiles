@@ -1,4 +1,4 @@
-require('vim._core.ui2').enable({})
+require('vim._core.ui2').enable({ enable = true })
 
 require('options')
 require('commands')
@@ -15,3 +15,4 @@ vim.schedule(function ()
         vim.cmd.edit('.')
     end
 end)
+
