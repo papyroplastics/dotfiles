@@ -45,9 +45,7 @@ export LIBVIRT_DEFAULT_URI='qemu:///system'
 export DEBEMAIL="lucasllort@gmail.com"
 export DEBFULLNAME="Lucas Llort"
 
-if [[ $TERM == 'xterm-kitty' ]]; then 
-    export BAT_THEME=OneHalfDark
-fi
+export BAT_THEME=OneHalfDark
 
 # -------------
 #  Completions
@@ -85,8 +83,6 @@ alias nivm='nvim'
 alias shimbolic='ln --symbolic /dev/shm .'
 alias virsh='virsh -c qemu:///system'
 
-alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
-
 if [[ $TERM == 'xterm-kitty' ]]; then 
     alias clear="printf '\e[H\e[22J'"
     bind -x '"\C-l":echo; clear'
@@ -101,9 +97,18 @@ function just {
     disown '%%';
 }
 
+alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
+
 function idfexport {
     export IDF_TOOLS_PATH=$PROGRAMS/esp-idf
     source "$HOME/Repos/esp-idf/export.sh"
+    _unsetfunc
+}
+
+function gcloudexport {
+    source '/home/lucas/Programs/google-cloud-sdk/path.bash.inc'
+    source '/home/lucas/Programs/google-cloud-sdk/completion.bash.inc'
+    complete -C terraform terraform
     _unsetfunc
 }
 
@@ -243,14 +248,19 @@ function pretty_path {
 #  Prompt
 # --------
 
-reset=$'\e[0m'
-dark_white=$'\e[37m'
-bright_black=$'\e[90m'
-bright_red=$'\e[91m'
-bright_blue=$'\e[94m'
-bright_magenta=$'\e[95m'
-bright_cyan=$'\e[96m'
-bright_white=$'\e[97m'
+esc=$'\e'
+bel=$'\a'
+csi=$esc'['
+osc=$esc']'
+
+reset=$csi'0m'
+dark_white=$csi'37m'
+bright_black=$csi'90m'
+bright_red=$csi'91m'
+bright_blue=$csi'94m'
+bright_magenta=$csi'95m'
+bright_cyan=$csi'96m'
+bright_white=$csi'97m'
 
 logo_col=$bright_red
 host_col=$bright_blue
@@ -271,7 +281,7 @@ git_end=')'
 exit_icon='(e:'
 exit_end=')'
 
-if [[ $TERM == "xterm-kitty" ]]; then
+if [[ $COLORTERM == "truecolor" ]]; then
     logo_icon=' '
     prompt_icon=''
     dir_sep='....'
@@ -284,16 +294,14 @@ if [[ $TERM == "xterm-kitty" ]]; then
     exit_icon=''
     exit_end=''
 
-    bslash='\\'
+    ps1_start=$osc'133;A'$bel
+    ps1_end=$osc'133;B'$bel
 
-    ps1_start=$'\e]133;A\e'$bslash
-    ps1_end=$'\e]133;B\e'$bslash
+    ps2_start=$osc'133;A;k=s'$bel
+    ps2_end=$osc'133;B;k=s'$bel
 
-    ps2_start=$'\e]133;A;k=s\e'$bslash
-    ps2_end=$'\e]133;B;k=s\e'$bslash
-
-    cmd_start=$'\e]133;C\e'$bslash
-    cmd_end=$'\e]133;D;$?\e'$bslash
+    cmd_start=$osc'133;C'$bel
+    cmd_end=$osc'133;D;$?'$bel
 fi
 
 exit_status=''
@@ -301,7 +309,13 @@ short_dir=''
 git_status=''
 git_status_update_pending=1; 
 
-alias cd='git_status_update_pending=1; builtin cd'
+function cd {
+    git_status_update_pending=1
+    builtin cd "$@" || return
+    local uri="file://$HOSTNAME$PWD"
+    echo -nE $osc"7;$uri$bel"
+}
+
 alias git='git_status_update_pending=1; git'
 alias lazygit='git_status_update_pending=1; lazygit'
 
@@ -346,8 +360,7 @@ function update_prompt {
     if [[ -n "$git_status_update_pending" ]]; then
         git_status_update_pending=''
         git_status=''
-        git_dir=$(back-search -d .git)
-        [[ $? == 0 ]] && update_git_status
+        back-search -d .git &>/dev/null && update_git_status
     fi
 }
 
@@ -355,21 +368,16 @@ PROMPT_COMMAND=update_prompt
 PS0="\[$cmd_start\]"
 
 PS1="\
-\[$cmd_end\
-$ps1_start\
-$no_col\
-$logo_col\]$logo_icon\
-\[$host_col\]\u@\H \
+\[$cmd_end$ps1_start$no_col$logo_col\]$logo_icon\
+\[$host_col\]\\u@\\H \
 \[$dir_col\]\$short_dir \
 \[$git_col\]\$git_status\
 \[$exit_col\]\$exit_status\
 \[$prompt_col\]$prompt_icon \
-\[$no_col\
-$ps1_end\]"
+\[$no_col$ps1_end\]"
 
 PS2="\
 \[$ps2_start\]\
 \[$prompt_col\]$prompt_icon \
-\[$no_col\
-$ps2_end\]"
+\[$no_col$ps2_end\]"
 
