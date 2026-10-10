@@ -1,6 +1,7 @@
 # Options
-font monospace 0.1
+font pango:DroidSansM Nerd Font Bold 11
 titlebar_padding 1
+title_align center
 default_border none 
 default_floating_border none 
 hide_edge_borders --i3 none
@@ -12,17 +13,21 @@ set $background ../assets/background.jpg
 output * bg $background fill
 
 # Colors
-set $acbg #44475A
-set $acfg #F8F8F2
-set $inbg #282A36
-set $infg #BFBFBF
-set $urbg #FF5555
+set $text     #cdd6f4
+set $subtext1 #bac2de
+set $subtext0 #a6adc8
 
-# Color classes         brdr   bg   text   ind  ch_brdr
-client.focused          $acbg $acbg $acbg $acbg $acbg
-client.focused_inactive $acbg $acbg $acbg $acbg $acbg
-client.unfocused        $inbg $inbg $inbg $inbg $inbg
-client.urgent           $urbg $urbg $urbg $urbg $urbg
+set $base     #1e1e2e
+set $mantle   #181825
+set $crust    #11111b
+
+set $red      #e78284
+set $surface2 #585b70
+
+client.focused          $base   $base   $text     $base   $base
+client.focused_inactive $mantle $mantle $subtext1 $mantle $mantle
+client.unfocused        $crust  $crust  $subtext0 $crust  $crust 
+client.urgent           $red    $red    $text     $red    $red
 
 bar {
     status_command i3status
@@ -31,16 +36,14 @@ bar {
     font pango:DroidSansM Nerd Font 11
     separator_symbol " ❯ "
     colors {
-        background $inbg
-        statusline $acfg
-        separator #585B70
+        background $base
+        statusline $text
+        separator  $surface2
 
-        # Class            brdr  bg  text
-        focused_workspace  $acbg $acbg $acfg
-        active_workspace   $inbg $acbg $acfg
-        inactive_workspace $inbg $inbg $infg
-        urgent_workspace   $urbg $urbg $acfg
-        binding_mode       $urbg $urbg $acfg
+        focused_workspace  $crust $crust $text
+        active_workspace   $crust $crust $text
+        inactive_workspace $base  $base  $subtext0
+        urgent_workspace   $red   $red   $text
     }
 }
 

@@ -98,8 +98,8 @@ require('blink.pairs').setup({
         enabled = true,
         cmdline = true,
         wrap = {
-            ['<C-b>'] = nil,
-            ['<C-S-b>'] = nil,
+            ['<C-b>'] = false,
+            ['<C-S-b>'] = false,
 
             ['<C-l>'] = 'motion',
             ['<C-h>'] = 'motion_reverse',
@@ -127,3 +127,38 @@ require('blink.cmp').setup({
     },
 })
 
+-- Plugin management
+vim.api.nvim_create_user_command('PlugList', function (_)
+    local plugins = vim.pack.get()
+    local plug_str = ''
+
+    for i, plugin in ipairs(plugins) do
+        plug_str = plug_str
+                    .. i .. ') '
+                    .. '[' .. (plugin.active and 'active' or 'inactive') .. '] '
+                    .. plugin.spec.name
+                    .. '\n'
+    end
+
+    vim.print(plug_str)
+end, {})
+
+vim.api.nvim_create_user_command('PlugClean', function (_)
+    local inactive = vim.iter(vim.pack.get())
+        :filter(function(x) return not x.active end)
+        :map(function(x) return x.spec.name end)
+        :totable()
+
+    vim.ui.select({'yes', 'no'}, {
+        prompt = 'Delete inactive plugins? ('.. table.concat(inactive, ', ') ..')',
+    }, function (_, idx)
+        if idx == 1 then
+            vim.pack.del(inactive)
+        end
+    end
+    )
+end, {})
+
+vim.api.nvim_create_user_command('PlugUpdate', function (_)
+    vim.pack.update()
+end, {})

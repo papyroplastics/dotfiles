@@ -195,7 +195,7 @@ function pyexport {
     fi
 
     source "$script_path/activate"
-    echo "VIRTUAL_ENV=$(pretty_path "$VIRTUAL_ENV")"
+    echo "VIRTUAL_ENV=$(abs_to_rel_path "$VIRTUAL_ENV")"
 
     if [[ -x $script_path/pip ]]; then 
         eval "$("$script_path/pip" completion --bash)"
@@ -223,7 +223,7 @@ function back-search {
     return 1
 }
 
-function pretty_path {
+function abs_to_rel_path {
     local res=${1#"$PWD"}
     if [[ $res != "$1" ]]; then
         echo ".$res"
@@ -304,20 +304,33 @@ if [[ $COLORTERM == "truecolor" ]]; then
     cmd_end=$osc'133;D;$?'$bel
 fi
 
-exit_status=''
-short_dir=''
-git_status=''
-git_status_update_pending=1; 
+function update_pwd_signal {
+    pwd_pretty=$PWD
+    if [[ $pwd_pretty != '/' ]]; then
+        pwd_pretty=${pwd_pretty/#$HOME/'~'}
+        pwd_pretty=${pwd_pretty#/}
+        pwd_pretty=${pwd_pretty/\/*\//\/$dir_sep\/}
+    fi
+
+    pwd_signal=$osc"0;$pwd_pretty$bel"
+}
+update_pwd_signal
 
 function cd {
-    git_status_update_pending=1
     builtin cd "$@" || return
     local uri="file://$HOSTNAME$PWD"
     echo -nE $osc"7;$uri$bel"
+
+    update_pwd_signal
+    git_status_update_pending=1
 }
 
 alias git='git_status_update_pending=1; git'
 alias lazygit='git_status_update_pending=1; lazygit'
+
+exit_status=''
+git_status=''
+git_status_update_pending=1; 
 
 function update_git_status {
     # if on a branch
@@ -339,22 +352,11 @@ function update_git_status {
 }
 
 function update_prompt {
-    # update exit status
     exit_status=$?
     if [[ $exit_status == 0 ]]; then
         exit_status=''
     else
         exit_status="$exit_icon $exit_status$exit_end "
-    fi
-
-    # update formatted dir
-    short_dir=$PWD
-    if [[ $short_dir == '/' ]]; then
-        short_dir='/'
-    else
-        short_dir=${short_dir/#$HOME/'~'}
-        short_dir=${short_dir#/}
-        short_dir=${short_dir/\/*\//\/$dir_sep\/}
     fi
 
     if [[ -n "$git_status_update_pending" ]]; then
@@ -366,11 +368,10 @@ function update_prompt {
 
 PROMPT_COMMAND=update_prompt
 PS0="\[$cmd_start\]"
-
 PS1="\
-\[$cmd_end$ps1_start$no_col$logo_col\]$logo_icon\
+\[$cmd_end\$pwd_signal$ps1_start$no_col$logo_col\]$logo_icon\
 \[$host_col\]\\u@\\H \
-\[$dir_col\]\$short_dir \
+\[$dir_col\]\$pwd_pretty \
 \[$git_col\]\$git_status\
 \[$exit_col\]\$exit_status\
 \[$prompt_col\]$prompt_icon \
@@ -381,3 +382,7 @@ PS2="\
 \[$prompt_col\]$prompt_icon \
 \[$no_col$ps2_end\]"
 
+function set_cmd_to_win_title {
+    [[ $BASH_COMMAND != update_prompt ]] && echo -nE $osc"0;$BASH_COMMAND$bel"
+}
+trap set_cmd_to_win_title DEBUG
