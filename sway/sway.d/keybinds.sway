@@ -1,6 +1,7 @@
 # Programs
 bindsym {
-    $mod+t exec kitty --single-instance
+    #$mod+t exec kitty --single-instance
+    $mod+t exec footclient
     $mod+d exec wofi
     $mod+ctrl+d exec rofi -show
     $mod+shift+d exec rofi -drun-reload-desktop-cache -show

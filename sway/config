@@ -13,6 +13,7 @@ exec {
     dbus-update-activation-environment --systemd $env_vars
     systemctl --user import-environment $env_vars
     mate-polkit
+    foot --server
 }
 
 # Lock screen
