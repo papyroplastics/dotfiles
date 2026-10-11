@@ -1,6 +1,6 @@
 # Options
-font pango:DroidSansM Nerd Font Bold 11
-titlebar_padding 1
+font pango:DroidSansM Nerd Font Bold 13
+titlebar_padding 2
 title_align center
 default_border none 
 default_floating_border none 
@@ -33,7 +33,7 @@ bar {
     status_command i3status
     mode hide
     hidden_state hide
-    font pango:DroidSansM Nerd Font 11
+    font pango:DroidSansM Nerd Font 12
     separator_symbol " ❯ "
     colors {
         background $base
