@@ -43,6 +43,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 export BAT_THEME=OneHalfDark
+export CCACHE_SLOPPINESS=time_macros,include_file_mtime,include_file_ctime
 
 # -------------
 #  Completions
@@ -96,6 +97,13 @@ function just {
 
 alias _unsetfunc='unset -f "${FUNCNAME[0]}"'
 
+function linuxexport {
+    export INSTALL_MOD_STRIP=1
+    export KBUILD_BUILD_TIMESTAMP="$(git show --no-patch --format=%cs)"
+    source ./scripts/bash-completion/make
+    _unsetfunc
+}
+
 function idfexport {
     export IDF_TOOLS_PATH=$PROGRAMS/esp-idf
     source "$HOME/Repos/esp-idf/export.sh"
@@ -103,9 +111,15 @@ function idfexport {
 }
 
 function gcloudexport {
-    source '/home/lucas/Programs/google-cloud-sdk/path.bash.inc'
-    source '/home/lucas/Programs/google-cloud-sdk/completion.bash.inc'
+    source "$HOME/Programs/google-cloud-sdk/path.bash.inc"
+    source "$HOME/Programs/google-cloud-sdk/completion.bash.inc"
     complete -C terraform terraform
+    _unsetfunc
+}
+
+function dotnetexport {
+    export DOTNET_ROOT="$HOME/Programs/dotnet-sdk-10.0.402-linux-x64"
+    PATH="$PATH:$DOTNET_ROOT"
     _unsetfunc
 }
 
@@ -291,14 +305,16 @@ if [[ $COLORTERM == "truecolor" ]]; then
     exit_icon=''
     exit_end=''
 
-    ps1_start=$osc'133;A'$bel
-    ps1_end=$osc'133;B'$bel
+    osc133=$osc'133;'
 
-    ps2_start=$osc'133;A;k=s'$bel
-    ps2_end=$osc'133;B;k=s'$bel
+    ps1_start=$osc133'A'$bel
+    ps1_end=$osc133'B'$bel
 
-    cmd_start=$osc'133;C'$bel
-    cmd_end=$osc'133;D;$?'$bel
+    ps2_start=$osc133'A;k=s'$bel
+    ps2_end=$osc133'B;k=s'$bel
+
+    cmd_start=$osc133'C'$bel
+    cmd_end=$osc133'D;$?'$bel
 fi
 
 function update_pwd_signal {
@@ -309,16 +325,16 @@ function update_pwd_signal {
         pwd_pretty=${pwd_pretty/\/*\//\/$dir_sep\/}
     fi
 
-    pwd_signal=$osc"0;$pwd_pretty$bel"
+    pwd_signal=$osc"2;$pwd_pretty$bel"
 }
-update_pwd_signal
+update_pwd_signal 
 
 function cd {
     builtin cd "$@" || return
     local uri="file://$HOSTNAME$PWD"
     echo -nE $osc"7;$uri$bel"
 
-    update_pwd_signal
+    update_pwd_signal 
     git_status_update_pending=1
 }
 
@@ -380,6 +396,6 @@ PS2="\
 \[$no_col$ps2_end\]"
 
 function set_cmd_to_win_title {
-    [[ $BASH_COMMAND != update_prompt ]] && echo -nE $osc"0;$BASH_COMMAND$bel"
+    [[ $BASH_COMMAND != "$PROMPT_COMMAND" ]] && echo -nE $osc"2;$BASH_COMMAND$bel"
 }
 trap set_cmd_to_win_title DEBUG

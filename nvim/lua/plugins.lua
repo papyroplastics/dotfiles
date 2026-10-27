@@ -16,7 +16,6 @@ vim.pack.add({
     },
     {
         src = 'https://github.com/rafamadriz/friendly-snippets',
-        name = 'friendly-snippets',
         version = 'main',
     },
     {
@@ -39,12 +38,10 @@ vim.pack.add({
     },
     {
         src = 'https://github.com/saghen/blink.indent',
-        name = 'blink.indent',
         version = vim.version.range('2.*'),
     },
     {
         src = 'https://github.com/saghen/blink.cmp',
-        name = 'blink.cmp',
         version = vim.version.range('1.*'),
     },
 })
